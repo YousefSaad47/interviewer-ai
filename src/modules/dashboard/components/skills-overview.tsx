@@ -13,7 +13,7 @@ export function SkillsOverview() {
     <div className="space-y-4">
       <h2 className="text-foreground text-xl font-bold">Skills Overview</h2>
 
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
         {skills.map((skill, index) => (
           <Card
             key={index}
@@ -26,7 +26,7 @@ export function SkillsOverview() {
               </div>
               <Progress
                 value={skill.progress}
-                className="h-2 bg-neutral-200 dark:bg-neutral-800 [&>div]:bg-[#6382DE]"
+                className="[&>div]:bg-primary h-2 bg-neutral-200 dark:bg-neutral-800"
               />
             </CardContent>
           </Card>

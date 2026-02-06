@@ -36,7 +36,7 @@ export function SignUpPage() {
   return (
     <AuthLayout>
       {/* Title Section */}
-      <div className="flex w-full max-w-[300px] flex-col items-center gap-1.5 sm:gap-2">
+      <div className="flex w-full max-w-75 flex-col items-center gap-1.5 sm:gap-2">
         <h1 className="text-foreground text-center text-3xl leading-none font-bold tracking-[-2.5%] sm:text-[40px]">
           Join The Future
         </h1>
@@ -46,8 +46,8 @@ export function SignUpPage() {
       </div>
 
       {/* Tab Switcher */}
-      <div className="flex w-full max-w-[420px] flex-col items-center gap-4 sm:gap-5">
-        <div className="bg-card flex h-8 w-full max-w-[260px] items-center justify-between gap-1 rounded-[9px] p-1.5">
+      <div className="flex w-full max-w-105 flex-col items-center gap-4 sm:gap-5">
+        <div className="bg-card flex h-8 w-full max-w-65 items-center justify-between gap-1 rounded-[9px] p-1.5">
           <Link
             href="/auth/signin"
             className="text-foreground hover:bg-primary/5 hover:text-foreground flex items-center justify-center gap-1 rounded-md px-8 py-2 transition-all sm:px-10 sm:py-2.5"
@@ -87,7 +87,7 @@ export function SignUpPage() {
               <Input
                 {...register("fullName")}
                 placeholder="Full Name"
-                className="text-foreground placeholder:text-foreground/18 focus:placeholder:text-primary h-auto w-full border-0 !bg-transparent p-0 text-base font-normal shadow-none ring-0 outline-none placeholder:text-sm placeholder:leading-none placeholder:font-medium focus-visible:border-0 focus-visible:ring-0 sm:text-lg sm:placeholder:text-[15px] dark:!bg-transparent"
+                className="text-foreground placeholder:text-foreground/18 focus:placeholder:text-primary h-auto w-full border-0 bg-transparent! p-0 text-base font-normal shadow-none ring-0 outline-none placeholder:text-sm placeholder:leading-none placeholder:font-medium focus-visible:border-0 focus-visible:ring-0 sm:text-lg sm:placeholder:text-[15px] dark:bg-transparent!"
               />
             </div>
             {errors.fullName && (
@@ -117,7 +117,7 @@ export function SignUpPage() {
                 {...register("email")}
                 type="email"
                 placeholder="Email Address"
-                className="text-foreground placeholder:text-foreground/18 focus:placeholder:text-primary h-auto w-full border-0 !bg-transparent p-0 text-base font-normal shadow-none ring-0 outline-none placeholder:text-sm placeholder:leading-none placeholder:font-medium focus-visible:border-0 focus-visible:ring-0 sm:text-lg sm:placeholder:text-[15px] dark:!bg-transparent"
+                className="text-foreground placeholder:text-foreground/18 focus:placeholder:text-primary h-auto w-full border-0 bg-transparent! p-0 text-base font-normal shadow-none ring-0 outline-none placeholder:text-sm placeholder:leading-none placeholder:font-medium focus-visible:border-0 focus-visible:ring-0 sm:text-lg sm:placeholder:text-[15px] dark:bg-transparent!"
               />
             </div>
             {errors.email && (
@@ -147,7 +147,7 @@ export function SignUpPage() {
                 {...register("password")}
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className="text-foreground placeholder:text-foreground/18 focus:placeholder:text-primary h-auto w-full border-0 !bg-transparent p-0 text-base font-normal shadow-none ring-0 outline-none placeholder:text-sm placeholder:leading-none placeholder:font-medium focus-visible:border-0 focus-visible:ring-0 sm:text-lg sm:placeholder:text-[15px] dark:!bg-transparent"
+                className="text-foreground placeholder:text-foreground/18 focus:placeholder:text-primary h-auto w-full border-0 bg-transparent! p-0 text-base font-normal shadow-none ring-0 outline-none placeholder:text-sm placeholder:leading-none placeholder:font-medium focus-visible:border-0 focus-visible:ring-0 sm:text-lg sm:placeholder:text-[15px] dark:bg-transparent!"
               />
               <button
                 type="button"
@@ -190,7 +190,7 @@ export function SignUpPage() {
                 {...register("confirmPassword")}
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm Password"
-                className="text-foreground placeholder:text-foreground/18 focus:placeholder:text-primary h-auto w-full border-0 !bg-transparent p-0 text-base font-normal shadow-none ring-0 outline-none placeholder:text-sm placeholder:leading-none placeholder:font-medium focus-visible:border-0 focus-visible:ring-0 sm:text-lg sm:placeholder:text-[15px] dark:!bg-transparent"
+                className="text-foreground placeholder:text-foreground/18 focus:placeholder:text-primary h-auto w-full border-0 bg-transparent! p-0 text-base font-normal shadow-none ring-0 outline-none placeholder:text-sm placeholder:leading-none placeholder:font-medium focus-visible:border-0 focus-visible:ring-0 sm:text-lg sm:placeholder:text-[15px] dark:bg-transparent!"
               />
               <button
                 type="button"
@@ -226,20 +226,20 @@ export function SignUpPage() {
       </div>
 
       {/* Social Login & Footer */}
-      <div className="flex w-full max-w-[420px] flex-col items-center gap-6 sm:gap-8.5">
+      <div className="flex w-full max-w-105 flex-col items-center gap-6 sm:gap-8.5">
         <div className="flex w-full flex-col items-center justify-center gap-2.5 sm:gap-3">
           <p className="text-foreground w-full text-center text-base leading-none font-light tracking-[-2.5%] sm:text-[17px]">
             or continue with
           </p>
 
           <div className="flex w-full items-center gap-4 sm:gap-4.5">
-            <button className="bg-primary hover:bg-primary/90 focus:ring-primary/50 flex h-9 flex-1 items-center justify-center gap-2 rounded-[10px] px-5 py-2 shadow-[0px_0.92px_1.84px_0px_rgba(26,26,26,0.05)] transition-all hover:scale-[1.02] focus:scale-[0.98] focus:ring-2 focus:outline-none active:scale-95 sm:h-[38px] sm:gap-2.5 sm:px-8 sm:py-3">
+            <button className="bg-primary hover:bg-primary/90 focus:ring-primary/50 flex h-9 flex-1 items-center justify-center gap-2 rounded-[10px] px-5 py-2 shadow-[0px_0.92px_1.84px_0px_rgba(26,26,26,0.05)] transition-all hover:scale-[1.02] focus:scale-[0.98] focus:ring-2 focus:outline-none active:scale-95 sm:h-9.5 sm:gap-2.5 sm:px-8 sm:py-3">
               <Github className="text-foreground h-5 w-5 sm:h-6 sm:w-6" />
               <span className="text-[10px] leading-[1.43em] font-medium text-[#FAFAFA] sm:text-[12px]">
                 GitHub
               </span>
             </button>
-            <button className="border-primary hover:bg-primary/10 focus:ring-primary/50 flex h-9 flex-1 items-center justify-center gap-2 rounded-[10px] border bg-transparent px-5 py-2 shadow-[0px_0.92px_1.84px_0px_rgba(26,26,26,0.05)] transition-all hover:scale-[1.02] focus:scale-[0.98] focus:ring-2 focus:outline-none active:scale-95 sm:h-[38px] sm:gap-2.5 sm:px-8 sm:py-3">
+            <button className="border-primary hover:bg-primary/10 focus:ring-primary/50 flex h-9 flex-1 items-center justify-center gap-2 rounded-[10px] border bg-transparent px-5 py-2 shadow-[0px_0.92px_1.84px_0px_rgba(26,26,26,0.05)] transition-all hover:scale-[1.02] focus:scale-[0.98] focus:ring-2 focus:outline-none active:scale-95 sm:h-9.5 sm:gap-2.5 sm:px-8 sm:py-3">
               <Github className="text-foreground h-5 w-5 sm:h-6 sm:w-6" />
               <span className="text-[10px] leading-[1.43em] font-medium text-[#FAFAFA] sm:text-[12px]">
                 GitHub

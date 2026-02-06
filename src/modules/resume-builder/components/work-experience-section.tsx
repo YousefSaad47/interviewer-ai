@@ -33,7 +33,7 @@ export function WorkExperienceSection() {
         <CardAction>
           <Button
             onClick={addWorkExperience}
-            className="gap-1 rounded-lg bg-[#6382DE] px-4 py-2 text-sm text-white hover:bg-[#6382DE]/90"
+            className="bg-primary hover:bg-primary/90 gap-1 rounded-lg px-4 py-2 text-sm text-white"
           >
             <Plus className="h-4 w-4" />
             Add
@@ -63,48 +63,64 @@ export function WorkExperienceSection() {
             </div>
 
             {/* Company & Position */}
-            <div className="flex gap-3">
-              <Input
-                type="text"
-                value={exp.company}
-                onChange={(e) =>
-                  updateWorkExperience(exp.id, { company: e.target.value })
-                }
-                placeholder="Company"
-                className="flex-1 rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
-              />
-              <Input
-                type="text"
-                value={exp.position}
-                onChange={(e) =>
-                  updateWorkExperience(exp.id, { position: e.target.value })
-                }
-                placeholder="Position"
-                className="flex-1 rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
-              />
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="flex-1 space-y-1.5">
+                <Label className="text-muted-foreground text-xs">Company</Label>
+                <Input
+                  type="text"
+                  value={exp.company}
+                  onChange={(e) =>
+                    updateWorkExperience(exp.id, { company: e.target.value })
+                  }
+                  placeholder="Enter company name"
+                  className="rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+                />
+              </div>
+              <div className="flex-1 space-y-1.5">
+                <Label className="text-muted-foreground text-xs">
+                  Position
+                </Label>
+                <Input
+                  type="text"
+                  value={exp.position}
+                  onChange={(e) =>
+                    updateWorkExperience(exp.id, { position: e.target.value })
+                  }
+                  placeholder="Enter position title"
+                  className="rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+                />
+              </div>
             </div>
 
             {/* Duration */}
-            <Input
-              type="text"
-              value={exp.duration}
-              onChange={(e) =>
-                updateWorkExperience(exp.id, { duration: e.target.value })
-              }
-              placeholder="Duration"
-              className="w-full rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
-            />
+            <div className="space-y-1.5">
+              <Label className="text-muted-foreground text-xs">Duration</Label>
+              <Input
+                type="text"
+                value={exp.duration}
+                onChange={(e) =>
+                  updateWorkExperience(exp.id, { duration: e.target.value })
+                }
+                placeholder="e.g., Jan 2020 - Dec 2022"
+                className="w-full rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+              />
+            </div>
 
             {/* Description */}
-            <Textarea
-              value={exp.description}
-              onChange={(e) =>
-                updateWorkExperience(exp.id, { description: e.target.value })
-              }
-              placeholder="Description"
-              rows={3}
-              className="w-full rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
-            />
+            <div className="space-y-1.5">
+              <Label className="text-muted-foreground text-xs">
+                Description
+              </Label>
+              <Textarea
+                value={exp.description}
+                onChange={(e) =>
+                  updateWorkExperience(exp.id, { description: e.target.value })
+                }
+                placeholder="Describe your responsibilities and achievements"
+                rows={3}
+                className="w-full rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+              />
+            </div>
           </div>
         ))}
       </CardContent>

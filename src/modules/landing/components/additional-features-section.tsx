@@ -1,3 +1,7 @@
+import { Heading } from "@/shared/components/ui/heading";
+import { Paragraph } from "@/shared/components/ui/paragraph";
+import { SpotlightCard } from "@/shared/components/ui/spotlight-card";
+
 export function AdditionalFeaturesSection() {
   const features = [
     {
@@ -127,22 +131,19 @@ export function AdditionalFeaturesSection() {
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="mb-16 text-center">
-          <h2 className="text-foreground mb-6 text-4xl font-bold">
+          <Heading as="h2" className="mb-6">
             Our Feature
-          </h2>
-          <p className="text-muted-foreground mx-auto max-w-3xl text-xl">
+          </Heading>
+          <Paragraph className="mx-auto max-w-3xl">
             A complete interview preparation platform with AI-powered features
             designed to help you succeed
-          </p>
+          </Paragraph>
         </div>
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
-            <div
-              key={index}
-              className="group border-border bg-card hover:border-primary/50 hover:bg-accent rounded-2xl border p-6 transition-all duration-300"
-            >
+            <SpotlightCard key={index} className="group p-6">
               <div className="bg-primary/10 text-primary group-hover:bg-primary/20 mb-4 flex h-12 w-12 items-center justify-center rounded-xl transition-colors">
                 {feature.icon}
               </div>
@@ -152,7 +153,7 @@ export function AdditionalFeaturesSection() {
               <p className="text-muted-foreground leading-relaxed">
                 {feature.description}
               </p>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </div>

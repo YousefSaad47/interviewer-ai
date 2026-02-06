@@ -72,7 +72,7 @@ export function SetupInterviewPage() {
         </div>
 
         {/* Setup Form Card */}
-        <Card className="border-primary/20 bg-card/50 w-full max-w-2xl backdrop-blur-sm md:max-w-3xl lg:max-w-4xl">
+        <Card className="w-full max-w-2xl border-neutral-200 bg-neutral-50 backdrop-blur-sm md:max-w-3xl lg:max-w-4xl dark:border-neutral-800 dark:bg-neutral-900">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-6 p-6 sm:gap-8 sm:p-8 md:p-10 lg:gap-10 lg:p-12">
               {/* Target Role */}
@@ -91,7 +91,7 @@ export function SetupInterviewPage() {
                       <SelectTrigger
                         id="target-role"
                         className={cn(
-                          "border-primary/30 bg-primary/10 text-foreground hover:bg-primary/15 focus:border-primary/50 focus:ring-primary/20 h-12",
+                          "text-foreground h-12 border-neutral-300 bg-neutral-100 hover:bg-neutral-200 focus:border-neutral-400 focus:ring-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:border-neutral-600 dark:focus:ring-neutral-700",
                           errors.targetRole && "border-destructive"
                         )}
                       >
@@ -138,7 +138,7 @@ export function SetupInterviewPage() {
                       <SelectTrigger
                         id="experience-level"
                         className={cn(
-                          "border-primary/30 bg-primary/10 text-foreground hover:bg-primary/15 focus:border-primary/50 focus:ring-primary/20 h-12",
+                          "text-foreground h-12 border-neutral-300 bg-neutral-100 hover:bg-neutral-200 focus:border-neutral-400 focus:ring-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:border-neutral-600 dark:focus:ring-neutral-700",
                           errors.experienceLevel && "border-destructive"
                         )}
                       >
@@ -183,7 +183,7 @@ export function SetupInterviewPage() {
                       <SelectTrigger
                         id="interview-focus"
                         className={cn(
-                          "border-primary/30 bg-primary/10 text-foreground hover:bg-primary/15 focus:border-primary/50 focus:ring-primary/20 h-12",
+                          "text-foreground h-12 border-neutral-300 bg-neutral-100 hover:bg-neutral-200 focus:border-neutral-400 focus:ring-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:border-neutral-600 dark:focus:ring-neutral-700",
                           errors.interviewFocus && "border-destructive"
                         )}
                       >
@@ -235,24 +235,15 @@ export function SetupInterviewPage() {
                       <SelectTrigger
                         id="interview-type"
                         className={cn(
-                          "border-primary/30 bg-primary/10 text-foreground hover:bg-primary/15 focus:border-primary/50 focus:ring-primary/20 h-12",
+                          "text-foreground h-12 border-neutral-300 bg-neutral-100 hover:bg-neutral-200 focus:border-neutral-400 focus:ring-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:border-neutral-600 dark:focus:ring-neutral-700",
                           errors.interviewType && "border-destructive"
                         )}
                       >
                         <SelectValue placeholder="Select Type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="technical">
-                          Technical Round
-                        </SelectItem>
-                        <SelectItem value="screening">
-                          Phone Screening
-                        </SelectItem>
-                        <SelectItem value="onsite">
-                          On-site Interview
-                        </SelectItem>
-                        <SelectItem value="final">Final Round</SelectItem>
-                        <SelectItem value="mock">Practice Mock</SelectItem>
+                        <SelectItem value="video">Video Meeting</SelectItem>
+                        <SelectItem value="audio">Audio Meeting</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -277,7 +268,7 @@ export function SetupInterviewPage() {
                   id="additional-context"
                   placeholder="Add any specific topics or requirements..."
                   className={cn(
-                    "border-primary/30 bg-primary/10 text-foreground placeholder:text-muted-foreground hover:bg-primary/15 focus:border-primary/50 focus:ring-primary/20 min-h-25 resize-none sm:min-h-30",
+                    "text-foreground placeholder:text-muted-foreground min-h-25 resize-none border-neutral-300 bg-neutral-100 hover:bg-neutral-200 focus:border-neutral-400 focus:ring-neutral-300 sm:min-h-30 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:border-neutral-600 dark:focus:ring-neutral-700",
                     errors.additionalContext && "border-destructive"
                   )}
                 />
@@ -292,7 +283,7 @@ export function SetupInterviewPage() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="group from-primary to-primary/90 text-primary-foreground hover:shadow-primary/50 mt-4 h-12 w-full gap-2 bg-gradient-to-r text-base font-bold shadow-lg transition-all sm:h-14 sm:text-lg"
+                className="group from-primary to-primary/90 text-primary-foreground hover:shadow-primary/50 mt-4 h-12 w-full gap-2 bg-linear-to-r text-base font-bold shadow-lg transition-all sm:h-14 sm:text-lg"
               >
                 <Play className="h-5 w-5 fill-current transition-transform group-hover:scale-110" />
                 {isSubmitting ? "Starting..." : "Start Interview"}

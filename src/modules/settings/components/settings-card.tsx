@@ -14,7 +14,7 @@ interface SettingsCardProps {
 
 export function SettingsCard({ title, children }: SettingsCardProps) {
   return (
-    <Card className="border-primary/20 bg-card/80 rounded-3xl shadow-lg backdrop-blur-sm">
+    <Card className="rounded-3xl border-neutral-200 bg-neutral-50 shadow-lg backdrop-blur-sm dark:border-neutral-800 dark:bg-neutral-900">
       <CardHeader>
         <CardTitle className="text-foreground text-center text-base font-semibold">
           {title}

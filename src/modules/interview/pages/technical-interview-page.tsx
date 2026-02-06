@@ -39,7 +39,7 @@ export function TechnicalInterviewPage() {
         <div className="mb-8 flex flex-col gap-4 lg:mb-12 lg:flex-row lg:gap-7">
           {/* Interview Details Card */}
           <div className="w-full lg:flex-1">
-            <div className="bg-card/80 flex flex-col gap-4 rounded-3xl p-4 shadow-lg backdrop-blur-sm sm:p-6 md:flex-row md:items-center md:justify-between md:gap-6 lg:rounded-[40px] lg:p-8">
+            <div className="flex flex-col gap-4 rounded-3xl bg-neutral-50 p-4 shadow-lg backdrop-blur-sm sm:p-6 md:flex-row md:items-center md:justify-between md:gap-6 lg:rounded-[40px] lg:p-8 dark:bg-neutral-900">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center md:gap-6 lg:gap-8">
                 <div className="flex items-center gap-3 sm:gap-4">
                   <svg
@@ -92,7 +92,7 @@ export function TechnicalInterviewPage() {
             </div>
 
             {/* Progress Bar */}
-            <Card className="bg-card/80 border-primary/20 mt-6 rounded-3xl p-6 backdrop-blur-sm lg:rounded-[40px] lg:p-8">
+            <Card className="border-primary/20 mt-6 rounded-3xl bg-neutral-50 p-6 backdrop-blur-sm lg:rounded-[40px] lg:p-8 dark:bg-neutral-900">
               <div className="flex w-full flex-col gap-4 lg:gap-5">
                 <div className="flex items-center justify-between">
                   <span className="text-foreground text-base font-medium sm:text-lg">
@@ -116,7 +116,7 @@ export function TechnicalInterviewPage() {
           {/* Left - Interview Cards */}
           <div className="flex w-full flex-col gap-6 lg:flex-1 lg:gap-7">
             {/* AI-Powered Interview Card */}
-            <Card className="border-border/10 bg-card/70 rounded-2xl p-6 backdrop-blur-sm lg:rounded-3xl lg:p-7">
+            <Card className="border-border/10 rounded-2xl bg-neutral-50 p-6 backdrop-blur-sm lg:rounded-3xl lg:p-7 dark:bg-neutral-900">
               <div className="flex items-center gap-4 lg:gap-5">
                 <div className="bg-primary/20 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl sm:h-14 sm:w-14">
                   <svg
@@ -146,9 +146,9 @@ export function TechnicalInterviewPage() {
             </Card>
 
             {/* Ready to Begin Card */}
-            <Card className="border-border/10 bg-card/70 relative h-[500px] overflow-hidden rounded-2xl backdrop-blur-sm sm:h-[550px] lg:h-[627px] lg:rounded-3xl">
+            <Card className="border-border/10 relative h-[500px] overflow-hidden rounded-2xl bg-neutral-50 backdrop-blur-sm sm:h-[550px] lg:h-[627px] lg:rounded-3xl dark:bg-neutral-900">
               {/* Bottom Status Bar */}
-              <div className="border-border/5 bg-card/60 absolute right-0 bottom-0 left-0 rounded-b-2xl border-t px-6 py-6 backdrop-blur-sm lg:rounded-b-3xl lg:px-7 lg:py-7">
+              <div className="border-border/5 absolute right-0 bottom-0 left-0 rounded-b-2xl border-t bg-neutral-100 px-6 py-6 backdrop-blur-sm lg:rounded-b-3xl lg:px-7 lg:py-7 dark:bg-neutral-800">
                 <div className="flex items-center gap-3 lg:gap-4">
                   <div className="bg-primary/30 flex h-12 w-12 shrink-0 items-center justify-center rounded-full sm:h-14 sm:w-14 lg:h-[61px] lg:w-[61px]">
                     <svg
@@ -243,7 +243,7 @@ export function TechnicalInterviewPage() {
 
           {/* Right - Session Overview */}
           <div className="w-full lg:w-80 xl:w-96">
-            <Card className="border-primary/30 bg-primary/30 rounded-2xl px-6 pt-6 pb-1 backdrop-blur-sm lg:rounded-3xl">
+            <Card className="rounded-2xl border-neutral-200 bg-neutral-50 px-6 pt-6 pb-1 backdrop-blur-sm lg:rounded-3xl dark:border-neutral-800 dark:bg-neutral-900">
               <h3 className="text-foreground mb-10 text-lg font-bold sm:mb-12 sm:text-xl lg:mb-14">
                 Session Overview
               </h3>

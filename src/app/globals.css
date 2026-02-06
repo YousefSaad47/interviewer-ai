@@ -6,6 +6,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-heading: var(--heading);
+  --color-subheading: var(--subheading);
+  --color-paragraph: var(--paragraph);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -50,6 +53,9 @@
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
+  --heading: oklch(0.145 0 0); /* Same as foreground */
+  --subheading: oklch(0.145 0 0); /* Same as foreground */
+  --paragraph: oklch(0.556 0 0); /* Same as muted-foreground */
   --card: oklch(0.985 0 0 / 60%);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -63,7 +69,7 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.556 0 0 / 20%);
+  --border: oklch(0.89 0 0); /* neutral-200 */
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -84,6 +90,9 @@
 .dark {
   --background: oklch(0 0 0); /* Pure black for dark mode */
   --foreground: oklch(0.985 0 0);
+  --heading: oklch(0.985 0 0); /* Same as foreground */
+  --subheading: oklch(0.985 0 0); /* Same as foreground */
+  --paragraph: oklch(0.708 0 0); /* Same as muted-foreground */
   --card: oklch(0.15 0.01 265.8 / 50%); /* #161B29 with semi-transparency */
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
@@ -97,7 +106,7 @@
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.545 0.143 265.8 / 40%); /* #657DC4 */
+  --border: oklch(0.32 0 0); /* neutral-800 */
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);
@@ -122,6 +131,10 @@
   body {
     @apply bg-background text-foreground;
   }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 /* Figma Landing Page Exact Colors */
@@ -140,7 +153,7 @@
 
   /* Border & Stroke */
   --figma-border-light: rgba(255, 255, 255, 0.05);
-  --figma-border-blue: #657dc4;
+  --figma-border-neutral: rgba(255, 255, 255, 0.15);
 
   /* Backgrounds with opacity */
   --figma-bg-blue-10: rgba(99, 130, 222, 0.1);

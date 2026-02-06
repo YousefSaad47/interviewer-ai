@@ -1,3 +1,7 @@
+import { Heading } from "@/shared/components/ui/heading";
+import { Paragraph } from "@/shared/components/ui/paragraph";
+import { SpotlightCard } from "@/shared/components/ui/spotlight-card";
+
 export function HowItWorksSection() {
   const steps = [
     {
@@ -91,12 +95,12 @@ export function HowItWorksSection() {
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="mb-16 text-center">
-          <h2 className="text-foreground mb-6 text-4xl font-bold">
+          <Heading as="h2" className="mb-6">
             How It Work
-          </h2>
-          <p className="text-muted-foreground mx-auto max-w-2xl">
+          </Heading>
+          <Paragraph className="mx-auto max-w-2xl">
             Get started in minutes and begin your journey to interview success
-          </p>
+          </Paragraph>
         </div>
 
         {/* Steps */}
@@ -115,7 +119,7 @@ export function HowItWorksSection() {
                 </div>
 
                 {/* Card */}
-                <div className="group border-border bg-card hover:border-primary/50 hover:bg-accent rounded-2xl border pt-8 pr-6 pb-6 pl-8 transition-all duration-300">
+                <SpotlightCard className="group pt-8 pr-6 pb-6 pl-8">
                   {/* Icon */}
                   <div className="bg-primary/10 text-primary group-hover:bg-primary/20 mb-6 flex h-16 w-16 items-center justify-center rounded-xl transition-colors">
                     {step.icon}
@@ -128,7 +132,7 @@ export function HowItWorksSection() {
                   <p className="text-muted-foreground leading-relaxed">
                     {step.description}
                   </p>
-                </div>
+                </SpotlightCard>
               </div>
             </div>
           ))}

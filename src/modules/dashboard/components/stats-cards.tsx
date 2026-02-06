@@ -27,7 +27,7 @@ const stats = [
 
 export function StatsCards() {
   return (
-    <div className="grid grid-cols-4 gap-7">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
       {stats.map((stat, index) => {
         const Icon = stat.icon;
         return (
@@ -36,7 +36,7 @@ export function StatsCards() {
             className="border-border rounded-[15px] bg-neutral-100 dark:bg-neutral-900"
           >
             <CardContent className="flex items-center justify-between">
-              <Icon className="h-9 w-9 text-[#6382DE]" />
+              <Icon className="text-primary h-9 w-9" />
               <span className="text-foreground text-3xl font-bold">
                 {stat.value}
               </span>

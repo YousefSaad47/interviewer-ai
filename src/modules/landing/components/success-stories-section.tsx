@@ -1,3 +1,7 @@
+import { Heading } from "@/shared/components/ui/heading";
+import { Paragraph } from "@/shared/components/ui/paragraph";
+import { SpotlightCard } from "@/shared/components/ui/spotlight-card";
+
 export function SuccessStoriesSection() {
   const stats = [
     { value: "50K+", label: "Active Users" },
@@ -54,21 +58,18 @@ export function SuccessStoriesSection() {
               Trusted by 50,000+ Professionals
             </span>
           </div>
-          <h2 className="text-foreground mb-4 text-4xl font-bold">
+          <Heading as="h2" className="mb-4">
             Success Stories
-          </h2>
-          <p className="text-muted-foreground mx-auto max-w-2xl">
+          </Heading>
+          <Paragraph className="mx-auto max-w-2xl">
             See how professionals landed their dream jobs with our platform
-          </p>
+          </Paragraph>
         </div>
 
         {/* Testimonials */}
         <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="border-border bg-card hover:border-primary/50 hover:bg-accent rounded-2xl border p-6 transition-all duration-300"
-            >
+            <SpotlightCard key={index} className="p-6">
               <div className="mb-4 flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <svg
@@ -97,37 +98,37 @@ export function SuccessStoriesSection() {
                   </div>
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
 
         {/* Stats */}
-        <div className="mb-24 grid grid-cols-2 gap-8 md:grid-cols-4">
+        <div className="mb-24 grid gap-12 divide-y *:text-center md:grid-cols-2 md:gap-8 md:divide-x md:divide-y-0 lg:grid-cols-4">
           {stats.map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="text-foreground mb-2 text-4xl font-bold">
+            <div key={index} className="space-y-4 pt-12 first:pt-0 md:pt-0">
+              <div className="text-foreground text-5xl font-bold">
                 {stat.value}
               </div>
-              <div className="text-muted-foreground">{stat.label}</div>
+              <p className="text-muted-foreground">{stat.label}</p>
             </div>
           ))}
         </div>
 
         {/* Team Section */}
         <div className="mb-12 text-center">
-          <h2 className="text-foreground mb-4 text-4xl font-bold">
+          <Heading as="h2" className="mb-4">
             Meet Our Team
-          </h2>
-          <p className="text-muted-foreground mx-auto max-w-2xl">
+          </Heading>
+          <Paragraph className="mx-auto max-w-2xl">
             We&apos;re a team of passionate engineers, designers, and educators
             dedicated to helping you succeed
-          </p>
+          </Paragraph>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {team.map((member, index) => (
             <div key={index} className="group text-center">
-              <div className="group-hover:from-primary/30 group-hover:to-primary/20 from-primary/20 to-primary/10 relative mb-4 aspect-3/4 overflow-hidden rounded-2xl bg-linear-to-br transition-all duration-300">
+              <div className="relative mb-4 aspect-3/4 overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50 transition-all duration-300 dark:border-neutral-800 dark:bg-neutral-900">
                 <div className="text-foreground/10 absolute inset-0 flex items-center justify-center text-6xl font-bold">
                   {member.name
                     .split(" ")

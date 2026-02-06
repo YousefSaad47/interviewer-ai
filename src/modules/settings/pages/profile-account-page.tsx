@@ -39,7 +39,7 @@ export function ProfileAccountPage() {
 
   return (
     <SettingsLayout>
-      <div className="mx-auto max-w-[872px]">
+      <div className="mx-auto max-w-218">
         {/* Header */}
         <div className="mb-16 lg:mb-20">
           <h1 className="text-foreground mb-2 text-lg font-bold sm:text-xl">
@@ -68,7 +68,7 @@ export function ProfileAccountPage() {
                   id="fullName"
                   type="text"
                   className={cn(
-                    "border-primary/30 bg-primary/10 focus:border-primary/50 h-12 rounded-xl",
+                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
                     errors.fullName && "border-destructive"
                   )}
                 />
@@ -92,7 +92,7 @@ export function ProfileAccountPage() {
                   id="email"
                   type="email"
                   className={cn(
-                    "border-primary/30 bg-primary/10 focus:border-primary/50 h-12 rounded-xl",
+                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
                     errors.email && "border-destructive"
                   )}
                 />
@@ -116,7 +116,7 @@ export function ProfileAccountPage() {
                   id="phone"
                   type="tel"
                   className={cn(
-                    "border-primary/30 bg-primary/10 focus:border-primary/50 h-12 rounded-xl",
+                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
                     errors.phone && "border-destructive"
                   )}
                 />
@@ -145,7 +145,7 @@ export function ProfileAccountPage() {
                   id="currentRole"
                   type="text"
                   className={cn(
-                    "border-primary/30 bg-primary/10 focus:border-primary/50 h-12 rounded-xl",
+                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
                     errors.currentRole && "border-destructive"
                   )}
                 />
@@ -169,7 +169,7 @@ export function ProfileAccountPage() {
                   id="targetRole"
                   type="text"
                   className={cn(
-                    "border-primary/30 bg-primary/10 focus:border-primary/50 h-12 rounded-xl",
+                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
                     errors.targetRole && "border-destructive"
                   )}
                 />
@@ -193,7 +193,7 @@ export function ProfileAccountPage() {
                   id="experience"
                   type="text"
                   className={cn(
-                    "border-primary/30 bg-primary/10 focus:border-primary/50 h-12 rounded-xl",
+                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
                     errors.experience && "border-destructive"
                   )}
                 />

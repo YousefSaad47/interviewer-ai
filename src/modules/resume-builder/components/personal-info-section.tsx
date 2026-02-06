@@ -38,7 +38,7 @@ export const PersonalInfoSection = () => {
     <Card className="border-border rounded-[15px] bg-neutral-100 dark:bg-neutral-900">
       <CardHeader>
         <CardTitle className="text-foreground flex items-center gap-2 text-xl font-bold">
-          <User className="h-5 w-5 text-[#6382DE]" />
+          <User className="text-primary h-5 w-5" />
           Personal Information
         </CardTitle>
       </CardHeader>

@@ -41,11 +41,11 @@ export function RecentInterviews() {
         {interviews.map((interview, index) => (
           <div
             key={index}
-            className="flex items-center justify-between rounded-lg bg-neutral-50 px-4 py-4 dark:bg-neutral-800"
+            className="flex flex-col gap-3 rounded-lg bg-neutral-50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between dark:bg-neutral-800"
           >
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#6382DE]/20 p-3">
-                <Calendar className="h-5 w-5 text-[#6382DE]" />
+              <div className="bg-primary/20 flex h-12 w-12 items-center justify-center rounded-lg p-3">
+                <Calendar className="text-primary h-5 w-5" />
               </div>
               <div className="space-y-1">
                 <p className="text-foreground text-base font-medium">
@@ -59,8 +59,8 @@ export function RecentInterviews() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-end space-y-1">
-              <span className="text-lg font-bold text-[#6382DE]">
+            <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-end sm:space-y-1">
+              <span className="text-primary text-lg font-bold">
                 {interview.score}
               </span>
               <span className="text-muted-foreground text-sm">
