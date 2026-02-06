@@ -27,7 +27,7 @@ export function EducationSection() {
         <CardAction>
           <Button
             onClick={addEducation}
-            className="gap-1 rounded-lg bg-[#6382DE] px-4 py-2 text-sm text-white hover:bg-[#6382DE]/90"
+            className="bg-primary hover:bg-primary/90 gap-1 rounded-lg px-4 py-2 text-sm text-white"
           >
             <Plus className="h-4 w-4" />
             Add
@@ -57,36 +57,45 @@ export function EducationSection() {
             </div>
 
             {/* School */}
-            <Input
-              type="text"
-              value={edu.school}
-              onChange={(e) =>
-                updateEducation(edu.id, { school: e.target.value })
-              }
-              placeholder="School"
-              className="w-full rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
-            />
+            <div className="space-y-1.5">
+              <Label className="text-muted-foreground text-xs">School</Label>
+              <Input
+                type="text"
+                value={edu.school}
+                onChange={(e) =>
+                  updateEducation(edu.id, { school: e.target.value })
+                }
+                placeholder="Enter school or university name"
+                className="w-full rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+              />
+            </div>
 
             {/* Degree & Year */}
-            <div className="flex gap-3">
-              <Input
-                type="text"
-                value={edu.degree}
-                onChange={(e) =>
-                  updateEducation(edu.id, { degree: e.target.value })
-                }
-                placeholder="Degree"
-                className="flex-1 rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
-              />
-              <Input
-                type="text"
-                value={edu.year}
-                onChange={(e) =>
-                  updateEducation(edu.id, { year: e.target.value })
-                }
-                placeholder="Year"
-                className="flex-1 rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
-              />
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="flex-1 space-y-1.5">
+                <Label className="text-muted-foreground text-xs">Degree</Label>
+                <Input
+                  type="text"
+                  value={edu.degree}
+                  onChange={(e) =>
+                    updateEducation(edu.id, { degree: e.target.value })
+                  }
+                  placeholder="e.g., Bachelor of Science"
+                  className="rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+                />
+              </div>
+              <div className="flex-1 space-y-1.5">
+                <Label className="text-muted-foreground text-xs">Year</Label>
+                <Input
+                  type="text"
+                  value={edu.year}
+                  onChange={(e) =>
+                    updateEducation(edu.id, { year: e.target.value })
+                  }
+                  placeholder="e.g., 2020-2024"
+                  className="rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+                />
+              </div>
             </div>
           </div>
         ))}

@@ -43,7 +43,7 @@ export function SignInPage() {
   return (
     <AuthLayout>
       {/* Title Section */}
-      <div className="flex w-full max-w-[300px] flex-col items-center gap-1.5 sm:gap-2">
+      <div className="flex w-full max-w-75 flex-col items-center gap-1.5 sm:gap-2">
         <h1 className="text-foreground text-center text-3xl leading-none font-bold tracking-[-2.5%] sm:text-[40px]">
           Welcome Back!
         </h1>
@@ -53,8 +53,8 @@ export function SignInPage() {
       </div>
 
       {/* Tab Switcher */}
-      <div className="flex w-full max-w-[420px] flex-col items-center gap-4 sm:gap-5">
-        <div className="bg-card flex h-8 w-full max-w-[260px] items-center justify-between gap-1 rounded-[9px] p-1.5">
+      <div className="flex w-full max-w-105 flex-col items-center gap-4 sm:gap-5">
+        <div className="bg-card flex h-8 w-full max-w-65 items-center justify-between gap-1 rounded-[9px] p-1.5">
           <div className="bg-primary flex items-center justify-center gap-1 rounded-md px-8 py-2 sm:px-10 sm:py-2.5">
             <span className="text-foreground text-[10px] leading-none font-medium tracking-[-2.5%] sm:text-[11px]">
               Sign in
@@ -156,7 +156,7 @@ export function SignInPage() {
               {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
 
-            <div className="flex flex-col items-start justify-center gap-3 sm:flex-row sm:items-center sm:gap-[200px]">
+            <div className="flex flex-col items-start justify-center gap-3 sm:flex-row sm:items-center sm:gap-50">
               <label className="flex cursor-pointer items-center gap-2 transition-opacity hover:opacity-90 sm:gap-2.5">
                 <Checkbox
                   checked={rememberMe}
@@ -182,7 +182,7 @@ export function SignInPage() {
       </div>
 
       {/* Social Login & Footer */}
-      <div className="flex w-full max-w-[420px] flex-col items-center gap-6 sm:gap-[28px]">
+      <div className="flex w-full max-w-105 flex-col items-center gap-6 sm:gap-7">
         <div className="flex w-full flex-col items-center justify-center gap-2.5 sm:gap-3">
           <p className="text-foreground w-full text-center text-base leading-none font-light tracking-[-2.5%] sm:text-[17px]">
             or continue with
@@ -191,7 +191,7 @@ export function SignInPage() {
           <div className="flex w-full items-center gap-4 sm:gap-4.5">
             <button
               type="button"
-              className="bg-primary hover:bg-primary/90 focus:ring-primary/50 flex h-9 flex-1 items-center justify-center gap-2 rounded-[10px] px-5 py-2 shadow-[0px_0.92px_1.84px_0px_rgba(26,26,26,0.05)] transition-all hover:scale-[1.02] focus:scale-[0.98] focus:ring-2 focus:outline-none active:scale-95 sm:h-[38px] sm:gap-2.5 sm:px-8 sm:py-3"
+              className="bg-primary hover:bg-primary/90 focus:ring-primary/50 flex h-9 flex-1 items-center justify-center gap-2 rounded-[10px] px-5 py-2 shadow-[0px_0.92px_1.84px_0px_rgba(26,26,26,0.05)] transition-all hover:scale-[1.02] focus:scale-[0.98] focus:ring-2 focus:outline-none active:scale-95 sm:h-9.5 sm:gap-2.5 sm:px-8 sm:py-3"
             >
               <Github className="text-foreground h-5 w-5 sm:h-6 sm:w-6" />
               <span className="text-[10px] leading-[1.43em] font-medium text-[#FAFAFA] sm:text-[12px]">
@@ -200,7 +200,7 @@ export function SignInPage() {
             </button>
             <button
               type="button"
-              className="border-primary hover:bg-primary/10 focus:ring-primary/50 flex h-9 flex-1 items-center justify-center gap-2 rounded-[10px] border bg-transparent px-5 py-2 shadow-[0px_0.92px_1.84px_0px_rgba(26,26,26,0.05)] transition-all hover:scale-[1.02] focus:scale-[0.98] focus:ring-2 focus:outline-none active:scale-95 sm:h-[38px] sm:gap-2.5 sm:px-8 sm:py-3"
+              className="border-primary hover:bg-primary/10 focus:ring-primary/50 flex h-9 flex-1 items-center justify-center gap-2 rounded-[10px] border bg-transparent px-5 py-2 shadow-[0px_0.92px_1.84px_0px_rgba(26,26,26,0.05)] transition-all hover:scale-[1.02] focus:scale-[0.98] focus:ring-2 focus:outline-none active:scale-95 sm:h-9.5 sm:gap-2.5 sm:px-8 sm:py-3"
             >
               <Github className="text-foreground h-5 w-5 sm:h-6 sm:w-6" />
               <span className="text-[10px] leading-[1.43em] font-medium text-[#FAFAFA] sm:text-[12px]">

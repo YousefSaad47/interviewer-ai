@@ -95,7 +95,7 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
           width: "390px",
           height: "393px",
           background:
-            "linear-gradient(180deg, #6382DE 0%, rgba(99, 130, 222, 0) 100%)",
+            "linear-gradient(180deg, oklch(0.545 0.143 265.8) 0%, oklch(0.545 0.143 265.8 / 0) 100%)",
           filter: "blur(358.5px)",
         }}
       />
@@ -137,7 +137,7 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
         {/* Sidebar - Desktop */}
         <aside className="hidden w-64 p-5 lg:block xl:w-72">
           <div className="bg-card/80 border-primary/20 rounded-3xl border p-6 shadow-lg backdrop-blur-sm lg:p-8">
-            <div className="mb-9 flex items-center gap-[5px]">
+            <div className="mb-9 flex items-center gap-1.25">
               <SettingsIcon className="h-6 w-6" />
               <h2 className="text-lg font-normal">Settings</h2>
             </div>

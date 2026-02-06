@@ -50,20 +50,7 @@ export function FeaturesSection() {
             }}
           >
             <div className="flex items-center gap-[4.52px]">
-              <svg
-                width="19"
-                height="19"
-                viewBox="0 0 19 19"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.13 1.56L15.65 17.21"
-                  stroke="currentColor"
-                  strokeWidth="1.56"
-                  className="text-primary/80"
-                />
-              </svg>
+              <Brain className="text-primary size-6" />
               <span
                 className="text-sm text-[#85A3FF] md:text-base lg:text-[17.32px]"
                 style={{
@@ -226,8 +213,8 @@ export function FeaturesSection() {
           </GridBackground>
 
           {/* Right side - Image */}
-          <div className="order-1 mx-auto w-full max-w-sm lg:order-2 lg:max-w-none">
-            <div className="relative aspect-[405/443] w-full overflow-hidden rounded-lg lg:rounded-none">
+          <div className="order-1 mx-auto my-2 w-full max-w-60 lg:order-2 lg:my-0 lg:max-w-none">
+            <div className="relative aspect-405/443 w-full overflow-hidden rounded-lg lg:rounded-none">
               <Image
                 src="/images/ai-interview-preview-36af0e.png"
                 alt="AI Mock Interview Interface"
@@ -245,8 +232,8 @@ export function FeaturesSection() {
           style={{ marginBottom: "clamp(80px, 15vw, 142px)" }}
         >
           {/* Left side - Image */}
-          <div className="mx-auto w-full max-w-sm lg:max-w-none">
-            <div className="relative aspect-[457/297] w-full overflow-hidden rounded-lg lg:rounded-none">
+          <div className="mx-auto my-2 w-full max-w-60 lg:my-0 lg:max-w-none">
+            <div className="relative aspect-457/297 w-full overflow-hidden rounded-lg lg:rounded-none">
               <Image
                 src="/images/coding-practice-preview-16338e.png"
                 alt="Coding Practice Interface"
@@ -471,8 +458,8 @@ export function FeaturesSection() {
           </GridBackground>
 
           {/* Right side - Image */}
-          <div className="order-1 mx-auto w-full max-w-sm lg:order-2 lg:max-w-none">
-            <div className="relative aspect-[405/443] w-full overflow-hidden rounded-lg lg:rounded-none">
+          <div className="order-1 mx-auto my-2 w-full max-w-60 lg:order-2 lg:my-0 lg:max-w-none">
+            <div className="relative aspect-405/443 w-full overflow-hidden rounded-lg lg:rounded-none">
               <Image
                 src="/images/resume-builder-preview-36af0e.png"
                 alt="Resume Builder Interface"

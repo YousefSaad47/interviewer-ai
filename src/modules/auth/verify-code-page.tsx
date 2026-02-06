@@ -36,17 +36,17 @@ export function VerifyCodePage() {
   return (
     <AuthLayout>
       {/* Title Section */}
-      <div className="flex w-full max-w-[360px] flex-col items-center gap-2.5 sm:gap-3">
-        <h1 className="text-foreground w-full max-w-[370px] text-center text-3xl leading-none font-bold tracking-[-2.5%] sm:text-[35px]">
-          Verify Your Code
+      <div className="flex w-full max-w-90 flex-col items-center gap-2.5 sm:gap-3">
+        <h1 className="text-foreground w-full max-w-92.5 text-center text-3xl leading-none font-bold tracking-[-2.5%] sm:text-[35px]">
+          Verify Your Email
         </h1>
-        <p className="text-foreground w-full max-w-[335px] text-center text-[13px] leading-[1.21em] font-light tracking-[-2.5%] sm:text-[16px]">
+        <p className="text-foreground w-full max-w-83.75 text-center text-[13px] leading-[1.21em] font-light tracking-[-2.5%] sm:text-[16px]">
           Enter the 6-digit code sent to your email or authenticator app.
         </p>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[420px]">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-105">
         {/* Code Input */}
         <div className="flex w-full flex-col items-center gap-4 sm:gap-5">
           <Controller
@@ -77,7 +77,7 @@ export function VerifyCodePage() {
       </form>
 
       {/* Footer */}
-      <div className="flex w-full max-w-[420px] flex-col items-center gap-6 sm:gap-[28px]">
+      <div className="flex w-full max-w-105 flex-col items-center gap-6 sm:gap-7">
         <div className="flex items-center gap-2 sm:gap-2.5">
           <span className="text-foreground text-[11px] leading-none font-light tracking-[-2.5%] sm:text-[14px]">
             Remember your password?

@@ -68,7 +68,7 @@ export function DashboardPage() {
           </div>
 
           {/* Right Column */}
-          <div className="w-full lg:w-[410px]">
+          <div className="w-full lg:w-102.5">
             <QuickActions />
           </div>
         </div>

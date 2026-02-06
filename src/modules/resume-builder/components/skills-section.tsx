@@ -34,7 +34,7 @@ export function SkillsSection() {
           Skills
         </CardTitle>
         <CardAction>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Input
               type="text"
               value={newSkill}
@@ -45,11 +45,11 @@ export function SkillsSection() {
                 }
               }}
               placeholder="Add skill..."
-              className="h-9 w-32 rounded-lg border-neutral-300 bg-white text-sm dark:border-neutral-700 dark:bg-neutral-800"
+              className="h-9 w-full rounded-lg border-neutral-300 bg-white text-sm sm:w-32 dark:border-neutral-700 dark:bg-neutral-800"
             />
             <Button
               onClick={handleAddSkill}
-              className="gap-1 rounded-lg bg-[#6382DE] px-4 py-2 text-sm text-white hover:bg-[#6382DE]/90"
+              className="bg-primary hover:bg-primary/90 w-full gap-1 rounded-lg px-4 py-2 text-sm text-white sm:w-auto"
             >
               <Plus className="h-4 w-4" />
               Add
@@ -68,7 +68,7 @@ export function SkillsSection() {
               type="text"
               value={skill}
               onChange={(e) => updateSkill(index, e.target.value)}
-              className="text-foreground h-auto w-auto border-none !bg-transparent p-0 text-sm shadow-none ring-0 outline-none hover:!bg-transparent focus:!bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 dark:hover:!bg-transparent dark:focus:!bg-transparent"
+              className="text-foreground h-auto w-auto border-none bg-transparent! p-0 text-sm shadow-none ring-0 outline-none hover:bg-transparent! focus:bg-transparent! focus-visible:ring-0 focus-visible:ring-offset-0 dark:hover:bg-transparent! dark:focus:bg-transparent!"
             />
             <button
               onClick={() => removeSkill(index)}

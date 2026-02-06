@@ -82,7 +82,7 @@ export const ResumeBuilderPage = () => {
                 <Save className="h-4 w-4" />
                 Save
               </Button>
-              <Button className="gap-2 rounded-lg bg-[#6382DE] px-4 py-2 text-sm text-white hover:bg-[#6382DE]/90">
+              <Button className="bg-primary hover:bg-primary/90 gap-2 rounded-lg px-4 py-2 text-sm text-white">
                 <Download className="h-4 w-4" />
                 <span className="hidden sm:inline">Export PDF</span>
                 <span className="sm:hidden">PDF</span>
@@ -101,7 +101,7 @@ export const ResumeBuilderPage = () => {
             </div>
 
             {/* Right Panel - Resume Preview */}
-            <div className="w-full lg:w-[420px]">
+            <div className="w-full lg:w-105">
               <ResumePreview />
             </div>
           </div>

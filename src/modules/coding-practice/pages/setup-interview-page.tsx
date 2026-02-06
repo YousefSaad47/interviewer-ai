@@ -242,17 +242,8 @@ export function SetupInterviewPage() {
                         <SelectValue placeholder="Select Type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="technical">
-                          Technical Round
-                        </SelectItem>
-                        <SelectItem value="screening">
-                          Phone Screening
-                        </SelectItem>
-                        <SelectItem value="onsite">
-                          On-site Interview
-                        </SelectItem>
-                        <SelectItem value="final">Final Round</SelectItem>
-                        <SelectItem value="mock">Practice Mock</SelectItem>
+                        <SelectItem value="video">Video Meeting</SelectItem>
+                        <SelectItem value="audio">Audio Meeting</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -292,7 +283,7 @@ export function SetupInterviewPage() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="group from-primary to-primary/90 text-primary-foreground hover:shadow-primary/50 mt-4 h-12 w-full gap-2 bg-gradient-to-r text-base font-bold shadow-lg transition-all sm:h-14 sm:text-lg"
+                className="group from-primary to-primary/90 text-primary-foreground hover:shadow-primary/50 mt-4 h-12 w-full gap-2 bg-linear-to-r text-base font-bold shadow-lg transition-all sm:h-14 sm:text-lg"
               >
                 <Play className="h-5 w-5 fill-current transition-transform group-hover:scale-110" />
                 {isSubmitting ? "Starting..." : "Start Interview"}

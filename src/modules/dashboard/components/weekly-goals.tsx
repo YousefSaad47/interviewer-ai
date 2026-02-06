@@ -41,7 +41,7 @@ export function WeeklyGoals() {
             </div>
             <Progress
               value={goal.progress}
-              className="h-2 bg-neutral-200 dark:bg-neutral-800 [&>div]:bg-[#6382DE]"
+              className="[&>div]:bg-primary h-2 bg-neutral-200 dark:bg-neutral-800"
             />
           </div>
         ))}

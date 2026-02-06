@@ -39,7 +39,7 @@ export function ProfileAccountPage() {
 
   return (
     <SettingsLayout>
-      <div className="mx-auto max-w-[872px]">
+      <div className="mx-auto max-w-218">
         {/* Header */}
         <div className="mb-16 lg:mb-20">
           <h1 className="text-foreground mb-2 text-lg font-bold sm:text-xl">

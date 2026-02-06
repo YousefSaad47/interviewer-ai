@@ -6,10 +6,20 @@ import { motion, useMotionValue, useTransform } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/shared/components/ui/button";
+import { useIsMounted } from "@/shared/hooks/use-is-mounted";
 
 export const ThemeToggle = ({ className }: { className?: string }) => {
   const { theme, setTheme } = useTheme();
+  const isMounted = useIsMounted();
   const isDark = theme === "dark";
+
+  if (!isMounted) {
+    return (
+      <Button className={cn("px-2.5", className)} variant="ghost">
+        <div className="h-5 w-5" />
+      </Button>
+    );
+  }
 
   return (
     <Button

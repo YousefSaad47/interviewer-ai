@@ -15,7 +15,7 @@ export function ResumePreview() {
   const { personalInfo, workExperience, education, skills } = data;
 
   return (
-    <Card className="border-border sticky top-25 rounded-[15px] bg-neutral-100 dark:bg-neutral-900">
+    <Card className="border-border rounded-[15px] bg-neutral-100 lg:sticky lg:top-25 dark:bg-neutral-900">
       <CardHeader>
         <CardTitle className="text-foreground text-xl font-bold">
           Resume Preview
@@ -24,13 +24,13 @@ export function ResumePreview() {
 
       <CardContent>
         {/* Preview Card */}
-        <div className="rounded-lg bg-white p-6">
+        <div className="rounded-lg bg-white p-4 sm:p-6">
           {/* Header */}
           <div className="space-y-2 pb-4">
-            <h1 className="text-center text-3xl font-bold text-black">
+            <h1 className="text-center text-2xl font-bold text-black sm:text-3xl">
               {personalInfo.fullName || "Your Name"}
             </h1>
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-gray-600">
+            <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 text-xs text-gray-600 sm:gap-x-4 sm:text-sm">
               {personalInfo.email && <p>{personalInfo.email}</p>}
               {personalInfo.phone && <p>{personalInfo.phone}</p>}
               {personalInfo.location && <p>{personalInfo.location}</p>}
