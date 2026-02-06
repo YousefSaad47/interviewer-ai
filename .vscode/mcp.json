@@ -1,20 +1,50 @@
 {
   "servers": {
-    "figma": {
-      "url": "https://mcp.figma.com/mcp",
-      "type": "http"
-    },
     "next-devtools": {
       "command": "npx",
-      "args": ["-y", "next-devtools-mcp@latest"]
+      "args": ["-y", "next-devtools-mcp@latest"],
+      "type": "stdio"
     },
     "playwriter": {
       "command": "npx",
-      "args": ["-y", "playwriter@latest"]
+      "args": ["-y", "playwriter@latest"],
+      "type": "stdio"
     },
     "shadcn": {
       "command": "npx",
-      "args": ["shadcn@latest", "mcp"]
+      "args": ["shadcn@latest", "mcp"],
+      "type": "stdio"
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {
+        "CONTEXT7_API_KEY": "${input:context7_api_key}"
+      },
+      "type": "stdio"
+    },
+    "figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "figma-developer-mcp",
+        "--figma-api-key=${input:figma_api_key}",
+        "--stdio"
+      ]
     }
-  }
+  },
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "context7_api_key",
+      "description": "Enter your Context7 API Key",
+      "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "figma_api_key",
+      "description": "Enter your Figma API Key",
+      "password": true
+    }
+  ]
 }

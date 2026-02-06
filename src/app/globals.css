@@ -50,12 +50,12 @@
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
+  --card: oklch(0.985 0 0 / 60%);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.545 0.143 265.8); /* #6382DE */
+  --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -63,7 +63,7 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+  --border: oklch(0.556 0 0 / 20%);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -82,14 +82,14 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(0 0 0); /* Pure black for dark mode */
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: oklch(0.15 0.01 265.8 / 50%); /* #161B29 with semi-transparency */
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --primary: oklch(0.545 0.143 265.8); /* #6382DE */
+  --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -97,7 +97,7 @@
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+  --border: oklch(0.545 0.143 265.8 / 40%); /* #657DC4 */
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);
@@ -117,9 +117,35 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 max-w-full;
   }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Figma Landing Page Exact Colors */
+:root {
+  /* Primary Colors from Figma */
+  --figma-bg-black: #000000;
+  --figma-bg-card: #161b29;
+  --figma-primary-blue: #6382de;
+  --figma-light-blue: #85a3ff;
+  --figma-blue-accent: #657dc4;
+
+  /* Text Colors */
+  --figma-text-white: #ffffff;
+  --figma-text-dimmed: rgba(255, 255, 255, 0.6);
+  --figma-text-secondary: rgba(255, 255, 255, 0.8);
+
+  /* Border & Stroke */
+  --figma-border-light: rgba(255, 255, 255, 0.05);
+  --figma-border-blue: #657dc4;
+
+  /* Backgrounds with opacity */
+  --figma-bg-blue-10: rgba(99, 130, 222, 0.1);
+  --figma-bg-blue-17: rgba(101, 125, 196, 0.17);
+  --figma-bg-blue-20: rgba(101, 125, 196, 0.2);
+  --figma-bg-blue-70: rgba(99, 130, 222, 0.7);
+  --figma-bg-white-05: rgba(255, 255, 255, 0.05);
 }
