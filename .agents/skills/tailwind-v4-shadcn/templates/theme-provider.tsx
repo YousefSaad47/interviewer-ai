@@ -40,7 +40,7 @@ export function ThemeProvider({
         (sessionStorage.getItem(storageKey) as Theme) ||
         defaultTheme
       );
-    } catch (e) {
+    } catch (err) {
       // Storage unavailable (incognito/privacy mode) - use default
       return defaultTheme;
     }
@@ -70,7 +70,7 @@ export function ThemeProvider({
       // Try to persist to localStorage, fall back to sessionStorage
       try {
         localStorage.setItem(storageKey, theme);
-      } catch (e) {
+      } catch (err) {
         // localStorage unavailable (incognito) - use sessionStorage
         try {
           sessionStorage.setItem(storageKey, theme);
