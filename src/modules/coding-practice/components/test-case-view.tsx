@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Plus, X } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
 
 interface TestCaseViewProps {
   activeTab: string;
@@ -19,7 +20,7 @@ interface TestCase {
 export function TestCaseView({ activeTab, setActiveTab }: TestCaseViewProps) {
   const [testCases, setTestCases] = useState<TestCase[]>([
     {
-      id: "case-1",
+      id: uuidv4(),
       label: "Case 1",
       input: [
         { key: "nums", value: "[2, 7, 11, 15]" },
@@ -28,7 +29,7 @@ export function TestCaseView({ activeTab, setActiveTab }: TestCaseViewProps) {
       output: "[0, 1]",
     },
     {
-      id: "case-2",
+      id: uuidv4(),
       label: "Case 2",
       input: [
         { key: "nums", value: "[3, 2, 4]" },
@@ -37,7 +38,7 @@ export function TestCaseView({ activeTab, setActiveTab }: TestCaseViewProps) {
       output: "[1, 2]",
     },
     {
-      id: "case-3",
+      id: uuidv4(),
       label: "Case 3",
       input: [
         { key: "nums", value: "[1, 5, 10, 20]" },
@@ -50,11 +51,11 @@ export function TestCaseView({ activeTab, setActiveTab }: TestCaseViewProps) {
   const currentTestCase = testCases.find((tc) => tc.id === activeTab);
 
   // Set initial active tab
-  useState(() => {
+  useEffect(() => {
     if (!activeTab || !testCases.find((tc) => tc.id === activeTab)) {
       setActiveTab(testCases[0].id);
     }
-  });
+  }, [activeTab, testCases, setActiveTab]);
 
   const addTestCase = () => {
     // Prevent adding more than 8 test cases
@@ -63,7 +64,7 @@ export function TestCaseView({ activeTab, setActiveTab }: TestCaseViewProps) {
     const newCaseNumber = testCases.length + 1;
     const lastCase = testCases[testCases.length - 1];
     const newCase: TestCase = {
-      id: `case-${newCaseNumber}`,
+      id: uuidv4(),
       label: `Case ${newCaseNumber}`,
       input: lastCase.input.map((item) => ({ ...item })),
       output: lastCase.output,
@@ -77,11 +78,16 @@ export function TestCaseView({ activeTab, setActiveTab }: TestCaseViewProps) {
     if (testCases.length <= 1) return;
 
     const filteredCases = testCases.filter((tc) => tc.id !== id);
-    setTestCases(filteredCases);
+    // Renumber the cases to maintain sequential ordering
+    const renumberedCases = filteredCases.map((tc, index) => ({
+      ...tc,
+      label: `Case ${index + 1}`,
+    }));
+    setTestCases(renumberedCases);
 
     // If removing the active tab, switch to the first remaining case
     if (activeTab === id) {
-      setActiveTab(filteredCases[0].id);
+      setActiveTab(renumberedCases[0].id);
     }
   };
 

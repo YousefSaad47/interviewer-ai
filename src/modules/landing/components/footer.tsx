@@ -89,7 +89,7 @@ export function Footer() {
                 <a
                   key={social.label}
                   href={social.href}
-                  className="border-border bg-card/50 text-muted-foreground hover:border-primary/50 hover:bg-card hover:text-primary flex h-10 w-10 items-center justify-center rounded-lg border transition-all duration-300"
+                  className="border-border bg-card/50 text-muted-foreground hover:bg-card hover:text-foreground flex h-10 w-10 items-center justify-center rounded-lg border transition-all duration-300 hover:border-neutral-400 dark:hover:border-neutral-600"
                   aria-label={social.label}
                   target="_blank"
                   rel="noopener noreferrer"

@@ -50,10 +50,10 @@ export function ForgotPasswordPage() {
             <div className="w-full">
               <div
                 className={cn(
-                  "bg-card relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3",
+                  "relative flex w-full items-center rounded-xl border-0 border-b bg-neutral-100 px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-neutral-800",
                   errors.email
                     ? "border-destructive"
-                    : "border-primary/50 focus-within:border-primary"
+                    : "border-neutral-300 focus-within:border-neutral-400 dark:border-neutral-700 dark:focus-within:border-neutral-600"
                 )}
               >
                 <Mail

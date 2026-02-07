@@ -26,7 +26,7 @@ export function PrivacySecurityPage() {
               {/* Change Password */}
               <Button
                 variant="outline"
-                className="border-primary/30 bg-card hover:bg-primary/10 hover:border-primary/40 h-auto w-full justify-start px-5 py-3 text-sm font-normal"
+                className="h-auto w-full justify-start border-neutral-300 bg-neutral-100 px-5 py-3 text-sm font-normal hover:border-neutral-400 hover:bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-neutral-600 dark:hover:bg-neutral-700"
               >
                 Change Password
               </Button>
@@ -34,7 +34,7 @@ export function PrivacySecurityPage() {
               {/* View Active Session */}
               <Button
                 variant="outline"
-                className="border-primary/30 bg-card hover:bg-primary/10 hover:border-primary/40 h-auto w-full justify-start px-5 py-3 text-sm font-normal"
+                className="h-auto w-full justify-start border-neutral-300 bg-neutral-100 px-5 py-3 text-sm font-normal hover:border-neutral-400 hover:bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-neutral-600 dark:hover:bg-neutral-700"
               >
                 View Active Session
               </Button>
@@ -47,7 +47,7 @@ export function PrivacySecurityPage() {
               {/* Download My Data */}
               <Button
                 variant="outline"
-                className="border-primary/30 bg-card hover:bg-primary/10 hover:border-primary/40 h-auto w-full justify-start px-5 py-3 text-sm font-normal"
+                className="h-auto w-full justify-start border-neutral-300 bg-neutral-100 px-5 py-3 text-sm font-normal hover:border-neutral-400 hover:bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-neutral-600 dark:hover:bg-neutral-700"
               >
                 Download My Data
               </Button>

@@ -1,6 +1,13 @@
+"use client";
+
 import { CheckIcon } from "lucide-react";
+import { motion } from "motion/react";
 
 import { Button } from "@/shared/components/ui/button";
+import { Heading } from "@/shared/components/ui/heading";
+import { Paragraph } from "@/shared/components/ui/paragraph";
+import { SpotlightCard } from "@/shared/components/ui/spotlight-card";
+import { WobbleCard } from "@/shared/components/ui/wobble-card";
 
 export function PricingSection() {
   const plans = [
@@ -104,7 +111,7 @@ export function PricingSection() {
 
   return (
     <section
-      className="bg-background relative overflow-hidden py-24"
+      className="bg-background relative overflow-hidden py-12 md:py-24"
       id="pricing"
     >
       {/* Background effects */}
@@ -125,84 +132,276 @@ export function PricingSection() {
 
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="mb-16 text-center">
-          <h2 className="text-foreground mb-6 text-5xl font-bold">
+        <div className="mb-12 text-center md:mb-16">
+          <Heading as="h2" className="mb-4 md:mb-6">
             Choose Your Plan
-          </h2>
-          <p className="text-muted-foreground mx-auto max-w-2xl text-xl">
+          </Heading>
+          <Paragraph className="mx-auto max-w-2xl">
             Select the perfect plan for your interview preparation journey
-          </p>
+          </Paragraph>
         </div>
 
         {/* Pricing Cards */}
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
           {plans.map((plan, index) => (
-            <div
+            <motion.div
               key={index}
-              className={`relative rounded-3xl p-8 ${
-                plan.highlighted
-                  ? "border-primary from-primary/20 to-primary/10 shadow-primary/20 scale-105 border-2 bg-linear-to-b shadow-2xl"
-                  : "border-border bg-card border"
-              } hover:border-primary/50 transition-all duration-300`}
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{
+                y: 0,
+                opacity: 1,
+              }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.1,
+              }}
+              className="relative flex md:hidden"
             >
-              {/* Popular Badge */}
-              {plan.badge && (
-                <div className="from-primary to-primary/80 text-primary-foreground absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-linear-to-r px-4 py-1 text-sm font-medium shadow-lg">
-                  {plan.badge}
-                </div>
+              {plan.highlighted ? (
+                <>
+                  {/* Popular Badge */}
+                  {plan.badge && (
+                    <div className="absolute -top-3 left-1/2 z-50 -translate-x-1/2 rounded-full bg-white px-6 py-2 text-sm font-medium text-blue-900 shadow-lg">
+                      {plan.badge}
+                    </div>
+                  )}
+
+                  <WobbleCard
+                    containerClassName="group mt-3 flex h-full w-full flex-col bg-blue-900 shadow-2xl shadow-black-950/5"
+                    className="flex h-full w-full flex-col p-6 pt-0 md:p-8"
+                  >
+                    {/* Icon */}
+                    <div className="bg-primary-foreground text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-xl md:mb-6">
+                      {plan.icon}
+                    </div>
+
+                    {/* Plan Name */}
+                    <h3 className="text-primary-foreground mb-2 text-xl font-bold md:text-2xl">
+                      {plan.name}
+                    </h3>
+                    <p className="text-primary-foreground/80 mb-4 text-sm md:mb-6 md:text-base">
+                      {plan.description}
+                    </p>
+
+                    {/* Price */}
+                    <div className="mb-4 md:mb-6">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-primary-foreground text-4xl font-bold md:text-5xl">
+                          {plan.price}
+                        </span>
+                        <span className="text-primary-foreground/80 text-sm md:text-base">
+                          {plan.period}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* CTA Button */}
+                    <Button
+                      className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 relative mb-6 w-full md:mb-8"
+                      size="lg"
+                      onClick={() =>
+                        console.log(`CTA clicked for ${plan.name} plan`)
+                      }
+                    >
+                      {plan.cta}
+                    </Button>
+
+                    {/* Features List */}
+                    <ul className="flex-1 space-y-3 md:space-y-4">
+                      {plan.features.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <CheckIcon className="text-primary-foreground mt-0.5 h-5 w-5 shrink-0" />
+                          <span className="text-primary-foreground/90 text-sm leading-relaxed">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </WobbleCard>
+                </>
+              ) : (
+                <SpotlightCard className="mt-3 flex h-full w-full flex-col p-6 md:p-8">
+                  {/* Icon */}
+                  <div className="bg-primary/10 text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-xl md:mb-6">
+                    {plan.icon}
+                  </div>
+
+                  {/* Plan Name */}
+                  <h3 className="text-foreground mb-2 text-xl font-bold md:text-2xl">
+                    {plan.name}
+                  </h3>
+                  <p className="text-muted-foreground mb-4 text-sm md:mb-6 md:text-base">
+                    {plan.description}
+                  </p>
+
+                  {/* Price */}
+                  <div className="mb-4 md:mb-6">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-foreground text-4xl font-bold md:text-5xl">
+                        {plan.price}
+                      </span>
+                      <span className="text-muted-foreground text-sm md:text-base">
+                        {plan.period}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* CTA Button */}
+                  <Button
+                    className="border-border bg-card text-foreground hover:bg-accent mb-6 w-full border md:mb-8"
+                    size="lg"
+                  >
+                    {plan.cta}
+                  </Button>
+
+                  {/* Features List */}
+                  <ul className="flex-1 space-y-3 md:space-y-4">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckIcon className="text-primary mt-0.5 h-5 w-5 shrink-0" />
+                        <span className="text-muted-foreground text-sm leading-relaxed">
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </SpotlightCard>
               )}
+            </motion.div>
+          ))}
+          {plans.map((plan, index) => (
+            <motion.div
+              key={`desktop-${index}`}
+              initial={{ y: 50, opacity: 1 }}
+              whileInView={{
+                y: plan.highlighted ? -20 : 0,
+                opacity: 1,
+                x: index === 2 ? -30 : index === 0 ? 30 : 0,
+                scale: index === 0 || index === 2 ? 0.94 : 1.0,
+              }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 1.6,
+                type: "spring",
+                stiffness: 100,
+                damping: 30,
+                delay: 0.4,
+                opacity: { duration: 0.5 },
+              }}
+              className="relative hidden md:flex"
+            >
+              {plan.highlighted ? (
+                <>
+                  {/* Popular Badge */}
+                  {plan.badge && (
+                    <div className="absolute -top-3 left-1/2 z-50 -translate-x-1/2 rounded-full bg-white px-6 py-2 text-sm font-medium text-blue-900 shadow-lg">
+                      {plan.badge}
+                    </div>
+                  )}
 
-              {/* Icon */}
-              <div
-                className={`h-12 w-12 rounded-xl ${
-                  plan.highlighted ? "bg-primary" : "bg-primary/10"
-                } mb-6 flex items-center justify-center ${
-                  plan.highlighted ? "text-primary-foreground" : "text-primary"
-                }`}
-              >
-                {plan.icon}
-              </div>
+                  <WobbleCard
+                    containerClassName="group mt-3 flex h-full w-full flex-col bg-blue-900 shadow-2xl shadow-black-950/5 md:scale-105"
+                    className="flex h-full w-full flex-col p-8 pt-0"
+                  >
+                    {/* Icon */}
+                    <div className="bg-primary-foreground text-primary mb-6 flex h-12 w-12 items-center justify-center rounded-xl">
+                      {plan.icon}
+                    </div>
 
-              {/* Plan Name */}
-              <h3 className="text-foreground mb-2 text-2xl font-bold">
-                {plan.name}
-              </h3>
-              <p className="text-muted-foreground mb-6">{plan.description}</p>
+                    {/* Plan Name */}
+                    <h3 className="text-primary-foreground mb-2 text-2xl font-bold">
+                      {plan.name}
+                    </h3>
+                    <p className="text-primary-foreground/80 mb-6">
+                      {plan.description}
+                    </p>
 
-              {/* Price */}
-              <div className="mb-6">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-foreground text-5xl font-bold">
-                    {plan.price}
-                  </span>
-                  <span className="text-muted-foreground">{plan.period}</span>
-                </div>
-              </div>
+                    {/* Price */}
+                    <div className="mb-6">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-primary-foreground text-5xl font-bold">
+                          {plan.price}
+                        </span>
+                        <span className="text-primary-foreground/80">
+                          {plan.period}
+                        </span>
+                      </div>
+                    </div>
 
-              {/* CTA Button */}
-              <Button
-                className={`mb-8 w-full ${
-                  plan.highlighted
-                    ? "from-primary to-primary/80 text-primary-foreground bg-linear-to-r hover:opacity-90"
-                    : "border-border bg-card text-foreground hover:bg-accent border"
-                }`}
-                size="lg"
-              >
-                {plan.cta}
-              </Button>
+                    {/* CTA Button */}
+                    <Button
+                      className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 relative mb-8 w-full"
+                      size="lg"
+                      onClick={() =>
+                        console.log(`CTA clicked for ${plan.name} plan`)
+                      }
+                    >
+                      {plan.cta}
+                    </Button>
 
-              {/* Features List */}
-              <ul className="space-y-4">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <CheckIcon className="text-primary mt-0.5 h-5 w-5 shrink-0" />
-                    <span className="text-muted-foreground text-sm leading-relaxed">
-                      {feature}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                    {/* Features List */}
+                    <ul className="flex-1 space-y-4">
+                      {plan.features.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <CheckIcon className="text-primary-foreground mt-0.5 h-5 w-5 shrink-0" />
+                          <span className="text-primary-foreground/90 text-sm leading-relaxed">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </WobbleCard>
+                </>
+              ) : (
+                <SpotlightCard className="mt-3 flex h-full w-full flex-col">
+                  {/* Icon */}
+                  <div className="bg-primary/10 text-primary mb-6 flex h-12 w-12 items-center justify-center rounded-xl">
+                    {plan.icon}
+                  </div>
+
+                  {/* Plan Name */}
+                  <h3 className="text-foreground mb-2 text-2xl font-bold">
+                    {plan.name}
+                  </h3>
+                  <p className="text-muted-foreground mb-6">
+                    {plan.description}
+                  </p>
+
+                  {/* Price */}
+                  <div className="mb-6">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-foreground text-5xl font-bold">
+                        {plan.price}
+                      </span>
+                      <span className="text-muted-foreground">
+                        {plan.period}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* CTA Button */}
+                  <Button
+                    className="border-border bg-card text-foreground hover:bg-accent mb-8 w-full border"
+                    size="lg"
+                  >
+                    {plan.cta}
+                  </Button>
+
+                  {/* Features List */}
+                  <ul className="flex-1 space-y-4">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckIcon className="text-primary mt-0.5 h-5 w-5 shrink-0" />
+                        <span className="text-muted-foreground text-sm leading-relaxed">
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </SpotlightCard>
+              )}
+            </motion.div>
           ))}
         </div>
       </div>

@@ -32,7 +32,7 @@ export function Header() {
 
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (latest) => {
-      setScrolled(latest > 0.05);
+      setScrolled(latest > 0.03);
     });
     return () => unsubscribe();
   }, [scrollYProgress]);
@@ -79,29 +79,26 @@ export function Header() {
               onMouseLeave={() => setSelectedTab(null)}
             >
               {links.map(({ href, label }, idx) => {
-                const isActive = pathname === href;
                 return (
                   <Link
                     key={href}
                     href={href}
                     className={cn(
                       "text-foreground relative flex h-12 items-center justify-center rounded-[15px] px-3.75",
-                      isActive && "font-semibold"
+                      pathname === href && "font-semibold"
                     )}
                     onMouseEnter={() => setSelectedTab(idx)}
                   >
-                    <AnimatePresence>
-                      {selectedTab === idx && (
-                        <motion.span
-                          layoutId="tab"
-                          className={cn(
-                            "absolute inset-0 rounded-[15px] bg-neutral-200 dark:bg-neutral-800",
-                            scrolled && "bg-neutral-300 dark:bg-neutral-700"
-                          )}
-                          transition={{ duration: 0.2 }}
-                        />
-                      )}
-                    </AnimatePresence>
+                    {selectedTab === idx && (
+                      <motion.span
+                        layoutId="tab"
+                        className={cn(
+                          "absolute inset-0 rounded-[15px] bg-neutral-200 dark:bg-neutral-800",
+                          scrolled && "bg-neutral-300 dark:bg-neutral-700"
+                        )}
+                        transition={{ duration: 0.2 }}
+                      />
+                    )}
                     <span className="relative z-10">{label}</span>
                   </Link>
                 );

@@ -1,9 +1,11 @@
 import Image from "next/image";
 
-import { Brain } from "lucide-react";
+import { Brain, Sparkles } from "lucide-react";
 
 import { GridBackground } from "@/shared/components/backgrounds/grid-background";
 import { Badge } from "@/shared/components/ui/badge";
+import { Paragraph } from "@/shared/components/ui/paragraph";
+import { SubHeading } from "@/shared/components/ui/sub-heading";
 
 export function FeaturesSection() {
   return (
@@ -42,53 +44,25 @@ export function FeaturesSection() {
       <div className="container mx-auto max-w-7xl">
         {/* Section Header - Exact Figma specs */}
         <div className="mb-12 text-center md:mb-16">
-          <div
-            className="border-primary/60 bg-card mb-7 inline-flex items-center rounded-full border-[0.94px]"
-            style={{
-              padding: "9.04px 19.89px",
-              gap: "9.04px",
-            }}
-          >
-            <div className="flex items-center gap-[4.52px]">
-              <Brain className="text-primary size-6" />
-              <span
-                className="text-sm text-[#85A3FF] md:text-base lg:text-[17.32px]"
-                style={{
-                  lineHeight: "1.5em",
-                  fontWeight: 400,
-                  fontFamily: "Geist",
-                  textAlign: "center",
-                }}
-              >
-                Comprehensive Platform
-              </span>
-            </div>
+          <div className="border-border bg-card mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2">
+            <Sparkles className="text-primary h-5 w-5" />
+            <span className="text-foreground text-sm font-medium">
+              Comprehensive Platform
+            </span>
           </div>
 
-          <h2
-            className="text-foreground mb-2.5 text-lg md:text-xl lg:text-[21px]"
-            style={{
-              lineHeight: "1.48em",
-              fontWeight: 400,
-              textAlign: "center",
-            }}
+          <SubHeading
+            as="h2"
+            className="mb-2.5 text-center text-2xl md:text-3xl lg:text-4xl"
           >
             Everything You Need to{" "}
-            <span className="font-bold text-[#85A3FF]">Succeed</span>
-          </h2>
+            <span className="text-foreground font-bold">Succeed</span>
+          </SubHeading>
 
-          <p
-            className="text-muted-foreground mx-auto max-w-3xl text-sm md:text-base lg:text-[21px]"
-            style={{
-              lineHeight: "1.73em",
-              fontWeight: 400,
-              fontFamily: "Geist",
-              textAlign: "center",
-            }}
-          >
+          <Paragraph className="mx-auto max-w-3xl text-center text-sm md:text-base lg:text-[21px]">
             A complete interview preparation platform with AI-powered tools,
             real human feedback, and realistic practice environments.
-          </p>
+          </Paragraph>
         </div>
 
         {/* Feature Cards - AI Mock Interviews */}
@@ -105,7 +79,7 @@ export function FeaturesSection() {
                   <div className="flex flex-wrap items-center gap-2 md:gap-3">
                     <Brain className="text-primary size-6 md:size-8 lg:size-10" />
                     <h3
-                      className="text-primary text-lg md:text-2xl lg:text-[34.1px]"
+                      className="text-foreground text-lg md:text-2xl lg:text-[34.1px]"
                       style={{
                         lineHeight: "1.43em",
                         fontWeight: 600,
@@ -116,7 +90,7 @@ export function FeaturesSection() {
                     </h3>
                     {/* Badge */}
                     <div
-                      className="bg-primary/70 inline-flex items-center justify-center rounded-full px-3 py-1 md:px-6 md:py-1"
+                      className="bg-muted inline-flex items-center justify-center rounded-full px-3 py-1 md:px-6 md:py-1"
                       style={{
                         fontSize: "11px",
                         lineHeight: "1.27em",
@@ -124,87 +98,41 @@ export function FeaturesSection() {
                         fontFamily: "Geist",
                       }}
                     >
-                      <span className="text-primary-foreground text-xs md:text-[13px]">
+                      <span className="text-foreground text-xs md:text-[13px]">
                         Ai Powered
                       </span>
                     </div>
                   </div>
-                  <p
-                    className="text-foreground text-sm md:text-base lg:text-[18.69px]"
-                    style={{
-                      lineHeight: "1.43em",
-                      fontWeight: 400,
-                      fontFamily: "Geist",
-                    }}
+                  <SubHeading
+                    as="p"
+                    className="text-sm leading-[1.43em] font-normal md:text-base lg:text-[18.69px]"
                   >
                     Practice with our advanced AI interviewer
-                  </p>
+                  </SubHeading>
                 </div>
 
                 {/* Description */}
-                <p
-                  className="text-foreground text-sm md:text-base lg:text-[22.21px]"
-                  style={{
-                    lineHeight: "1.7em",
-                    fontWeight: 500,
-                    fontFamily: "Geist",
-                  }}
-                >
+                <Paragraph className="text-sm leading-[1.7em] font-medium md:text-base lg:text-[22.21px]">
                   Experience realistic interview scenarios with our AI that
                   adapts to your responses, provides real-time feedback, and
                   helps you improve your confidence and technical skills.
-                </p>
+                </Paragraph>
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-3 md:gap-[24.16px]">
-                  <Badge
-                    className="bg-primary/70 text-primary-foreground rounded-full border-none text-xs md:text-sm"
-                    style={{
-                      padding: "3px 17px",
-                      lineHeight: "1.21em",
-                      fontFamily: "Geist",
-                    }}
-                  >
+                  <Badge className="bg-muted text-foreground rounded-full border-none px-[17px] py-[3px] text-xs leading-[1.21em] md:text-sm">
                     Data Structure
                   </Badge>
-                  <Badge
-                    className="bg-primary/70 text-primary-foreground rounded-full border-none text-xs md:text-sm"
-                    style={{
-                      padding: "3px 15px",
-                      lineHeight: "1.21em",
-                      fontFamily: "Geist",
-                    }}
-                  >
+                  <Badge className="bg-muted text-foreground rounded-full border-none px-[15px] py-[3px] text-xs leading-[1.21em] md:text-sm">
                     Algorithims
                   </Badge>
-                  <Badge
-                    className="bg-primary/70 text-primary-foreground rounded-full border-none text-xs md:text-sm"
-                    style={{
-                      padding: "3px 18px",
-                      lineHeight: "1.21em",
-                      fontFamily: "Geist",
-                    }}
-                  >
+                  <Badge className="bg-muted text-foreground rounded-full border-none px-[18px] py-[3px] text-xs leading-[1.21em] md:text-sm">
                     Behavioral
                   </Badge>
-                  <Badge
-                    className="bg-primary/70 text-primary-foreground rounded-full border-none text-xs md:text-sm"
-                    style={{
-                      padding: "3px 25px",
-                      lineHeight: "1.29em",
-                      fontFamily: "Geist",
-                    }}
-                  >
+                  <Badge className="bg-muted text-foreground rounded-full border-none px-[25px] py-[3px] text-xs leading-[1.29em] md:text-sm">
                     System Design
                   </Badge>
-                  <Badge
-                    className="bg-primary/70 text-primary-foreground rounded-full border-none text-xs md:text-sm"
-                    style={{
-                      padding: "3px 20px",
-                      lineHeight: "1.21em",
-                      fontFamily: "Geist",
-                    }}
-                  >
+                  <Badge className="bg-muted text-foreground rounded-full border-none px-5 py-[3px] text-xs leading-[1.21em] md:text-sm">
                     Java Script
                   </Badge>
                 </div>
@@ -252,7 +180,7 @@ export function FeaturesSection() {
                   <div className="flex flex-wrap items-center gap-2 md:gap-3">
                     <Brain className="text-primary size-6 md:size-7" />
                     <h3
-                      className="text-primary text-lg md:text-2xl lg:text-[32.06px]"
+                      className="text-foreground text-lg md:text-2xl lg:text-[32.06px]"
                       style={{
                         lineHeight: "1.43em",
                         fontWeight: 600,
@@ -263,7 +191,7 @@ export function FeaturesSection() {
                     </h3>
                     {/* Badge */}
                     <div
-                      className="bg-primary/70 inline-flex items-center justify-center rounded-full px-3 py-1 md:px-6 md:py-1"
+                      className="bg-muted inline-flex items-center justify-center rounded-full px-3 py-1 md:px-6 md:py-1"
                       style={{
                         fontSize: "11px",
                         lineHeight: "1em",
@@ -271,36 +199,25 @@ export function FeaturesSection() {
                         fontFamily: "Geist",
                       }}
                     >
-                      <span className="text-primary-foreground text-xs md:text-[13px]">
+                      <span className="text-foreground text-xs md:text-[13px]">
                         Interactive
                       </span>
                     </div>
                   </div>
-                  <p
-                    className="text-foreground text-sm md:text-base lg:text-[17.58px]"
-                    style={{
-                      lineHeight: "1.43em",
-                      fontWeight: 400,
-                      fontFamily: "Geist",
-                    }}
+                  <SubHeading
+                    as="p"
+                    className="text-sm leading-[1.43em] font-normal md:text-base lg:text-[17.58px]"
                   >
                     Solve problems with AI interviewer mode
-                  </p>
+                  </SubHeading>
                 </div>
 
                 {/* Description */}
-                <p
-                  className="text-foreground text-sm md:text-base lg:text-[22.12px]"
-                  style={{
-                    lineHeight: "1.31em",
-                    fontWeight: 500,
-                    fontFamily: "Geist",
-                  }}
-                >
+                <Paragraph className="text-sm leading-[1.31em] font-medium md:text-base lg:text-[22.12px]">
                   Practice coding problems with real-time execution and optional
                   AI interviewer mode for guided feedback, hints, and code
                   quality assessment.
-                </p>
+                </Paragraph>
 
                 {/* Difficulty Stats */}
                 <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-[53.98px]">
@@ -311,7 +228,7 @@ export function FeaturesSection() {
                   ].map((item) => (
                     <div
                       key={item.difficulty}
-                      className="border-primary bg-card flex flex-col items-center justify-center rounded-[18.89px] border-[0.92px]"
+                      className="border-border bg-card flex flex-col items-center justify-center rounded-[18.89px] border-[0.92px]"
                       style={{
                         padding: "2.3px 20px",
                         gap: "4.61px",
@@ -360,7 +277,7 @@ export function FeaturesSection() {
                   <div className="flex flex-wrap items-center gap-2 md:gap-3">
                     <Brain className="text-primary size-6 md:size-8 lg:size-10" />
                     <h3
-                      className="text-primary text-lg md:text-2xl lg:text-[34.1px]"
+                      className="text-foreground text-lg md:text-2xl lg:text-[34.1px]"
                       style={{
                         lineHeight: "1.43em",
                         fontWeight: 600,
@@ -371,7 +288,7 @@ export function FeaturesSection() {
                     </h3>
                     {/* Badge */}
                     <div
-                      className="bg-primary/70 inline-flex items-center justify-center rounded-full px-3 py-1 md:px-6 md:py-1"
+                      className="bg-muted inline-flex items-center justify-center rounded-full px-3 py-1 md:px-6 md:py-1"
                       style={{
                         fontSize: "11px",
                         lineHeight: "1.27em",
@@ -379,77 +296,38 @@ export function FeaturesSection() {
                         fontFamily: "Geist",
                       }}
                     >
-                      <span className="text-primary-foreground text-xs md:text-[13px]">
+                      <span className="text-foreground text-xs md:text-[13px]">
                         Ai Powered
                       </span>
                     </div>
                   </div>
-                  <p
-                    className="text-foreground text-sm md:text-base lg:text-[18.69px]"
-                    style={{
-                      lineHeight: "1.43em",
-                      fontWeight: 400,
-                      fontFamily: "Geist",
-                    }}
+                  <SubHeading
+                    as="p"
+                    className="text-sm leading-[1.43em] font-normal md:text-base lg:text-[18.69px]"
                   >
                     Create job-ready resumes with AI assistance
-                  </p>
+                  </SubHeading>
                 </div>
 
                 {/* Description */}
-                <p
-                  className="text-foreground text-sm md:text-base lg:text-[22.21px]"
-                  style={{
-                    lineHeight: "1.7em",
-                    fontWeight: 500,
-                    fontFamily: "Geist",
-                  }}
-                >
+                <Paragraph className="text-sm leading-[1.7em] font-medium md:text-base lg:text-[22.21px]">
                   Create job-ready resumes with our AI that adapts to your
                   experience, provides real-time suggestions, and helps you
                   highlight your strengths and achievements.
-                </p>
+                </Paragraph>
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-3 md:gap-[24.16px]">
-                  <Badge
-                    className="bg-primary/70 text-primary-foreground rounded-full border-none text-xs md:text-sm"
-                    style={{
-                      padding: "3px 17px",
-                      lineHeight: "1.21em",
-                      fontFamily: "Geist",
-                    }}
-                  >
+                  <Badge className="bg-muted text-foreground rounded-full border-none px-[17px] py-[3px] text-xs leading-[1.21em] md:text-sm">
                     Data Structure
                   </Badge>
-                  <Badge
-                    className="bg-primary/70 text-primary-foreground rounded-full border-none text-xs md:text-sm"
-                    style={{
-                      padding: "3px 15px",
-                      lineHeight: "1.21em",
-                      fontFamily: "Geist",
-                    }}
-                  >
+                  <Badge className="bg-muted text-foreground rounded-full border-none px-[15px] py-[3px] text-xs leading-[1.21em] md:text-sm">
                     Algorithims
                   </Badge>
-                  <Badge
-                    className="bg-primary/70 text-primary-foreground rounded-full border-none text-xs md:text-sm"
-                    style={{
-                      padding: "3px 18px",
-                      lineHeight: "1.21em",
-                      fontFamily: "Geist",
-                    }}
-                  >
+                  <Badge className="bg-muted text-foreground rounded-full border-none px-[18px] py-[3px] text-xs leading-[1.21em] md:text-sm">
                     Behavioral
                   </Badge>
-                  <Badge
-                    className="bg-primary/70 text-primary-foreground rounded-full border-none text-xs md:text-sm"
-                    style={{
-                      padding: "3px 20px",
-                      lineHeight: "1em",
-                      fontFamily: "Geist",
-                    }}
-                  >
+                  <Badge className="bg-muted text-foreground rounded-full border-none px-5 py-[3px] text-xs leading-none md:text-sm">
                     LinkedIn Profile
                   </Badge>
                 </div>

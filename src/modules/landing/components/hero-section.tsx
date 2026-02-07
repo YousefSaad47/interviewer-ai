@@ -2,12 +2,15 @@ import Link from "next/link";
 
 import { CheckIcon } from "lucide-react";
 
+import { AnimatedBadge } from "@/shared/components/ui/animated-badge";
 import { Button } from "@/shared/components/ui/button";
 import { FlowButton } from "@/shared/components/ui/flow-button";
+import { Heading } from "@/shared/components/ui/heading";
+import { Paragraph } from "@/shared/components/ui/paragraph";
 
 export function HeroSection() {
   return (
-    <section className="bg-background relative flex min-h-screen items-center justify-center overflow-hidden px-4 pt-20 md:px-8">
+    <section className="bg-background relative flex min-h-[80vh] items-center justify-center overflow-hidden px-4 py-12 sm:min-h-[75vh] sm:py-14 md:min-h-[85vh] md:px-8 md:py-20 lg:min-h-screen lg:py-24">
       {/* Background Effects from Figma */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-visible">
         {/* Gradient ellipses matching Figma positions */}
@@ -36,51 +39,34 @@ export function HeroSection() {
       </div>
 
       <div className="z-10 container mx-auto max-w-6xl text-center">
-        {/* Badge - Exact Figma positioning */}
+        {/* Badge - Animated Badge */}
         <div
-          className="border-primary/60 bg-card mb-8 inline-flex items-center gap-2 rounded-full border-[0.8px] px-6 py-2 md:mb-16.5 md:px-8.25 md:py-2.25"
+          className="mb-8 md:mb-16.5"
           style={{ marginTop: "clamp(80px, 15vw, 176px)" }}
         >
-          <div
-            className="bg-primary/60 h-2 w-2 rounded-full opacity-[0.59]"
-            style={{ boxShadow: "0 0 8px rgba(101, 125, 196, 0.6)" }}
+          <AnimatedBadge
+            text="AI-Powered Interview Preparation"
+            href="/interview/setup"
           />
-          <span
-            className="text-xs leading-[1.5em] font-normal text-[#85A3FF] md:text-[13.87px]"
-            style={{ fontFamily: "Geist" }}
-          >
-            AI-Powered Interview Preparation
-          </span>
         </div>
 
-        {/* Main Heading - Exact Figma typography */}
-        <h1
-          className="text-foreground mx-auto mb-6 max-w-[90%] text-4xl md:mb-8.25 md:max-w-250 md:text-6xl lg:text-[74px]"
-          style={{
-            lineHeight: "1em",
-            letterSpacing: "-2.5%",
-            fontWeight: 700,
-            fontFamily: "Geist",
-            textAlign: "center",
-          }}
+        {/* Main Heading */}
+        <Heading
+          as="h1"
+          className="mx-auto mb-6 max-w-[90%] tracking-tight md:mb-8.25 md:max-w-250"
         >
           Master Your Interview Skills with AI-Powered
-        </h1>
+        </Heading>
 
-        {/* Subheading - Exact Figma specs */}
-        <p
-          className="text-muted-foreground mx-auto mb-8 max-w-[95%] text-base md:mb-16 md:max-w-[820.32px] md:text-xl lg:text-[20.59px]"
-          style={{
-            lineHeight: "1.56em",
-            fontWeight: 500,
-            fontFamily: "Geist",
-            textAlign: "center",
-          }}
+        {/* Subheading */}
+        <Paragraph
+          as="p"
+          className="mx-auto mb-8 max-w-[95%] md:mb-16 md:max-w-[820.32px]"
         >
           Experience the future of interview preparation with AI-powered
           practice sessions, real-time feedback, and comprehensive performance
           analytics
-        </p>
+        </Paragraph>
 
         {/* CTA Buttons - Exact Figma specs */}
         <div className="mb-12 flex flex-col items-center justify-center gap-4 md:mb-23 md:flex-row">
@@ -94,7 +80,7 @@ export function HeroSection() {
             <Button
               size="lg"
               variant="outline"
-              className="border-primary text-foreground hover:bg-accent h-[50.94px] w-full rounded-[15px] border bg-transparent px-[40.75px] py-[10.19px] text-base leading-[1.43em] font-medium shadow-[0px_1.27px_2.55px_0px_rgba(26,26,26,0.05)] md:w-auto md:text-[17.83px]"
+              className="border-border text-foreground hover:bg-accent h-[50.94px] w-full rounded-[15px] border bg-transparent px-[40.75px] py-[10.19px] text-base leading-[1.43em] font-medium shadow-[0px_1.27px_2.55px_0px_rgba(26,26,26,0.05)] md:w-auto md:text-[17.83px]"
               style={{ fontFamily: "Geist" }}
             >
               Practice Coding
@@ -102,34 +88,25 @@ export function HeroSection() {
           </Link>
         </div>
 
-        {/* Features List - Exact Figma positioning */}
+        {/* Features List */}
         <div className="text-foreground flex flex-col items-center justify-center gap-4 md:flex-row md:gap-8">
           <div className="flex items-center gap-2">
             <CheckIcon className="text-foreground h-5 w-5" />
-            <span
-              className="text-sm leading-[1.5em] font-normal md:text-[16px]"
-              style={{ fontFamily: "Geist" }}
-            >
+            <Paragraph as="span" className="text-sm md:text-base">
               No credit card required
-            </span>
+            </Paragraph>
           </div>
           <div className="flex items-center gap-2">
             <CheckIcon className="text-foreground h-5 w-5" />
-            <span
-              className="text-sm leading-[1.5em] font-normal md:text-[16px]"
-              style={{ fontFamily: "Geist" }}
-            >
+            <Paragraph as="span" className="text-sm md:text-base">
               Free trial available
-            </span>
+            </Paragraph>
           </div>
           <div className="flex items-center gap-2">
             <CheckIcon className="text-foreground h-5 w-5" />
-            <span
-              className="text-sm leading-[1.5em] font-normal md:text-[16px]"
-              style={{ fontFamily: "Geist" }}
-            >
+            <Paragraph as="span" className="text-sm md:text-base">
               Cancel anytime
-            </span>
+            </Paragraph>
           </div>
         </div>
       </div>

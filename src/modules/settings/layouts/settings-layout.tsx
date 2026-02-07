@@ -112,10 +112,10 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "border-primary/30 flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2 text-sm transition-colors",
+                      "flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2 text-sm transition-colors",
                       isActive
-                        ? "bg-primary/10 border-primary/50"
-                        : "bg-card/50 hover:bg-primary/10 hover:border-primary/40"
+                        ? "border-neutral-300 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
+                        : "border-neutral-200 bg-neutral-50 hover:border-neutral-300 hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 dark:hover:bg-neutral-800"
                     )}
                   >
                     <item.icon
@@ -136,7 +136,7 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
 
         {/* Sidebar - Desktop */}
         <aside className="hidden w-64 p-5 lg:block xl:w-72">
-          <div className="bg-card/80 border-primary/20 rounded-3xl border p-6 shadow-lg backdrop-blur-sm lg:p-8">
+          <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-6 shadow-lg backdrop-blur-sm lg:p-8 dark:border-neutral-800 dark:bg-neutral-900">
             <div className="mb-9 flex items-center gap-1.25">
               <SettingsIcon className="h-6 w-6" />
               <h2 className="text-lg font-normal">Settings</h2>
@@ -150,10 +150,10 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "group border-primary/30 flex items-center gap-2 rounded-lg border-b px-2 py-2 text-sm transition-colors",
+                      "group flex items-center gap-2 rounded-lg border-b px-2 py-2 text-sm transition-colors",
                       isActive
-                        ? "bg-primary/10 border-primary/50"
-                        : "bg-card/50 hover:bg-primary/10 hover:border-primary/40"
+                        ? "border-neutral-300 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
+                        : "border-neutral-200 bg-neutral-50 hover:border-neutral-300 hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 dark:hover:bg-neutral-800"
                     )}
                   >
                     <item.icon
