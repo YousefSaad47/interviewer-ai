@@ -1,0 +1,16 @@
+[project]
+name = "ats-parser"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
+
+[tool.uv]
+package = true
+
+[project.scripts]
+ats-parser = "main:main"
+
+[dependency-groups]
+dev = ["ruff>=0.15.16", "ty>=0.0.47"]
