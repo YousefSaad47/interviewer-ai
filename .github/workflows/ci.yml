@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: Lint • Typecheck • Format
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-bun
+
+      - name: Run formatter
+        run: bun run format:check
+
+      - name: Run import sorter
+        run: bun run order:check
+
+      - name: Run type-check
+        run: bun run type:check
+
+      - name: Run linter
+        run: bun run lint

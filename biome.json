@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
   "root": true,
   "files": {
     "ignoreUnknown": false,
@@ -10,7 +10,8 @@
       "**/*.json",
       "!**/dist",
       "!**/.next",
-      "!**/.turbo"
+      "!**/.turbo",
+      "!.agents"
     ]
   },
   "vcs": {

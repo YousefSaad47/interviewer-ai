@@ -25,8 +25,8 @@
     "order:fix": {
       "dependsOn": ["^order:fix"]
     },
-    "type-check": {
-      "dependsOn": ["^type-check"]
+    "type:check": {
+      "dependsOn": ["^type:check"]
     },
     "start:dev": {
       "cache": false,
