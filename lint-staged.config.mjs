@@ -3,6 +3,10 @@
  * @type {import('lint-staged').Configuration}
  */
 export default {
-  "**/*.{ts,tsx}": ["biome lint", "biome format", "biome check"],
-  "**/*.json": "biome format",
+  "**/*.{ts,tsx}": [
+    "biome lint --no-errors-on-unmatched",
+    "biome format --no-errors-on-unmatched",
+    "biome check --no-errors-on-unmatched",
+  ],
+  "**/*.json": "biome format --no-errors-on-unmatched",
 };
