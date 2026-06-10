@@ -18,7 +18,6 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
     "isolatedModules": true,
-    "esModuleInterop": true,
-    "types": ["bun"]
+    "esModuleInterop": true
   }
 }
