@@ -12,6 +12,7 @@ enum NodeEnv {
 const envSchema = z
   .object({
     NODE_ENV: z.enum(NodeEnv).default(NodeEnv.DEVELOPMENT),
+    PORT: z.coerce.number().default(3000),
     PG_HOST: z.string(),
     PG_PORT: z.coerce.number(),
     PG_USER: z.string(),
