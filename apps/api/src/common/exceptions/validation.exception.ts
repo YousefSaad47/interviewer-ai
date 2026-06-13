@@ -17,7 +17,7 @@ export class ValidationException extends AbstractException {
       message: this.message,
       statusCode: this.statusCode,
       code: this.code,
-      details: this._details,
+      ...(this._details && { details: this._details }),
     };
   }
 }
