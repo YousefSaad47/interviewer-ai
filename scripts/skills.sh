@@ -185,6 +185,12 @@ add_skill https://github.com/github/awesome-copilot gh-cli
 
 add_skill https://github.com/github/awesome-copilot git-commit
 
+add_skill https://github.com/wshobson/agents python-performance-optimization
+add_skill https://github.com/wshobson/agents python-design-patterns
+add_skill https://github.com/wshobson/agents uv-package-manager
+add_skill https://github.com/astral-sh/claude-code-plugins uv
+add_skill https://github.com/github/awesome-copilot dataverse-python-production-code
+
 wait
 
 echo "All installations completed."
