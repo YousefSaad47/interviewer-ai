@@ -1,26 +1,17 @@
-import { once } from "node:events";
+import "@/core/init";
 
 import express from "express";
 
+import { ControllersFactory } from "@/common";
+import { extendExpressApp } from "@/common/extensions";
+
 const app = express();
 
-app.get("/", (_req, res) => {
-  res.send("Hello, World!");
-});
+extendExpressApp(app);
 
-const PORT = Number(process.env.PORT) || 3000;
+app
+  .registerParsers()
+  .registerControllers(ControllersFactory.controllers)
+  .registerErrorHandlers();
 
-async function startServer(port: number) {
-  const server = app.listen(port);
-  await once(server, "listening");
-  console.log(`Server is running on port http://localhost:${port}`);
-}
-
-try {
-  await startServer(PORT);
-} catch (error) {
-  // biome-ignore lint/suspicious/noExplicitAny: < >
-  if ((error as any).code === "EADDRINUSE") {
-    startServer(PORT + 1);
-  }
-}
+await app.bootstrap();

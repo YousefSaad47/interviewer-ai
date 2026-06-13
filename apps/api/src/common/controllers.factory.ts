@@ -28,4 +28,8 @@ export class ControllersFactory {
       controller,
     ) as AbstractController<AbstractService>;
   }
+
+  public static get controllers() {
+    return Array.from(this._controllers.values());
+  }
 }

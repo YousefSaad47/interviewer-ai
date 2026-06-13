@@ -9,6 +9,8 @@ import { type SignInBody, signInSchema } from "./auth.schema";
 import { AuthService } from "./auth.service";
 
 export class AuthController extends AbstractController<AuthService> {
+  public path = "/api";
+
   constructor() {
     super(ServicesFactory.create(Services.AUTH) as AuthService);
   }

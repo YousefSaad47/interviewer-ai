@@ -4,6 +4,7 @@ import { AbstractService } from "./abstract.service";
 
 export abstract class AbstractController<TService extends AbstractService> {
   protected _router: Router;
+  public abstract path: string;
 
   protected constructor(protected readonly _service: TService) {
     this._router = Router();
