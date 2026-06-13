@@ -1,0 +1,67 @@
+services:
+  postgres:
+    image: postgres:18.1-alpine3.22
+    container_name: interviewer-pg-dev
+    environment:
+      POSTGRES_USER: ${PG_USER:-interviewer_ai_dev_user}
+      POSTGRES_PASSWORD: ${PG_PASSWORD:-interviewer_ai_dev_pass}
+      POSTGRES_DB: ${PG_DB:-interviewer_ai_dev_db}
+    ports:
+      - "${PG_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${PG_USER:-interviewer_ai_dev_user} -d ${PG_DB:-interviewer_ai_dev_db}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - interviewer-network
+
+  pgadmin:
+    image: dpage/pgadmin4:9.8
+    container_name: interviewer-pgadmin-dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - 8080:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: demo@example.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    configs:
+      - source: pgadmin-servers
+        target: /pgadmin4/servers.json
+        mode: 0444
+    networks:
+      - interviewer-network
+
+configs:
+  pgadmin-servers:
+    content: |
+      {
+        "Servers": {
+          "1": {
+            "Name": "Local Postgres",
+            "Group": "Servers",
+            "Host": "postgres",
+            "Port": 5432,
+            "MaintenanceDB": "interviewer_ai_dev_db",
+            "Username": "interviewer_ai_dev_user",
+            "Password": "interviewer_ai_dev_pass"
+          }
+        }
+      }
+
+volumes:
+  postgres_data:
+
+networks:
+  interviewer-network:
+    driver: bridge
