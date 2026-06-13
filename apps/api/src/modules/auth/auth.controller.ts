@@ -9,7 +9,7 @@ import { type SignInBody, signInSchema } from "./auth.schema";
 import { AuthService } from "./auth.service";
 
 export class AuthController extends AbstractController<AuthService> {
-  public path = "/api";
+  public path = "auth";
 
   constructor() {
     super(ServicesFactory.create(Services.AUTH) as AuthService);
@@ -26,7 +26,6 @@ export class AuthController extends AbstractController<AuthService> {
   private _login: RequestHandler<unknown, unknown, SignInBody> = (req, res) => {
     const { email, password } = req.body;
     this._service._login({ email, password });
-
     res.status(HttpStatus.OK).json({ message: "Login successful" });
   };
 }

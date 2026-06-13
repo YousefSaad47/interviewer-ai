@@ -1,3 +1,5 @@
+import chalk from "chalk";
+
 export type SerializedException = {
   message: string;
   statusCode: number;
@@ -16,7 +18,20 @@ export abstract class AbstractException extends Error {
     this.name = this.constructor.name;
   }
 
-  public abstract serialize(): SerializedException;
+  public serialize(): SerializedException {
+    if (!this.isOperational) {
+      console.error(chalk.redBright(`${this.name}: ${this.message}`));
+    } else {
+      console.warn(chalk.yellow(`${this.name}: ${this.message}`));
+    }
+
+    return {
+      message: this.message,
+      statusCode: this.statusCode,
+      code: this.code,
+      ...(this._details && { details: this._details }),
+    };
+  }
 
   public get statusCode() {
     return this._statusCode;

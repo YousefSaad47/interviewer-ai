@@ -13,7 +13,11 @@ export abstract class AbstractController<TService extends AbstractService> {
 
   protected abstract _registerRoutes(): void;
 
-  public get router() {
+  public get router(): Router {
+    if (this.path.includes("/")) {
+      throw new Error("Path should not contain slashes");
+    }
+
     return this._router;
   }
 }

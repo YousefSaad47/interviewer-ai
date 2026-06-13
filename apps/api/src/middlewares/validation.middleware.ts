@@ -31,9 +31,9 @@ export const validationMiddleware =
         // biome-ignore lint/suspicious/noExplicitAny: <>
         req.params = params as any;
       }
-    } catch (err) {
+    } catch (error) {
       throw new ValidationException("Validation failed", {
-        details: z.treeifyError(err as ZodError),
+        details: z.treeifyError(error as ZodError),
       });
     }
 

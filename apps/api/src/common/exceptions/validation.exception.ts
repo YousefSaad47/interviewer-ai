@@ -1,23 +1,17 @@
-import chalk from "chalk";
-
 import { HttpStatus } from "../enums";
-import {
-  AbstractException,
-  type SerializedException,
-} from "./abstract.exception";
+import { AbstractException } from "./abstract.exception";
+
+type ValidationExceptionOptions = {
+  details: Record<string, unknown>;
+};
 
 export class ValidationException extends AbstractException {
-  constructor(message: string, details?: Record<string, unknown>) {
-    super(message, HttpStatus.BAD_REQUEST, "VALIDATION_ERROR", details);
-  }
-
-  public serialize(): SerializedException {
-    console.warn(chalk.yellow(`${this.name}: ${this.message}`));
-    return {
-      message: this.message,
-      statusCode: this.statusCode,
-      code: this.code,
-      ...(this._details && { details: this._details }),
-    };
+  constructor(message: string, _options?: ValidationExceptionOptions) {
+    super(
+      message,
+      HttpStatus.BAD_REQUEST,
+      "VALIDATION_ERROR",
+      _options?.details,
+    );
   }
 }
