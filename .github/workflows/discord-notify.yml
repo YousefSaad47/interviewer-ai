@@ -1,7 +1,8 @@
-name: Notify on Push
+name: Notify on Push and PR
 
 on:
   push:
+  pull_request:
 
 permissions:
   actions: read
@@ -11,7 +12,8 @@ jobs:
     name: Discord Notification
     runs-on: ubuntu-latest
     steps:
-      - name: Send Discord notification
+      - name: Send Discord notification (push)
+        if: github.event_name == 'push'
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -25,3 +27,18 @@ jobs:
           nodetail: true
           color: auto
           url: ${{ github.event.head_commit.url }}
+
+      - name: Send Discord notification (PR)
+        if: github.event_name == 'pull_request' && github.event.action != 'synchronize'
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: "PR #${{ github.event.number }}: ${{ github.event.pull_request.title }}"
+          description: |
+            **Repo:** ${{ github.repository }}
+            **Branch:** ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}
+            **Author:** ${{ github.event.pull_request.user.login }}
+            **State:** ${{ github.event.pull_request.state }}
+          nodetail: true
+          color: auto
+          url: ${{ github.event.pull_request.html_url }}
