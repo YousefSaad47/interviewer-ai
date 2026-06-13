@@ -18,7 +18,7 @@ export const extendExpressApp = (app: Application) => {
 
   app.registerControllers = (controllers: Controller[]) => {
     controllers.forEach((controller) => {
-      app.use(controller.path, controller.router);
+      app.use(`/api/${controller.path}`, controller.router);
     });
     return app;
   };
