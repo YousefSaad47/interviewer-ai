@@ -1,11 +1,11 @@
-import { RequestHandler } from "express";
+import type { RequestHandler } from "express";
 
 import { ServicesFactory } from "@/common";
 import { AbstractController } from "@/common/contracts";
 import { HttpStatus, Services } from "@/common/enums";
 import { validationMiddleware } from "@/middlewares";
 
-import { SignInBody, signInSchema } from "./auth.schema";
+import { type SignInBody, signInSchema } from "./auth.schema";
 import { AuthService } from "./auth.service";
 
 export class AuthController extends AbstractController<AuthService> {
