@@ -9,4 +9,8 @@ export default {
     "biome check --no-errors-on-unmatched",
   ],
   "**/*.json": "biome format --no-errors-on-unmatched",
+  "**/*.py": [
+    "uvx ruff check --fix",
+    "uvx ruff format",
+  ],
 };
