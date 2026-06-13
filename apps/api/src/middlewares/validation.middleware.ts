@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import type { RequestHandler } from "express";
 import { ZodError, ZodType, z } from "zod";
 
 import { ValidationException } from "@/common/exceptions";

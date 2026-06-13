@@ -1,7 +1,10 @@
 import chalk from "chalk";
 
 import { HttpStatus } from "../enums";
-import { AbstractException, SerializedException } from "./abstract.exception";
+import {
+  AbstractException,
+  type SerializedException,
+} from "./abstract.exception";
 
 export class ValidationException extends AbstractException {
   constructor(message: string, details?: Record<string, unknown>) {
