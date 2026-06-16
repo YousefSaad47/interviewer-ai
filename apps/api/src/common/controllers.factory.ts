@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: <> */
 /** biome-ignore-all lint/complexity/noThisInStatic: <> */
 
-import { AuthController, AuthService } from "@/modules/auth";
+import { AuthController } from "@/modules/auth";
 
 import { AbstractController } from "./contracts/abstract.controller";
 import { AbstractService } from "./contracts/abstract.service";
@@ -21,9 +21,7 @@ export class ControllersFactory {
         case Controllers.AUTH:
           this._controllers.set(
             controller,
-            new AuthController(
-              ServicesFactory.create(Services.AUTH) as AuthService,
-            ),
+            new AuthController(ServicesFactory.create(Services.AUTH)),
           );
           break;
         default:
