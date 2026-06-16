@@ -3,7 +3,7 @@ import "dotenv/config";
 import chalk from "chalk";
 import { z } from "zod";
 
-import { logger } from "@/lib/logger";
+import { logger } from "../lib/logger";
 
 enum NodeEnv {
   DEVELOPMENT = "development",
