@@ -394,6 +394,9 @@ add_skill https://github.com/sveltejs/ai-tools
 # Other
 add_skill https://github.com/wshobson/agents dependency-upgrade
 
+# Kubb
+add_skill https://github.com/kubb-labs/kubb
+
 wait
 
 echo "All installations completed."
