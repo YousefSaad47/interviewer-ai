@@ -1,7 +1,8 @@
 services:
   postgres:
     image: postgres:18.1-alpine3.22
-    container_name: interviewer-pg-dev
+    container_name: interviewer_ai_pg_dev
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${PG_USER:-interviewer_ai_dev_user}
       POSTGRES_PASSWORD: ${PG_PASSWORD:-interviewer_ai_dev_pass}
@@ -20,16 +21,17 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - interviewer-network
+      - interviewer_ai_network
 
   pgadmin:
     image: dpage/pgadmin4:9.8
-    container_name: interviewer-pgadmin-dev
+    container_name: interviewer_ai_pgadmin_dev
+    restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
     ports:
-      - 8080:80
+      - "8080:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: demo@example.com
       PGADMIN_DEFAULT_PASSWORD: secret
@@ -39,8 +41,10 @@ services:
       - source: pgadmin-servers
         target: /pgadmin4/servers.json
         mode: 0444
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
     networks:
-      - interviewer-network
+      - interviewer_ai_network
 
 configs:
   pgadmin-servers:
@@ -61,7 +65,8 @@ configs:
 
 volumes:
   postgres_data:
+  pgadmin_data:
 
 networks:
-  interviewer-network:
+  interviewer_ai_network:
     driver: bridge
