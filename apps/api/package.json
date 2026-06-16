@@ -27,6 +27,7 @@
     "@types/bun": "latest",
     "@types/express": "^5.0.6",
     "@types/node": "^25.9.2",
+    "@repo/kubb": "workspace:*",
     "prisma": "^7.8.0",
     "pino-pretty": "^13.1.3"
   },
