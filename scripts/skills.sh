@@ -21,13 +21,11 @@ add_skill() {
     echo "Installing ${skill:-default}..."
     set +e
     if [[ -n "$skill" ]]; then
-      npx skills add "$url" \
-        --skill "$skill" \
-        --yes
+      npx skills add "$url" -s "$skill" -y
     else
-      npx skills add "$url" \
-        --yes
+      npx skills add "$url" -y
     fi
+
     local rc=$?
     if [[ $rc -eq 0 ]]; then
       echo "✓ ${skill:-done}"
@@ -36,6 +34,7 @@ add_skill() {
     fi
   ) &
 }
+
 
 # General
 add_skill https://github.com/vercel-labs/skills find-skills
@@ -329,6 +328,8 @@ add_skill https://github.com/dalestudy/skills storybook
 
 # Search & Scraping
 add_skill https://github.com/firecrawl/cli
+add_skill https://github.com/firecrawl/firecrawl-workflows
+add_skill https://github.com/firecrawl/skills
 add_skill https://github.com/apify/agent-skills
 add_skill https://github.com/brave/brave-search-skills
 add_skill https://github.com/tavily-ai/skills
