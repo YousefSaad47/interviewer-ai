@@ -1,19 +1,14 @@
 import type { RequestHandler } from "express";
 
-import { ServicesFactory } from "@/common";
 import { AbstractController } from "@/common/contracts";
-import { HttpStatus, Services } from "@/common/enums";
+import { HttpStatus } from "@/common/enums";
 import { validationMiddleware } from "@/middlewares";
 
 import { type SignInBody, signInSchema } from "./auth.schema";
 import { AuthService } from "./auth.service";
 
 export class AuthController extends AbstractController<AuthService> {
-  public path = "auth";
-
-  constructor() {
-    super(ServicesFactory.create(Services.AUTH) as AuthService);
-  }
+  public override path = "auth";
 
   protected _registerRoutes() {
     this._router.post(
