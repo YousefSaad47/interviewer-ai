@@ -21,10 +21,18 @@ add_skill() {
     echo "Installing ${skill:-default}..."
     set +e
     if [[ -n "$skill" ]]; then
-      npx skills add "$url" -s "$skill" -y
+      npx skills add "$url" -s "$skill" -a "universal" -y
     else
-      npx skills add "$url" -y
+      npx skills add "$url" -a "universal" -y
     fi
+
+    mkdir -p .claude/skills
+    for skill_dir in .agents/skills/*; do
+      if [[ -d "$skill_dir" ]]; then
+        skill_name=$(basename "$skill_dir")
+        ln -sf "$(pwd)/$skill_dir" ".claude/skills/$skill_name"
+      fi
+    done
 
     local rc=$?
     if [[ $rc -eq 0 ]]; then
@@ -34,7 +42,6 @@ add_skill() {
     fi
   ) &
 }
-
 
 # General
 add_skill https://github.com/vercel-labs/skills find-skills
