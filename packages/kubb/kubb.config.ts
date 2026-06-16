@@ -10,8 +10,8 @@ import { pluginZod } from "@kubb/plugin-zod";
 export default defineConfig({
   root: ".",
   input: {
-    // path: "http://localhost:3000/openapi.json",
-    path: "openapi.yml",
+    path: "http://localhost:3000/api/openapi.json",
+    // path: "openapi.yml",
   },
   output: {
     path: "./__generated__",

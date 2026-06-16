@@ -7,6 +7,7 @@ declare global {
       registerParsers: () => this;
       registerControllers: (controllers: Controller[]) => this;
       registerErrorHandlers: () => this;
+      registerOpenAPI: () => this;
       bootstrap: () => Promise<void>;
     }
   }
