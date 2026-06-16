@@ -3,6 +3,8 @@ import "dotenv/config";
 import chalk from "chalk";
 import { z } from "zod";
 
+import { logger } from "@/lib/logger";
+
 enum NodeEnv {
   DEVELOPMENT = "development",
   PRODUCTION = "production",
@@ -43,7 +45,7 @@ const envSchema = z
     };
   });
 
-export const parsed = envSchema.safeParse(process.env);
+const parsed = envSchema.safeParse(process.env);
 
 if (!parsed.success) {
   console.error(chalk.red("Failed to parse environment variables"));
@@ -51,12 +53,10 @@ if (!parsed.success) {
   process.exit(1);
 }
 
-console.log(
+logger.info(
   parsed.data.NODE_ENV === NodeEnv.DEVELOPMENT
-    ? chalk.dim(`Loaded ${JSON.stringify(parsed.data, null, 2)} env vars`)
-    : chalk.dim(
-        `Loaded ${JSON.stringify(Object.keys(parsed.data), null, 2)} env vars`,
-      ),
+    ? `Loaded ${JSON.stringify(parsed.data, null, 2)} env vars`
+    : `Loaded ${JSON.stringify(Object.keys(parsed.data), null, 2)} env vars`,
 );
 
 declare global {

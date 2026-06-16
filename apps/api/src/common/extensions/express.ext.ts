@@ -1,10 +1,10 @@
 import { once } from "node:events";
 
-import chalk from "chalk";
 import type { Application } from "express";
 import { json } from "express";
 
 import { env } from "@/core";
+import { logger } from "@/lib/logger";
 import { errorHandler } from "@/middlewares";
 
 import { HttpStatus } from "../enums";
@@ -35,7 +35,7 @@ export const extendExpressApp = (app: Application) => {
     const startServer = async (port: number) => {
       const server = app.listen(port);
       await once(server, "listening");
-      console.log(`Server is running on port http://localhost:${port}`);
+      logger.info(`Server is running on port http://localhost:${port}`);
     };
 
     const port = env.PORT;
@@ -48,9 +48,7 @@ export const extendExpressApp = (app: Application) => {
         "code" in error &&
         error.code === "EADDRINUSE"
       ) {
-        console.warn(
-          chalk.yellow(`Port ${port} is in use. Trying port ${port + 1}...`),
-        );
+        logger.warn(`Port ${port} is in use. Trying port ${port + 1}...`);
         await startServer(port + 1);
       } else {
         throw error;
