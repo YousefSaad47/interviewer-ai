@@ -1,10 +1,12 @@
 import { once } from "node:events";
 
-import type { Application } from "express";
+import type { Application, Request, Response } from "express";
 import { json } from "express";
+import swaggerUi from "swagger-ui-express";
 
 import { env } from "@/core";
 import { logger } from "@/lib/logger";
+import { createOpenAPIDocument } from "@/lib/openapi/registry";
 import { errorHandler } from "@/middlewares";
 
 import { HttpStatus } from "../enums";
@@ -28,6 +30,21 @@ export const extendExpressApp = (app: Application) => {
       res.status(HttpStatus.NOT_FOUND).json({ message: "Not Found" });
     });
     app.use(errorHandler);
+    return app;
+  };
+
+  app.registerOpenAPI = () => {
+    app.get("/api/openapi.json", (_req: Request, res: Response) => {
+      const docs = createOpenAPIDocument();
+      res.json(docs);
+    });
+    app.use(
+      "/api/docs",
+      swaggerUi.serve,
+      swaggerUi.setup(null, {
+        swaggerUrl: "/api/openapi.json",
+      }),
+    );
     return app;
   };
 

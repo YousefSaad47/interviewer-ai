@@ -1,3 +1,4 @@
+import "@/common/extensions/zod.ext";
 import "@/core/init";
 
 import express from "express";
@@ -12,6 +13,7 @@ extendExpressApp(app);
 app
   .registerParsers()
   .registerControllers(ControllersFactory.controllers)
+  .registerOpenAPI()
   .registerErrorHandlers();
 
 await app.bootstrap();
