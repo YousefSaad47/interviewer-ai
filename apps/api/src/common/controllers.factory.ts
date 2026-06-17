@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: <> */
 /** biome-ignore-all lint/complexity/noThisInStatic: <> */
 
-import { AuthController } from "@/modules/auth";
+import { SampleController } from "@/modules/sample";
 
 import { AbstractController } from "./contracts/abstract.controller";
 import { AbstractService } from "./contracts/abstract.service";
@@ -18,10 +18,10 @@ export class ControllersFactory {
   public static create(controller: Controllers) {
     if (!this._controllers.has(controller)) {
       switch (controller) {
-        case Controllers.AUTH:
+        case Controllers.SAMPLE:
           this._controllers.set(
             controller,
-            new AuthController(ServicesFactory.create(Services.AUTH)),
+            new SampleController(ServicesFactory.create(Services.SAMPLE)),
           );
           break;
         default:

@@ -2,7 +2,7 @@
 /** biome-ignore-all lint/complexity/noThisInStatic: <> */
 
 import { prisma } from "@/lib/prisma";
-import { AuthService } from "@/modules/auth";
+import { SampleService } from "@/modules/sample";
 
 import { AbstractService } from "./contracts/abstract.service";
 import { Services } from "./enums";
@@ -13,8 +13,8 @@ export class ServicesFactory {
   public static create<T extends AbstractService>(service: Services): T {
     if (!this._services.has(service)) {
       switch (service) {
-        case Services.AUTH:
-          this._services.set(service, new AuthService(prisma));
+        case Services.SAMPLE:
+          this._services.set(service, new SampleService(prisma));
           break;
         default:
           throw new Error(`Unknown service: ${service satisfies never}`);
