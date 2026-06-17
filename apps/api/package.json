@@ -21,11 +21,9 @@
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
-    "auth:generate": "better-auth generate --output prisma/schema.prisma",
     "postinstall": "prisma generate"
   },
   "devDependencies": {
-    "@better-auth/cli": "^1.4.21",
     "@repo/kubb": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/bun": "latest",
