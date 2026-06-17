@@ -12,7 +12,7 @@ const app = express();
 
 extendExpressApp(app);
 
-app.all("/api/auth/*splat", toNodeHandler(auth));
+app.all("/api/auth/{*splat}", toNodeHandler(auth));
 
 app
   .registerParsers()
