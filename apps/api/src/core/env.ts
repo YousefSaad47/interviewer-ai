@@ -14,7 +14,7 @@ enum NodeEnv {
 const envSchema = z
   .object({
     NODE_ENV: z.enum(NodeEnv).default(NodeEnv.DEVELOPMENT),
-    PORT: z.coerce.number().default(3000),
+    PORT: z.coerce.number().default(4000),
     PG_HOST: z.string(),
     PG_PORT: z.coerce.number(),
     PG_USER: z.string(),
@@ -28,6 +28,12 @@ const envSchema = z
       .string()
       .min(32, "BETTER_AUTH_SECRET must be at least 32 characters"),
     BETTER_AUTH_URL: z.string().default("http://localhost:3000"),
+    CORS_ORIGIN: z
+      .string()
+      .default("http://localhost:3000,http://localhost:3001"),
+    MAIL_HOST: z.string().default("localhost"),
+    MAIL_PORT: z.coerce.number().default(1025),
+    MAIL_FROM: z.string().default("noreply@interviewer.ai"),
   })
   .transform((env) => {
     const {
@@ -40,12 +46,18 @@ const envSchema = z
       REDIS_PORT,
       REDIS_USER,
       REDIS_PASSWORD,
+      CORS_ORIGIN,
       ...rest
     } = env;
+    const corsOrigins = CORS_ORIGIN.split(",")
+      .map((o) => o.trim())
+      .filter(Boolean);
+
     return {
       ...rest,
       DATABASE_URL: `postgresql://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:${PG_PORT}/${PG_DB}`,
       REDIS_URL: `redis://${REDIS_USER}:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}`,
+      CORS_ORIGIN: corsOrigins,
     };
   });
 

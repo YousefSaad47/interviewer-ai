@@ -1,5 +1,6 @@
 import { once } from "node:events";
 
+import cors from "cors";
 import type { Application, Request, Response } from "express";
 import { json } from "express";
 import swaggerUi from "swagger-ui-express";
@@ -13,6 +14,16 @@ import { HttpStatus } from "../enums";
 import type { Controller } from "../types";
 
 export const extendExpressApp = (app: Application) => {
+  app.registerCors = () => {
+    app.use(
+      cors({
+        origin: env.CORS_ORIGIN,
+        credentials: true,
+      }),
+    );
+    return app;
+  };
+
   app.registerParsers = () => {
     app.use(json());
     return app;

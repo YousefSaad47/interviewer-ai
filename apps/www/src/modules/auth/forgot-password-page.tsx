@@ -1,11 +1,15 @@
 "use client";
 
+import { useState } from "react";
+
 import Link from "next/link";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import type { ForgotPasswordSubmitFormData } from "@/modules/auth";
 import { AuthLayout, forgotPasswordSubmitSchema } from "@/modules/auth";
@@ -22,10 +26,43 @@ export function ForgotPasswordPage() {
     mode: "onSubmit",
   });
 
+  const [sent, setSent] = useState(false);
+
   const onSubmit = async (data: ForgotPasswordSubmitFormData) => {
-    console.log("Form data:", data);
-    // TODO: Implement actual forgot password logic
+    const { error } = await authClient.requestPasswordReset({
+      email: data.email,
+      redirectTo: `${window.location.origin}/auth/reset-password`,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    setSent(true);
   };
+
+  if (sent) {
+    return (
+      <AuthLayout>
+        <div className="flex w-full max-w-90 flex-col items-center gap-2.5 text-center sm:gap-3">
+          <h1 className="font-bold text-3xl text-foreground sm:text-[35px]">
+            Check Your Email
+          </h1>
+          <p className="font-light text-[13px] text-foreground sm:text-[16px]">
+            We sent a password reset link to your email. Click the link to reset
+            your password.
+          </p>
+          <Link
+            href="/auth/signin"
+            className="font-light text-[13px] text-primary hover:underline sm:text-[16px]"
+          >
+            Back to Sign in
+          </Link>
+        </div>
+      </AuthLayout>
+    );
+  }
 
   return (
     <AuthLayout>
@@ -48,7 +85,7 @@ export function ForgotPasswordPage() {
             <div className="w-full">
               <div
                 className={cn(
-                  "relative flex w-full items-center rounded-xl border-0 border-b bg-neutral-100 px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-neutral-800",
+                  "relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-neutral-800",
                   errors.email
                     ? "border-destructive"
                     : "border-neutral-300 focus-within:border-neutral-400 dark:border-neutral-700 dark:focus-within:border-neutral-600",

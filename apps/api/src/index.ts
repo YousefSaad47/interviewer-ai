@@ -12,6 +12,8 @@ const app = express();
 
 extendExpressApp(app);
 
+app.registerCors();
+
 app.all("/api/auth/{*splat}", toNodeHandler(auth));
 
 app

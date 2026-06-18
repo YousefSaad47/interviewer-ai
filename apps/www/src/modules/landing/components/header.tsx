@@ -5,13 +5,22 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Brain } from "lucide-react";
+import { Brain, LogOut, Settings, User } from "lucide-react";
 import { AnimatePresence, motion, useScroll } from "motion/react";
 
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { Menu } from "@/shared/components/menu";
 import { SettingsIcon } from "@/shared/components/settings-icon";
 import { ThemeToggle } from "@/shared/components/theme-toggle";
+import { Button } from "@/shared/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/shared/components/ui/dropdown-menu";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,6 +28,7 @@ export function Header() {
   const { scrollYProgress } = useScroll();
   const [selectedTab, setSelectedTab] = useState<number | null>(null);
   const pathname = usePathname();
+  const { data: session, isPending } = authClient.useSession();
 
   const links = useMemo(
     () => [
@@ -105,40 +115,84 @@ export function Header() {
               })}
             </nav>
 
-            {/* Actions - Exact Figma specs */}
+            {/* Actions */}
             <div className="hidden items-center gap-6 lg:flex">
-              {/* Theme Toggle */}
               <ThemeToggle />
 
-              {/* Settings Icon */}
-              <Link
-                href="/settings"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-accent"
-              >
-                <SettingsIcon size={20} />
-              </Link>
-
-              {/* User Profile */}
-              <Link
-                href="/profile"
-                className="flex items-center gap-1 transition-opacity hover:opacity-90"
-              >
-                <div className="h-9 w-9 overflow-hidden rounded-full bg-gray-600">
-                  {/* Placeholder avatar */}
-                  <svg
-                    viewBox="0 0 36 36"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+              {isPending ? null : session ? (
+                <>
+                  <Link
+                    href="/settings"
+                    className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-accent"
+                    aria-label="Settings"
                   >
-                    <circle cx="18" cy="18" r="18" fill="#4B5563" />
-                    <circle cx="18" cy="14" r="6" fill="#9CA3AF" />
-                    <path
-                      d="M6 32C6 26 11 22 18 22C25 22 30 26 30 32"
-                      fill="#9CA3AF"
-                    />
-                  </svg>
-                </div>
-              </Link>
+                    <SettingsIcon size={20} />
+                  </Link>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        type="button"
+                        className="flex items-center gap-1 rounded-full transition-opacity hover:opacity-90"
+                        aria-label="User menu"
+                      >
+                        <div className="h-9 w-9 overflow-hidden rounded-full bg-gray-600">
+                          <svg
+                            viewBox="0 0 36 36"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="18" cy="18" r="18" fill="#4B5563" />
+                            <circle cx="18" cy="14" r="6" fill="#9CA3AF" />
+                            <path
+                              d="M6 32C6 26 11 22 18 22C25 22 30 26 30 32"
+                              fill="#9CA3AF"
+                            />
+                          </svg>
+                        </div>
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem asChild>
+                        <Link href="/profile" className="cursor-pointer">
+                          <User className="mr-2 size-4" />
+                          Profile
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/settings" className="cursor-pointer">
+                          <Settings className="mr-2 size-4" />
+                          Settings
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        variant="destructive"
+                        onClick={() => authClient.signOut()}
+                        className="cursor-pointer"
+                      >
+                        <LogOut className="mr-2 size-4" />
+                        Sign out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              ) : (
+                <>
+                  <Link href="/auth/signin">
+                    <Button
+                      variant="ghost"
+                      className="rounded-[15px] px-5 py-2.5 font-medium text-[15px]"
+                    >
+                      Sign in
+                    </Button>
+                  </Link>
+                  <Link href="/auth/signup">
+                    <Button className="rounded-[15px] bg-primary px-5 py-2.5 font-medium text-[15px] text-primary-foreground hover:bg-primary/90">
+                      Sign up
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </motion.div>
         </div>
@@ -175,36 +229,94 @@ export function Header() {
                     </Link>
                   );
                 })}
-                <div className="flex items-center justify-between border-border border-t pt-4">
-                  <ThemeToggle />
-                  <Link
-                    href="/settings"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-accent"
-                  >
-                    <SettingsIcon size={20} />
-                  </Link>
-                  <Link
-                    href="/profile"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="transition-opacity hover:opacity-90"
-                  >
-                    <div className="h-9 w-9 overflow-hidden rounded-full bg-gray-600">
-                      <svg
-                        viewBox="0 0 36 36"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
+                {isPending ? null : session ? (
+                  <div className="flex items-center justify-between border-border border-t pt-4">
+                    <ThemeToggle />
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button
+                          type="button"
+                          className="flex items-center gap-1 rounded-full transition-opacity hover:opacity-90"
+                          aria-label="User menu"
+                        >
+                          <div className="h-9 w-9 overflow-hidden rounded-full bg-gray-600">
+                            <svg
+                              viewBox="0 0 36 36"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle cx="18" cy="18" r="18" fill="#4B5563" />
+                              <circle cx="18" cy="14" r="6" fill="#9CA3AF" />
+                              <path
+                                d="M6 32C6 26 11 22 18 22C25 22 30 26 30 32"
+                                fill="#9CA3AF"
+                              />
+                            </svg>
+                          </div>
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/profile"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="cursor-pointer"
+                          >
+                            <User className="mr-2 size-4" />
+                            Profile
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/settings"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="cursor-pointer"
+                          >
+                            <Settings className="mr-2 size-4" />
+                            Settings
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          variant="destructive"
+                          onClick={() => {
+                            authClient.signOut();
+                            setMobileMenuOpen(false);
+                          }}
+                          className="cursor-pointer"
+                        >
+                          <LogOut className="mr-2 size-4" />
+                          Sign out
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between border-border border-t pt-4">
+                    <ThemeToggle />
+                    <div className="flex items-center gap-3">
+                      <Link
+                        href="/auth/signin"
+                        onClick={() => setMobileMenuOpen(false)}
                       >
-                        <circle cx="18" cy="18" r="18" fill="#4B5563" />
-                        <circle cx="18" cy="14" r="6" fill="#9CA3AF" />
-                        <path
-                          d="M6 32C6 26 11 22 18 22C25 22 30 26 30 32"
-                          fill="#9CA3AF"
-                        />
-                      </svg>
+                        <Button
+                          variant="ghost"
+                          className="rounded-[15px] px-4 py-2 font-medium text-[15px]"
+                        >
+                          Sign in
+                        </Button>
+                      </Link>
+                      <Link
+                        href="/auth/signup"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <Button className="rounded-[15px] bg-primary px-4 py-2 font-medium text-[15px]">
+                          Sign up
+                        </Button>
+                      </Link>
                     </div>
-                  </Link>
-                </div>
+                  </div>
+                )}
               </nav>
             </motion.div>
           )}

@@ -3,11 +3,14 @@
 import { useState } from "react";
 
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import type { ResetPasswordSubmitFormData } from "@/modules/auth";
 import { AuthLayout, resetPasswordSubmitSchema } from "@/modules/auth";
@@ -27,9 +30,27 @@ export function ResetPasswordPage() {
     mode: "onSubmit",
   });
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token") ?? "";
+
   const onSubmit = async (data: ResetPasswordSubmitFormData) => {
-    console.log("Form data:", data);
-    // TODO: Implement actual reset password logic
+    if (!token) {
+      toast.error("Invalid or missing reset token.");
+      return;
+    }
+
+    const { error } = await authClient.resetPassword({
+      newPassword: data.newPassword,
+      token,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    router.push("/auth/signin");
   };
 
   return (
