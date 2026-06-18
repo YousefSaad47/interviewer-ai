@@ -34,6 +34,10 @@ const envSchema = z
     MAIL_HOST: z.string().default("localhost"),
     MAIL_PORT: z.coerce.number().default(1025),
     MAIL_FROM: z.string().default("noreply@interviewer.ai"),
+    GOOGLE_CLIENT_ID: z.string().default(""),
+    GOOGLE_CLIENT_SECRET: z.string().default(""),
+    GITHUB_CLIENT_ID: z.string().default(""),
+    GITHUB_CLIENT_SECRET: z.string().default(""),
   })
   .transform((env) => {
     const {
