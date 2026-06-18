@@ -1,5 +1,10 @@
+import { AuthGuard } from "@/lib/auth-guard";
 import { TechnicalInterviewPage } from "@/modules/interview/pages";
 
 export default function TechnicalInterview() {
-  return <TechnicalInterviewPage />;
+  return (
+    <AuthGuard>
+      <TechnicalInterviewPage />
+    </AuthGuard>
+  );
 }
