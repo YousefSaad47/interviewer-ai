@@ -9,6 +9,7 @@ declare global {
       registerControllers: (controllers: Controller[]) => this;
       registerErrorHandlers: () => this;
       registerOpenAPI: () => this;
+      registerBullBoard: () => Promise<this>;
       bootstrap: () => Promise<void>;
     }
   }

@@ -2,8 +2,8 @@ import type { RequestHandler } from "express";
 
 import { AbstractController } from "@/common/contracts";
 import { HttpStatus } from "@/common/enums";
-import { registerPath } from "@/lib/openapi/registry";
 import { validationMiddleware } from "@/middlewares";
+import { registerPath } from "@/services/openapi/registry";
 
 import { type Sample, sampleSchema } from "./sample.schema";
 import { SampleService } from "./sample.service";
