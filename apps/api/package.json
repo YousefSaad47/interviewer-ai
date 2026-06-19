@@ -22,7 +22,8 @@
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
     "db:format": "prisma format",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "worker:email": "bun run src/services/bullmq/workers/email/init.ts"
   },
   "devDependencies": {
     "@repo/kubb": "workspace:*",
@@ -43,15 +44,19 @@
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^8.5.0",
+    "@bull-board/api": "^8.0.0",
+    "@bull-board/express": "^8.0.0",
     "@faker-js/faker": "^10.4.0",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "@react-email/components": "^1.0.12",
     "better-auth": "^1.6.18",
+    "bullmq": "^5.78.1",
     "chalk": "^5.6.2",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "ioredis": "^5.11.1",
     "nodemailer": "^8.0.11",
     "pg": "^8.21.0",
     "pino": "^10.3.1",
