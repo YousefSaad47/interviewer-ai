@@ -133,25 +133,33 @@ add_skill() {
 # add_skill https://github.com/pluginagentmarketplace/custom-plugin-nodejs express-rest-api
 # add_skill https://github.com/mindrally/skills express-typescript
 
-# Prisma
-add_skill https://github.com/prisma/skills prisma-database-setup
-add_skill https://github.com/prisma/skills prisma-client-api
-add_skill https://github.com/prisma/skills prisma-cli
-add_skill https://github.com/prisma/skills prisma-upgrade-v7
-add_skill https://github.com/prisma/skills prisma-driver-adapter-implementation
-add_skill https://github.com/sickn33/antigravity-awesome-skills prisma-expert
-add_skill https://github.com/wshobson/agents database-migration
+# # Prisma
+# add_skill https://github.com/prisma/skills prisma-database-setup
+# add_skill https://github.com/prisma/skills prisma-client-api
+# add_skill https://github.com/prisma/skills prisma-cli
+# add_skill https://github.com/prisma/skills prisma-upgrade-v7
+# add_skill https://github.com/prisma/skills prisma-driver-adapter-implementation
+# add_skill https://github.com/sickn33/antigravity-awesome-skills prisma-expert
+# add_skill https://github.com/wshobson/agents database-migration
 
-# PostgreSQL
-add_skill https://github.com/wshobson/agents postgresql-table-design
-add_skill https://github.com/github/awesome-copilot postgresql-optimization
-add_skill https://github.com/github/awesome-copilot postgresql-code-review
+# # PostgreSQL
+# add_skill https://github.com/wshobson/agents postgresql-table-design
+# add_skill https://github.com/github/awesome-copilot postgresql-optimization
+# add_skill https://github.com/github/awesome-copilot postgresql-code-review
 
-# Databases
-add_skill https://github.com/neondatabase/agent-skills
-add_skill https://github.com/redis/agent-skills
-add_skill https://github.com/planetscale/database-skills
-add_skill https://github.com/clickhouse/agent-skills
+# # Databases
+# add_skill https://github.com/neondatabase/agent-skills
+# add_skill https://github.com/redis/agent-skills
+# add_skill https://github.com/planetscale/database-skills
+# add_skill https://github.com/clickhouse/agent-skills
+
+
+# Docker
+add_skill https://github.com/github/awesome-copilot multi-stage-dockerfile
+add_skill https://github.com/sickn33/antigravity-awesome-skills docker-expert
+add_skill https://github.com/affaan-m/everything-claude-code docker-patterns
+add_skill https://github.com/manutej/luxor-claude-marketplace docker-compose-orchestration
+add_skill https://github.com/microsoft/azure-skills azure-kubernetes
 
 wait
 

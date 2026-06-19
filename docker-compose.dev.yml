@@ -46,6 +46,22 @@ services:
     networks:
       - interviewer_ai_network
 
+  redis:
+    image: redis:8.4.0-alpine3.22
+    container_name: interviewer_ai_redis_dev
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - interviewer_ai_network
+
   mailpit:
     image: axllent/mailpit:latest
     container_name: interviewer_ai_mailpit_dev
@@ -76,6 +92,7 @@ configs:
 volumes:
   postgres_data:
   pgadmin_data:
+  redis_data:
 
 networks:
   interviewer_ai_network:
