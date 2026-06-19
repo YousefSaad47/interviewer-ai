@@ -14,27 +14,32 @@ model User {
   emailVerified Boolean @default(false) @map("email_verified")
   image         String?
 
-  sessions Session[]
-  accounts Account[]
+  sessions    Session[]
+  accounts    Account[]
+  interviews  Interview[]
+  resumes     Resume[]
+  submissions CodingSubmission[]
+  performance PerformanceSnapshot[]
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
+  @@index([createdAt])
   @@map("users")
 }
 
 model Session {
   id        String   @id @default(uuid()) @db.Uuid()
   token     String   @unique
-  ipAddress String?
-  userAgent String?
-  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
+  expiresAt DateTime @map("expires_at") @db.Timestamptz()
 
   userId String @db.Uuid()
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@index([userId])
   @@map("sessions")
@@ -47,16 +52,16 @@ model Account {
   accessToken           String?   @map("access_token")
   refreshToken          String?   @map("refresh_token")
   idToken               String?   @map("id_token")
-  accessTokenExpiresAt  DateTime? @map("access_token_expires_at") @db.Timestamptz(6)
-  refreshTokenExpiresAt DateTime? @map("refresh_token_expires_at") @db.Timestamptz(6)
+  accessTokenExpiresAt  DateTime? @map("access_token_expires_at") @db.Timestamptz()
+  refreshTokenExpiresAt DateTime? @map("refresh_token_expires_at") @db.Timestamptz()
   scope                 String?
   password              String?
 
   userId String @map("user_id") @db.Uuid()
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@index([userId])
   @@map("accounts")
@@ -66,11 +71,362 @@ model Verification {
   id         String   @id @default(uuid()) @db.Uuid()
   identifier String
   value      String
-  expiresAt  DateTime @map("expires_at") @db.Timestamptz(6)
+  expiresAt  DateTime @map("expires_at") @db.Timestamptz()
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@index([identifier])
   @@map("verifications")
+}
+
+enum InterviewCategory {
+  DATA_STRUCTURES
+  ALGORITHMS
+  SYSTEM_DESIGN
+  BEHAVIORAL
+  HR
+  FRONTEND
+  BACKEND
+  FULLSTACK
+  DATABASE
+  DEVOPS
+  MACHINE_LEARNING
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum InterviewStatus {
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
+}
+
+model Interview {
+  id            String            @id @default(uuid()) @db.Uuid()
+  category      InterviewCategory
+  difficulty    Difficulty        @default(EASY)
+  status        InterviewStatus   @default(IN_PROGRESS)
+  questionCount Int               @default(5) @map("question_count")
+
+  startedAt   DateTime  @default(now()) @map("started_at") @db.Timestamptz()
+  completedAt DateTime? @map("completed_at") @db.Timestamptz()
+
+  userId String @db.Uuid()
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  questions InterviewQuestion[]
+  answers   Answer[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([userId, createdAt])
+  @@index([userId, status])
+  @@map("interviews")
+}
+
+model Question {
+  id              String            @id @default(uuid()) @db.Uuid()
+  category        InterviewCategory
+  difficulty      Difficulty        @default(EASY)
+  text            String
+  suggestedAnswer String?           @map("suggested_answer")
+
+  isCoding        Boolean @default(false) @map("is_coding")
+  codingProblemId String? @map("coding_problem_id") @db.Uuid()
+
+  interviews InterviewQuestion[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([category, difficulty])
+  @@map("questions")
+}
+
+model InterviewQuestion {
+  id        String @id @default(uuid()) @db.Uuid()
+  sortOrder Int    @map("sort_order")
+
+  interviewId String    @map("interview_id") @db.Uuid()
+  interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+
+  questionId String   @map("question_id") @db.Uuid()
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  followUpText String? @map("follow_up_text")
+
+  answers Answer[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@unique([interviewId, questionId])
+  @@index([interviewId])
+  @@index([questionId])
+  @@map("interview_questions")
+}
+
+model Answer {
+  id String @id @default(uuid()) @db.Uuid()
+
+  transcript String?
+  audioUrl   String? @map("audio_url")
+  durationMs Int?    @map("duration_ms")
+
+  interviewQuestionId String            @map("interview_question_id") @db.Uuid()
+  interviewQuestion   InterviewQuestion @relation(fields: [interviewQuestionId], references: [id], onDelete: Cascade)
+
+  interviewId String    @map("interview_id") @db.Uuid()
+  interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+
+  feedback AnswerFeedback[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([interviewQuestionId])
+  @@index([interviewId])
+  @@map("answers")
+}
+
+model AnswerFeedback {
+  id String @id @default(uuid()) @db.Uuid()
+
+  idealAnswer  String?  @map("ideal_answer")
+  strengths    String[]
+  improvements String[]
+  overallScore Float?   @map("overall_score")
+
+  fillerWordCount Int?   @map("filler_word_count")
+  fluencyScore    Float? @map("fluency_score")
+  clarityScore    Float? @map("clarity_score")
+  confidenceScore Float? @map("confidence_score")
+
+  emotionalTone  Json?  @map("emotional_tone")
+  sentimentScore Float? @map("sentiment_score")
+
+  detailLevel       String? @map("detail_level")
+  relevanceScore    Float?  @map("relevance_score")
+  technicalAccuracy Float?  @map("technical_accuracy")
+
+  answerId String @map("answer_id") @db.Uuid()
+  answer   Answer @relation(fields: [answerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([answerId])
+  @@map("answer_feedback")
+}
+
+model PerformanceSnapshot {
+  id String @id @default(uuid()) @db.Uuid()
+
+  snapshotDate DateTime          @map("snapshot_date") @db.Date()
+  category     InterviewCategory
+
+  avgConfidence Float?
+  avgFluency    Float?
+  avgClarity    Float?
+  avgScore      Float?
+  totalAnswered Int?   @map("total_answered")
+  timeSpentSec  Int?   @map("time_spent_sec")
+
+  recommendation String?
+
+  userId String @db.Uuid()
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@unique([userId, snapshotDate, category])
+  @@index([userId, snapshotDate])
+  @@map("performance_snapshots")
+}
+
+enum ResumeStatus {
+  DRAFT
+  COMPLETE
+  ARCHIVED
+}
+
+model Resume {
+  id     String       @id @default(uuid()) @db.Uuid()
+  title  String
+  status ResumeStatus @default(DRAFT)
+
+  content      Json
+  atsScore     Float?   @map("ats_score")
+  grammarScore Float?   @map("grammar_score")
+  suggestions  String[]
+
+  userId String @db.Uuid()
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  matches ResumeMatch[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([userId])
+  @@index([userId, status])
+  @@map("resumes")
+}
+
+model JobDescription {
+  id       String   @id @default(uuid()) @db.Uuid()
+  title    String
+  company  String
+  rawText  String   @map("raw_text")
+  keywords String[]
+
+  matches ResumeMatch[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([title])
+  @@map("job_descriptions")
+}
+
+model ResumeMatch {
+  id       String @id @default(uuid()) @db.Uuid()
+  matchPct Float  @map("match_pct")
+
+  matchedKeywords String[] @map("matched_keywords")
+  missingKeywords String[] @map("missing_keywords")
+  tailoredResume  Json?    @map("tailored_resume")
+
+  resumeId String @map("resume_id") @db.Uuid()
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  jobDescriptionId String         @map("job_description_id") @db.Uuid()
+  jobDescription   JobDescription @relation(fields: [jobDescriptionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@unique([resumeId, jobDescriptionId])
+  @@index([resumeId])
+  @@index([jobDescriptionId])
+  @@map("resume_matches")
+}
+
+enum ProblemDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum SubmissionStatus {
+  ACCEPTED
+  WRONG_ANSWER
+  TIME_LIMIT_EXCEEDED
+  RUNTIME_ERROR
+  COMPILATION_ERROR
+}
+
+model CodingProblem {
+  id            String            @id @default(uuid()) @db.Uuid()
+  title         String
+  difficulty    ProblemDifficulty @default(EASY)
+  description   String
+  constraints   String?
+  examples      Json
+  starterCode   Json?             @map("starter_code")
+  timeLimitMs   Int               @default(2000) @map("time_limit_ms")
+  memoryLimitKb Int               @default(256000) @map("memory_limit_kb")
+
+  logicWeight         Float @default(0.3) @map("logic_weight")
+  namingWeight        Float @default(0.15) @map("naming_weight")
+  efficiencyWeight    Float @default(0.3) @map("efficiency_weight")
+  bestPracticesWeight Float @default(0.25) @map("best_practices_weight")
+
+  testCases   TestCase[]
+  submissions CodingSubmission[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([difficulty])
+  @@map("coding_problems")
+}
+
+model TestCase {
+  id        String  @id @default(uuid()) @db.Uuid()
+  input     String
+  output    String
+  isHidden  Boolean @default(false) @map("is_hidden")
+  sortOrder Int     @default(0) @map("sort_order")
+
+  problemId String        @map("problem_id") @db.Uuid()
+  problem   CodingProblem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  results CodingSubmissionResult[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([problemId])
+  @@map("test_cases")
+}
+
+model CodingSubmission {
+  id       String           @id @default(uuid()) @db.Uuid()
+  code     String
+  language String           @default("javascript")
+  status   SubmissionStatus
+
+  logicScore         Float?  @map("logic_score")
+  namingScore        Float?  @map("naming_score")
+  efficiencyScore    Float?  @map("efficiency_score")
+  bestPracticesScore Float?  @map("best_practices_score")
+  aiFeedback         String? @map("ai_feedback")
+
+  executionTimeMs Int? @map("execution_time_ms")
+  memoryUsedKb    Int? @map("memory_used_kb")
+
+  problemId String        @map("problem_id") @db.Uuid()
+  problem   CodingProblem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  userId String @db.Uuid()
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  results CodingSubmissionResult[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([userId, problemId])
+  @@index([problemId])
+  @@index([status])
+  @@map("coding_submissions")
+}
+
+model CodingSubmissionResult {
+  id     String  @id @default(uuid()) @db.Uuid()
+  passed Boolean
+  output String?
+  error  String?
+
+  submissionId String           @map("submission_id") @db.Uuid()
+  submission   CodingSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  testCaseId String   @map("test_case_id") @db.Uuid()
+  testCase   TestCase @relation(fields: [testCaseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@unique([submissionId, testCaseId])
+  @@index([submissionId])
+  @@index([testCaseId])
+  @@map("coding_submission_results")
 }
