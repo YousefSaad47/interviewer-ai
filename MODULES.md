@@ -12,9 +12,9 @@ Based on the graduation project requirements and the current monorepo architectu
    - **Tech Stack:** Bun, Express.js, Prisma ORM, PostgreSQL.
    - **Purpose:** Central backend handling authentication, database operations, user state, and orchestrating requests to AI/Python services.
 
-3. **ATS & Resume Parsing Service (`apps/ats-parser`)**
+3. **Form Builder & ATS Optimization Service (`apps/form-builder`)**
    - **Tech Stack:** Python, UV (Package Manager).
-   - **Purpose:** Specialized backend microservice for analyzing resumes, parsing text, calculating ATS scores, and generating keyword match metrics.
+   - **Purpose:** Specialized backend microservice for generating professional resumes via an interactive form builder, analyzing uploaded resumes, calculating ATS scores, and matching resumes with job descriptions.
 
 ---
 
@@ -48,7 +48,7 @@ Based on the graduation project requirements and the current monorepo architectu
 ### 5. Resume Builder & ATS System Module
 
 - **Auto-Generator Builder:** Generates ATS-ready formats using user experience data and keyword-rich templates.
-- **Resume Analyzer:** Connects with `apps/ats-parser` to calculate ATS match scores and provide readability/grammar suggestions.
+- **Resume Analyzer:** Connects with `apps/form-builder` to calculate ATS match scores and provide readability/grammar suggestions.
 - **Job Description (JD) Matcher:** Compares uploaded resumes with pasted JDs, highlighting missing keywords and producing AI-tailored resume variations.
 - **Secure File Manager:** Ensures encryption, secure storage, and GDPR-compliant deletion of all uploaded user documents.
 
