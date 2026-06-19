@@ -5,7 +5,8 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_API_URL: z.url(),
   },
-  experimental__runtimeEnv: {
-    NEXT_PUBLIC_API_URL: process.env["NEXT_PUBLIC_API_URL"],
+  runtimeEnv: {
+    // @ts-expect-error
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
 });
