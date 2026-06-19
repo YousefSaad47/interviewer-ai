@@ -7,8 +7,8 @@ import swaggerUi from "swagger-ui-express";
 
 import { env } from "@/core";
 import { logger } from "@/lib/logger";
-import { createOpenAPIDocument } from "@/lib/openapi/registry";
 import { errorHandler } from "@/middlewares";
+import { createOpenAPIDocument } from "@/services/openapi/registry";
 
 import { HttpStatus } from "../enums";
 import type { Controller } from "../types";
@@ -56,6 +56,15 @@ export const extendExpressApp = (app: Application) => {
         swaggerUrl: "/api/openapi.json",
       }),
     );
+    return app;
+  };
+
+  app.registerBullBoard = async () => {
+    if (env.isDevelopment) {
+      const { serverAdapter } = await import("@/services/bullmq/ui");
+      app.use("/api/admin/queues", serverAdapter.getRouter());
+      logger.info("Bull Board mounted at /api/admin/queues");
+    }
     return app;
   };
 

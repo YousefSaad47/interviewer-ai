@@ -19,7 +19,10 @@ app.all("/api/auth/{*splat}", toNodeHandler(auth));
 app
   .registerParsers()
   .registerControllers(ControllersFactory.controllers)
-  .registerOpenAPI()
-  .registerErrorHandlers();
+  .registerOpenAPI();
+
+await app.registerBullBoard();
+
+app.registerErrorHandlers();
 
 await app.bootstrap();

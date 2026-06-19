@@ -2,7 +2,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { betterAuth } from "better-auth/minimal";
 
 import { env } from "@/core/env";
-import { sendEmail } from "@/lib/email";
+import { sendEmail } from "@/lib/email/send-email";
 import { prisma } from "@/lib/prisma";
 
 export const auth = betterAuth({
