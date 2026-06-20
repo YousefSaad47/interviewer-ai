@@ -34,7 +34,7 @@ export function Header() {
     () => [
       { href: "/dashboard", label: "Dashboard" },
       { href: "/interview/setup", label: "Mock Interview" },
-      { href: "/coding-practice", label: "Coding Practice" },
+      { href: "/problems", label: "Coding Practice" },
       { href: "/resume-builder", label: "Resume Builder" },
     ],
     [],

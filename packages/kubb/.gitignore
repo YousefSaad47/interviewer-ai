@@ -2,7 +2,7 @@
 node_modules
 
 # generated code
-__generated__
+generated
 
 # output
 out

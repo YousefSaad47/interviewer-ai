@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import { logger } from "@/lib/logger";
 
 export type SerializedException = {
   message: string;
@@ -20,9 +20,9 @@ export abstract class AbstractException extends Error {
 
   public serialize(): SerializedException {
     if (!this.isOperational) {
-      console.error(chalk.redBright(`${this.name}: ${this.message}`));
+      logger.error({ name: this.name }, this.message);
     } else {
-      console.warn(chalk.yellow(`${this.name}: ${this.message}`));
+      logger.warn({ name: this.name }, this.message);
     }
 
     return {
