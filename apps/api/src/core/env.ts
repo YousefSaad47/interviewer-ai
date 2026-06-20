@@ -40,6 +40,10 @@ const envSchema = z
     GITHUB_CLIENT_SECRET: z.string().default(""),
     JUDGE0_URL: z.string().default("http://localhost:2358"),
     JUDGE0_AUTH_TOKEN: z.string().default(""),
+    HUME_API_KEY: z.string().default(""),
+    HUME_SECRET_KEY: z.string().default(""),
+    HUME_WEBHOOK_SIGNING_KEY: z.string().default(""),
+    HUME_WEBHOOK_URL: z.string().default(""),
   })
   .transform((env) => {
     const {
