@@ -3,8 +3,10 @@
 
 import { prisma } from "@/lib/prisma";
 import { CodingService, codingCacheService } from "@/modules/coding";
+import { InterviewService } from "@/modules/interview";
 import { ProblemService } from "@/modules/problem";
 import { SampleService } from "@/modules/sample";
+import { hume } from "@/services/hume";
 import { judge0 } from "@/services/judge0/judge0";
 
 import { AbstractService } from "./contracts/abstract.service";
@@ -27,6 +29,9 @@ export class ServicesFactory {
           break;
         case Services.PROBLEM:
           this._services.set(service, new ProblemService(prisma));
+          break;
+        case Services.INTERVIEW:
+          this._services.set(service, new InterviewService(prisma, hume));
           break;
         default:
           throw new Error(`Unknown service: ${service satisfies never}`);

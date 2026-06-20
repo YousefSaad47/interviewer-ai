@@ -116,6 +116,11 @@ model Interview {
   startedAt   DateTime  @default(now()) @map("started_at") @db.Timestamptz()
   completedAt DateTime? @map("completed_at") @db.Timestamptz()
 
+  humeChatId      String? @unique @map("hume_chat_id")
+  humeChatGroupId String? @map("hume_chat_group_id")
+
+  currentQuestion Int    @default(0) @map("current_question")
+
   userId String @db.Uuid()
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -184,6 +189,9 @@ model Answer {
 
   interviewId String    @map("interview_id") @db.Uuid()
   interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+
+  humeChatId      String? @map("hume_chat_id")
+  humeChatGroupId String? @map("hume_chat_group_id")
 
   feedback AnswerFeedback[]
 
