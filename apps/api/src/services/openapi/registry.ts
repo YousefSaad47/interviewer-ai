@@ -29,6 +29,7 @@ type Options = {
   path: string;
   summary: string;
   bodySchema?: any;
+  responseSchema?: any;
   paramsSchema?: any;
   querySchema?: any;
   headersSchema?: any;
@@ -44,6 +45,7 @@ export const registerPath = (options: Options) => {
     path,
     summary,
     bodySchema,
+    responseSchema,
     paramsSchema,
     querySchema,
     headersSchema,
@@ -75,6 +77,9 @@ export const registerPath = (options: Options) => {
     responses: {
       [statusCode]: {
         description: responseDescription,
+        ...(responseSchema && {
+          content: { "application/json": { schema: responseSchema } },
+        }),
       },
     },
   });

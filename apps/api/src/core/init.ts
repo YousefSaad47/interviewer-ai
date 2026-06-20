@@ -1,4 +1,8 @@
 import { ControllersFactory } from "@/common";
 import { Controllers } from "@/common/enums";
 
-ControllersFactory.create(Controllers.SAMPLE);
+for (const controller of Object.values(Controllers).filter(
+  (v): v is Controllers => typeof v === "number",
+)) {
+  ControllersFactory.create(controller);
+}

@@ -11,7 +11,8 @@
       "!**/dist",
       "!**/.next",
       "!**/.turbo",
-      "!.agents"
+      "!.agents",
+      "!packages/kubb"
     ]
   },
   "vcs": {

@@ -1,14 +1,9 @@
 {
   "name": "@repo/kubb",
-  "module": "__generated__/index.ts",
+  "module": "generated/index.ts",
   "type": "module",
   "private": true,
-  "exports": {
-    ".": {
-      "import": "./__generated__/index.ts",
-      "types": "./__generated__/index.ts"
-    }
-  },
+  "exports": "./generated/index.ts",
   "scripts": {
     "kubb:gen": "kubb generate"
   },
@@ -18,14 +13,14 @@
     "@kubb/cli": "^4.38.0",
     "@kubb/core": "^4.38.0",
     "@kubb/plugin-client": "^4.38.0",
-    "@kubb/plugin-faker": "^4.38.0",
-    "@kubb/plugin-msw": "^4.38.0",
     "@kubb/plugin-oas": "^4.38.0",
     "@kubb/plugin-react-query": "^4.38.0",
-    "@kubb/plugin-ts": "^4.38.0",
-    "@kubb/plugin-zod": "^4.38.0"
+    "@kubb/plugin-ts": "^4.38.0"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.101.0"
   }
 }

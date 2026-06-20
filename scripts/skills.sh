@@ -155,11 +155,15 @@ add_skill() {
 
 
 # Docker
-add_skill https://github.com/github/awesome-copilot multi-stage-dockerfile
-add_skill https://github.com/sickn33/antigravity-awesome-skills docker-expert
-add_skill https://github.com/affaan-m/everything-claude-code docker-patterns
-add_skill https://github.com/manutej/luxor-claude-marketplace docker-compose-orchestration
-add_skill https://github.com/microsoft/azure-skills azure-kubernetes
+# add_skill https://github.com/github/awesome-copilot multi-stage-dockerfile
+# add_skill https://github.com/sickn33/antigravity-awesome-skills docker-expert
+# add_skill https://github.com/affaan-m/everything-claude-code docker-patterns
+# add_skill https://github.com/manutej/luxor-claude-marketplace docker-compose-orchestration
+# add_skill https://github.com/microsoft/azure-skills azure-kubernetes
+
+# TanStack
+add_skill https://github.com/tanstack-skills/tanstack-skills tanstack-query
+add_skill https://github.com/deckardger/tanstack-agent-skills tanstack-query-best-practices
 
 wait
 

@@ -3,9 +3,15 @@
 import { useState } from "react";
 
 import Editor from "@monaco-editor/react";
+import type { PostApiCodingSubmit201 } from "@repo/kubb";
+import { usePostApiCodingSubmit } from "@repo/kubb";
 import { Play, RotateCcw, Send } from "lucide-react";
 import { useTheme } from "next-themes";
 
+import {
+  LANGUAGE_STARTER_CODE,
+  type Language,
+} from "@/modules/coding-practice/constants";
 import { Button } from "@/shared/components/ui/button";
 import {
   ResizableHandle,
@@ -22,37 +28,103 @@ import {
 
 import { TestCaseView } from "./test-case-view";
 
-export function CodePanel() {
-  const [activeTab, setActiveTab] = useState("case-1");
+interface CodePanelProps {
+  problemId: string;
+}
+
+export function CodePanel({ problemId }: CodePanelProps) {
   const { theme } = useTheme();
   const [language, setLanguage] = useState("javascript");
-  const [code, setCode] = useState(
-    `/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(nums, target) {\n    \n};`,
+  const [code, setCode] = useState<string>(
+    LANGUAGE_STARTER_CODE.javascript ?? "",
   );
+  const [lastSubmission, setLastSubmission] = useState<{
+    status: string;
+    executionTimeMs: number | null;
+    memoryUsedKb: number | null;
+    results: Array<{
+      passed: boolean;
+      output: string | null;
+      error: string | null;
+    }>;
+  } | null>(null);
 
-  const languageStarterCode: Record<string, string> = {
-    javascript: `/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(nums, target) {\n    \n};`,
-    python: `class Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\n        `,
-    java: `class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        \n    }\n}`,
-    cpp: `class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        \n    }\n};`,
-    typescript: `function twoSum(nums: number[], target: number): number[] {\n    \n};`,
-  };
+  const [runResult, setRunResult] = useState<{
+    output: string | null;
+    error: string | null;
+    time: string | null;
+    memory: number | null;
+  } | null>(null);
+
+  const [isRunning, setIsRunning] = useState(false);
+
+  const { mutate: submitCode, isPending } = usePostApiCodingSubmit();
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);
-    setCode(languageStarterCode[newLanguage] || "");
+    setCode(LANGUAGE_STARTER_CODE[newLanguage as Language] || "");
   };
 
   const handleReset = () => {
-    setCode(languageStarterCode[language] || "");
+    setCode(LANGUAGE_STARTER_CODE[language as Language] || "");
+  };
+
+  const handleRun = async () => {
+    setIsRunning(true);
+    setRunResult(null);
+    try {
+      const res = await fetch("/api/coding/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, language }),
+      });
+      const data = await res.json();
+      setRunResult({
+        output: data.stdout,
+        error: data.stderr || data.compileOutput,
+        time: data.time,
+        memory: data.memory,
+      });
+    } catch {
+      setRunResult({
+        output: null,
+        error: "Failed to run code",
+        time: null,
+        memory: null,
+      });
+    } finally {
+      setIsRunning(false);
+    }
+  };
+
+  const handleSubmit = () => {
+    submitCode(
+      {
+        data: { problemId, code, language },
+      },
+      {
+        onSuccess: (data: PostApiCodingSubmit201) => {
+          setLastSubmission({
+            status: data.status ?? "ERROR",
+            executionTimeMs: data.executionTimeMs ?? null,
+            memoryUsedKb: data.memoryUsedKb ?? null,
+            results: (data.results ?? []).map(
+              (r: PostApiCodingSubmit201["results"][number]) => ({
+                passed: r.passed,
+                output: r.output,
+                error: r.error,
+              }),
+            ),
+          });
+        },
+      },
+    );
   };
 
   return (
     <ResizablePanelGroup orientation="vertical" className="h-full">
-      {/* Editor Section */}
       <ResizablePanel defaultSize="60%" minSize="30%" maxSize="80%">
         <div className="flex h-full flex-col">
-          {/* Header with Language Selector + Reset */}
           <div className="flex items-center justify-between border-b bg-background px-4 py-3 md:px-6 md:py-3.5 dark:border-[#1a1a1a]">
             <Select value={language} onValueChange={handleLanguageChange}>
               <SelectTrigger className="w-35 border-none bg-muted font-medium text-xs md:w-40 md:text-sm">
@@ -78,14 +150,13 @@ export function CodePanel() {
             </Button>
           </div>
 
-          {/* Monaco Editor */}
           <div className="flex-1 overflow-hidden">
             <Editor
               height="100%"
               defaultLanguage="javascript"
               language={language}
-              value={code}
-              onChange={(value) => setCode(value || "")}
+              value={code as string}
+              onChange={(value) => setCode(value ?? "")}
               theme={theme === "dark" ? "vs-dark" : "light"}
               options={{
                 minimap: { enabled: false },
@@ -102,22 +173,25 @@ export function CodePanel() {
             />
           </div>
 
-          {/* Action Buttons */}
           <div className="flex justify-end gap-2 border-t bg-background px-4 py-3 md:gap-3 md:px-6 md:py-3.5 dark:border-[#1a1a1a]">
             <Button
               variant="outline"
               size="sm"
+              onClick={handleRun}
+              disabled={isRunning || isPending}
               className="gap-2 text-xs md:text-sm"
             >
               <Play className="h-4 w-4 fill-current" />
-              Run Code
+              {isRunning ? "Running..." : "Run Code"}
             </Button>
             <Button
               size="sm"
+              onClick={handleSubmit}
+              disabled={isPending}
               className="gap-2 bg-primary text-xs hover:bg-primary/90 md:text-sm"
             >
               <Send className="h-4 w-4" />
-              Submit
+              {isPending ? "Submitting..." : "Submit"}
             </Button>
           </div>
         </div>
@@ -125,9 +199,13 @@ export function CodePanel() {
 
       <ResizableHandle withHandle />
 
-      {/* Test Cases */}
       <ResizablePanel defaultSize="40%" minSize="20%" maxSize="70%">
-        <TestCaseView activeTab={activeTab} setActiveTab={setActiveTab} />
+        <TestCaseView
+          lastSubmission={lastSubmission}
+          runResult={runResult}
+          isPending={isPending}
+          isRunning={isRunning}
+        />
       </ResizablePanel>
     </ResizablePanelGroup>
   );
