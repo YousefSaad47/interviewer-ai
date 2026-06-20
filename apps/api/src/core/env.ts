@@ -38,6 +38,8 @@ const envSchema = z
     GOOGLE_CLIENT_SECRET: z.string().default(""),
     GITHUB_CLIENT_ID: z.string().default(""),
     GITHUB_CLIENT_SECRET: z.string().default(""),
+    JUDGE0_URL: z.string().default("http://localhost:2358"),
+    JUDGE0_AUTH_TOKEN: z.string().default(""),
   })
   .transform((env) => {
     const {

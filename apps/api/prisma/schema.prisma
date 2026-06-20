@@ -326,6 +326,7 @@ enum ProblemDifficulty {
 }
 
 enum SubmissionStatus {
+  PENDING
   ACCEPTED
   WRONG_ANSWER
   TIME_LIMIT_EXCEEDED
@@ -336,6 +337,7 @@ enum SubmissionStatus {
 model CodingProblem {
   id            String            @id @default(uuid()) @db.Uuid()
   title         String
+  slug          String            @unique
   difficulty    ProblemDifficulty @default(EASY)
   description   String
   constraints   String?
@@ -384,6 +386,9 @@ model CodingSubmission {
   language String           @default("javascript")
   status   SubmissionStatus
 
+  astHash     String? @map("ast_hash")
+  judge0Token String? @unique @map("judge0_token")
+
   logicScore         Float?  @map("logic_score")
   namingScore        Float?  @map("naming_score")
   efficiencyScore    Float?  @map("efficiency_score")
@@ -406,6 +411,7 @@ model CodingSubmission {
 
   @@index([userId, problemId])
   @@index([problemId])
+  @@index([problemId, language, astHash])
   @@index([status])
   @@map("coding_submissions")
 }

@@ -2,7 +2,7 @@ interface ExampleCaseProps {
   number: number;
   input: string;
   output: string;
-  explanation: string;
+  explanation?: string;
 }
 
 export function ExampleCase({
@@ -34,14 +34,16 @@ export function ExampleCase({
               {output}
             </span>
           </div>
-          <div className="flex flex-wrap gap-1">
-            <span className="font-mono text-muted-foreground text-xs md:text-sm">
-              Explanation:
-            </span>
-            <span className="font-mono text-muted-foreground text-xs md:text-sm">
-              {explanation}
-            </span>
-          </div>
+          {explanation && (
+            <div className="flex flex-wrap gap-1">
+              <span className="font-mono text-muted-foreground text-xs md:text-sm">
+                Explanation:
+              </span>
+              <span className="font-mono text-muted-foreground text-xs md:text-sm">
+                {explanation}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>

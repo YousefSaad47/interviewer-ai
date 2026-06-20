@@ -2,7 +2,10 @@
 /** biome-ignore-all lint/complexity/noThisInStatic: <> */
 
 import { prisma } from "@/lib/prisma";
+import { CodingService, codingCacheService } from "@/modules/coding";
+import { ProblemService } from "@/modules/problem";
 import { SampleService } from "@/modules/sample";
+import { judge0 } from "@/services/judge0/judge0";
 
 import { AbstractService } from "./contracts/abstract.service";
 import { Services } from "./enums";
@@ -15,6 +18,15 @@ export class ServicesFactory {
       switch (service) {
         case Services.SAMPLE:
           this._services.set(service, new SampleService(prisma));
+          break;
+        case Services.CODING:
+          this._services.set(
+            service,
+            new CodingService(prisma, judge0, codingCacheService),
+          );
+          break;
+        case Services.PROBLEM:
+          this._services.set(service, new ProblemService(prisma));
           break;
         default:
           throw new Error(`Unknown service: ${service satisfies never}`);

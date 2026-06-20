@@ -7,12 +7,14 @@ import express from "express";
 import { ControllersFactory } from "@/common";
 import { extendExpressApp } from "@/common/extensions";
 import { auth } from "@/lib/auth";
+import { rateLimitMiddleware } from "@/middlewares";
 
 const app = express();
 
 extendExpressApp(app);
 
 app.registerCors();
+app.use(rateLimitMiddleware);
 
 app.all("/api/auth/{*splat}", toNodeHandler(auth));
 
