@@ -1,1 +1,1 @@
-export * from "./setup-interview-page";
+// barrel: no pages remaining in coding-practice/pages

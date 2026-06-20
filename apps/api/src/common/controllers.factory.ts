@@ -2,6 +2,7 @@
 /** biome-ignore-all lint/complexity/noThisInStatic: <> */
 
 import { CodingController } from "@/modules/coding";
+import { InterviewController } from "@/modules/interview";
 import { ProblemController } from "@/modules/problem";
 import { SampleController } from "@/modules/sample";
 
@@ -36,6 +37,12 @@ export class ControllersFactory {
           this._controllers.set(
             controller,
             new ProblemController(ServicesFactory.create(Services.PROBLEM)),
+          );
+          break;
+        case Controllers.INTERVIEW:
+          this._controllers.set(
+            controller,
+            new InterviewController(ServicesFactory.create(Services.INTERVIEW)),
           );
           break;
         default:
