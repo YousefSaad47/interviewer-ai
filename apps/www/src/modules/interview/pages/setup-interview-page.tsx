@@ -1,6 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
+import { usePostApiInterviewStart } from "@repo/kubb";
 import { Play } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -20,31 +23,77 @@ import {
 } from "@/shared/components/ui/select";
 import { Textarea } from "@/shared/components/ui/textarea";
 
+const FOCUS_TO_CATEGORY: Record<string, string> = {
+  algorithms: "ALGORITHMS",
+  "system-design": "SYSTEM_DESIGN",
+  behavioral: "BEHAVIORAL",
+  coding: "FRONTEND",
+  architecture: "SYSTEM_DESIGN",
+  debugging: "ALGORITHMS",
+};
+
+const LEVEL_TO_DIFFICULTY: Record<string, string> = {
+  entry: "EASY",
+  mid: "EASY",
+  senior: "MEDIUM",
+  lead: "HARD",
+  staff: "HARD",
+};
+
 export function SetupInterviewPage() {
+  const router = useRouter();
+
   const {
     control,
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<InterviewSetupFormData>({
     resolver: zodResolver(interviewSetupSchema),
     defaultValues: {
       targetRole: "",
       experienceLevel: "",
       interviewFocus: "",
-      interviewType: "",
       additionalContext: "",
     },
   });
 
-  const onSubmit = async (data: InterviewSetupFormData) => {
-    console.log("Interview setup data:", data);
-    // TODO: Implement actual interview start logic
+  const { mutate: startInterview, isPending: isSubmitting } =
+    usePostApiInterviewStart();
+
+  const onSubmit = (data: InterviewSetupFormData) => {
+    startInterview(
+      {
+        data: {
+          category: (FOCUS_TO_CATEGORY[data.interviewFocus] ??
+            "BEHAVIORAL") as "BEHAVIORAL",
+          difficulty: (LEVEL_TO_DIFFICULTY[data.experienceLevel] ??
+            "EASY") as "EASY",
+          questionCount: 5,
+          targetRole: data.targetRole,
+          experienceLevel: data.experienceLevel,
+          interviewFocus: data.interviewFocus,
+          ...(data.additionalContext && {
+            additionalContext: data.additionalContext,
+          }),
+        },
+      },
+      {
+        onSuccess: (result) => {
+          const params = new URLSearchParams({
+            interviewId: result.interviewId ?? "",
+            accessToken: result.accessToken ?? "",
+            configId: result.configId ?? "",
+            questionCount: String(result.questionCount ?? 5),
+          });
+          router.push(`/interview/technical?${params.toString()}`);
+        },
+      },
+    );
   };
 
   return (
     <div className="relative min-h-screen w-full bg-background">
-      {/* Background Effects */}
       <div
         className="pointer-events-none fixed inset-0 opacity-40 dark:opacity-60"
         style={{
@@ -54,12 +103,9 @@ export function SetupInterviewPage() {
         }}
       />
 
-      {/* Header */}
       <Header />
 
-      {/* Main Content */}
       <div className="relative z-10 flex min-h-screen flex-col items-center px-4 pt-24 pb-20 sm:px-6 md:px-8 lg:px-20 lg:pt-32">
-        {/* Title and Description */}
         <div className="mb-8 flex flex-col items-center gap-3 sm:mb-12 md:mb-16">
           <h1 className="text-center font-bold text-2xl text-foreground tracking-tight sm:text-3xl md:text-4xl lg:text-[37px]">
             Setup Mock Interview
@@ -69,11 +115,9 @@ export function SetupInterviewPage() {
           </p>
         </div>
 
-        {/* Setup Form Card */}
         <Card className="w-full max-w-2xl border-neutral-200 bg-neutral-50 backdrop-blur-sm md:max-w-3xl lg:max-w-4xl dark:border-neutral-800 dark:bg-neutral-900">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-6 p-6 sm:gap-8 sm:p-8 md:p-10 lg:gap-10 lg:p-12">
-              {/* Target Role */}
               <div className="flex flex-col gap-2">
                 <Label
                   htmlFor="target-role"
@@ -120,7 +164,6 @@ export function SetupInterviewPage() {
                 )}
               </div>
 
-              {/* Experience Level */}
               <div className="flex flex-col gap-2">
                 <Label
                   htmlFor="experience-level"
@@ -165,7 +208,6 @@ export function SetupInterviewPage() {
                 )}
               </div>
 
-              {/* Interview Focus */}
               <div className="flex flex-col gap-2">
                 <Label
                   htmlFor="interview-focus"
@@ -217,43 +259,6 @@ export function SetupInterviewPage() {
                 )}
               </div>
 
-              {/* Interview Type */}
-              <div className="flex flex-col gap-2">
-                <Label
-                  htmlFor="interview-type"
-                  className="font-medium text-base text-foreground"
-                >
-                  Interview Type
-                </Label>
-                <Controller
-                  name="interviewType"
-                  control={control}
-                  render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger
-                        id="interview-type"
-                        className={cn(
-                          "h-12 border-neutral-300 bg-neutral-100 text-foreground hover:bg-neutral-200 focus:border-neutral-400 focus:ring-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600 dark:focus:ring-neutral-700 dark:hover:bg-neutral-700",
-                          errors.interviewType && "border-destructive",
-                        )}
-                      >
-                        <SelectValue placeholder="Select Type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="video">Video Meeting</SelectItem>
-                        <SelectItem value="audio">Audio Meeting</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                {errors.interviewType && (
-                  <p className="text-destructive text-xs sm:text-sm">
-                    {errors.interviewType.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Additional Context */}
               <div className="flex flex-col gap-2">
                 <Label
                   htmlFor="additional-context"
@@ -277,7 +282,6 @@ export function SetupInterviewPage() {
                 )}
               </div>
 
-              {/* Start Interview Button */}
               <Button
                 type="submit"
                 disabled={isSubmitting}
@@ -291,7 +295,6 @@ export function SetupInterviewPage() {
         </Card>
       </div>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

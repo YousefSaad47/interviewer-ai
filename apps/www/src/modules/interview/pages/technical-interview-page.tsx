@@ -1,15 +1,105 @@
 "use client";
 
-import { Clock, Target } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
-import { Footer, Header } from "@/modules/landing/components";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import { useVoice, VoiceProvider } from "@humeai/voice-react";
+import { Clock, Loader2, Mic, MicOff, Phone, Target } from "lucide-react";
+
+import { Header } from "@/modules/landing/components";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 
-export function TechnicalInterviewPage() {
+function InterviewContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const interviewId = searchParams.get("interviewId") ?? "";
+  const accessToken = searchParams.get("accessToken") ?? "";
+  const configId = searchParams.get("configId") ?? "";
+  const questionCount = Number.parseInt(
+    searchParams.get("questionCount") ?? "5",
+    10,
+  );
+
+  const [chatId, setChatId] = useState<string | null>(null);
+  const [chatGroupId, setChatGroupId] = useState<string | null>(null);
+
+  const { connect, disconnect, status, messages, isMuted, mute, unmute } =
+    useVoice();
+
+  const isConnected = status.value === "connected";
+
+  const handleStart = useCallback(() => {
+    connect({
+      auth: { type: "accessToken", value: accessToken },
+      ...(configId ? { configId } : {}),
+    })
+      .then(() => {})
+      .catch(() => {});
+  }, [connect, accessToken, configId]);
+
+  const handleEnd = useCallback(async () => {
+    disconnect();
+
+    if (chatId && interviewId) {
+      await fetch(`/api/interview/${interviewId}/finalize`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chatId,
+          chatGroupId: chatGroupId ?? chatId,
+        }),
+      });
+    }
+
+    router.push("/dashboard");
+  }, [disconnect, chatId, chatGroupId, interviewId, router]);
+
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+
+  useEffect(() => {
+    const metadataMsg = messages.find((m) => m.type === "chat_metadata");
+    if (metadataMsg?.type === "chat_metadata") {
+      setChatId(metadataMsg.chatId);
+      setChatGroupId(metadataMsg.chatGroupId);
+
+      fetch(`/api/interview/${interviewId}/link-chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chatId: metadataMsg.chatId,
+          chatGroupId: metadataMsg.chatGroupId,
+        }),
+      }).catch(() => {});
+    }
+  }, [messages, interviewId]);
+
+  // Track questions via QUESTION_START sentinel in assistant messages
+  useEffect(() => {
+    const assistantMessages = messages.filter(
+      (m) => m.type === "assistant_message",
+    );
+    let count = 0;
+    for (const msg of assistantMessages) {
+      if (msg.message?.content?.includes("QUESTION_START")) {
+        count++;
+      }
+    }
+    setCurrentQuestion(count);
+  }, [messages]);
+
+  const transcriptMessages = messages.filter(
+    (m) => m.type === "user_message" || m.type === "assistant_message",
+  );
+
+  const progress = Math.min(
+    Math.round((currentQuestion / questionCount) * 100),
+    100,
+  );
+
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-background">
-      {/* Background Effects - Only visible in dark mode */}
       <div className="pointer-events-none fixed inset-0 opacity-0 dark:opacity-60">
         <div
           className="absolute inset-0"
@@ -30,43 +120,14 @@ export function TechnicalInterviewPage() {
         />
       </div>
 
-      {/* Header */}
       <Header />
 
-      {/* Main Content */}
       <main className="relative px-4 pt-24 pb-20 sm:px-6 md:px-8 lg:px-20 lg:pt-32">
-        {/* Top Cards Section */}
         <div className="mb-8 flex flex-col gap-4 lg:mb-12 lg:flex-row lg:gap-7">
-          {/* Interview Details Card */}
           <div className="w-full lg:flex-1">
             <div className="flex flex-col gap-4 rounded-3xl bg-neutral-50 p-4 shadow-lg backdrop-blur-sm sm:p-6 md:flex-row md:items-center md:justify-between md:gap-6 lg:rounded-[40px] lg:p-8 dark:bg-neutral-900">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center md:gap-6 lg:gap-8">
                 <div className="flex items-center gap-3 sm:gap-4">
-                  <svg
-                    width="51"
-                    height="43"
-                    viewBox="0 0 61 51"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-10 w-12 shrink-0 sm:h-12 sm:w-14 lg:h-[51px] lg:w-[61px]"
-                  >
-                    <path
-                      d="M30.5 0L0 15L30.5 30L61 15L30.5 0Z"
-                      fill="currentColor"
-                      className="text-primary"
-                    />
-                  </svg>
-                  <div className="flex flex-col gap-1">
-                    <h2 className="font-semibold text-foreground text-xl leading-tight sm:text-2xl lg:text-[26.75px]">
-                      Technical Interview
-                    </h2>
-                    <p className="text-muted-foreground text-sm leading-tight sm:text-base lg:text-[14.66px]">
-                      Data structures, algorithms, and system design questions
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-3 sm:gap-4 lg:gap-5">
                   <div className="flex items-center gap-2 rounded-lg bg-primary/20 px-4 py-2 sm:px-5 sm:py-3">
                     <Clock className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
                     <span className="font-medium text-foreground text-sm sm:text-base">
@@ -76,22 +137,56 @@ export function TechnicalInterviewPage() {
                   <div className="flex items-center gap-2 rounded-lg bg-primary/20 px-4 py-2 sm:px-5 sm:py-3">
                     <Target className="h-7 w-7 text-primary sm:h-8 sm:w-8 lg:h-9 lg:w-9" />
                     <span className="font-medium text-foreground text-sm sm:text-base">
-                      8 Questions
+                      {questionCount} Questions
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-start md:justify-end">
-                <div className="inline-flex items-center justify-center rounded-full bg-background px-5 py-1 shadow-sm sm:px-6 sm:py-1.5">
-                  <span className="font-medium text-foreground text-sm sm:text-base">
-                    Medium
-                  </span>
-                </div>
+              <div className="flex items-center gap-3">
+                {isConnected && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => (isMuted ? unmute() : mute())}
+                    className="gap-2"
+                  >
+                    {isMuted ? (
+                      <MicOff className="h-4 w-4" />
+                    ) : (
+                      <Mic className="h-4 w-4" />
+                    )}
+                    {isMuted ? "Unmute" : "Mute"}
+                  </Button>
+                )}
+                {isConnected ? (
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleEnd}
+                    className="gap-2"
+                  >
+                    <Phone className="h-4 w-4 rotate-135" />
+                    End Interview
+                  </Button>
+                ) : (
+                  <Button
+                    size="sm"
+                    onClick={handleStart}
+                    disabled={status.value === "connecting"}
+                    className="gap-2"
+                  >
+                    {status.value === "connecting" ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Phone className="h-4 w-4" />
+                    )}
+                    Start Interview
+                  </Button>
+                )}
               </div>
             </div>
 
-            {/* Progress Bar */}
             <Card className="mt-6 rounded-3xl border-primary/20 bg-neutral-50 p-6 backdrop-blur-sm lg:rounded-[40px] lg:p-8 dark:bg-neutral-900">
               <div className="flex w-full flex-col gap-4 lg:gap-5">
                 <div className="flex items-center justify-between">
@@ -99,149 +194,90 @@ export function TechnicalInterviewPage() {
                     Interview Progress
                   </span>
                   <span className="font-medium text-base text-foreground sm:text-lg">
-                    20% Complete
+                    {progress}% Complete
                   </span>
                 </div>
                 <div className="relative h-2.5 w-full">
                   <div className="h-full w-full rounded-full bg-muted" />
-                  <div className="absolute top-0 left-0 h-full w-1/5 rounded-full bg-primary" />
+                  <div
+                    className="absolute top-0 left-0 h-full rounded-full bg-primary transition-all duration-500"
+                    style={{ width: `${progress}%` }}
+                  />
                 </div>
               </div>
             </Card>
           </div>
         </div>
 
-        {/* Bottom Section - Interview Cards and Session Overview */}
         <div className="flex flex-col gap-6 lg:flex-row">
-          {/* Left - Interview Cards */}
           <div className="flex w-full flex-col gap-6 lg:flex-1 lg:gap-7">
-            {/* AI-Powered Interview Card */}
-            <Card className="rounded-2xl border-border/10 bg-neutral-50 p-6 backdrop-blur-sm lg:rounded-3xl lg:p-7 dark:bg-neutral-900">
-              <div className="flex items-center gap-4 lg:gap-5">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/20 sm:h-14 sm:w-14">
-                  <svg
-                    width="33"
-                    height="33"
-                    viewBox="0 0 33 33"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 sm:h-8 sm:w-8"
-                  >
-                    <path
-                      d="M16.5 0L0 10L16.5 20L33 10L16.5 0Z"
-                      fill="currentColor"
-                      className="text-primary"
-                    />
-                  </svg>
-                </div>
-                <div className="flex flex-col">
-                  <h3 className="font-bold text-foreground text-lg sm:text-xl lg:text-[21px]">
-                    AI-Powered Interview
-                  </h3>
-                  <p className="text-muted-foreground text-sm sm:text-base">
-                    Practice with realistic scenarios
+            <Card className="relative h-[500px] overflow-hidden rounded-2xl border-border/10 bg-neutral-50 backdrop-blur-sm sm:h-[550px] lg:h-[627px] lg:rounded-3xl dark:bg-neutral-900">
+              {!isConnected && status.value !== "connecting" ? (
+                <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-8 px-4">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full border border-primary/30 bg-primary/20 sm:h-24 sm:w-24 lg:h-28 lg:w-28">
+                    <Mic className="h-10 w-10 text-primary" />
+                  </div>
+                  <h2 className="text-center font-bold text-2xl text-foreground sm:text-3xl lg:text-[28px]">
+                    AI Mock Interview
+                  </h2>
+                  <p className="text-center text-base text-muted-foreground sm:text-lg">
+                    Press Start Interview to begin your practice session
                   </p>
                 </div>
-              </div>
-            </Card>
-
-            {/* Ready to Begin Card */}
-            <Card className="relative h-[500px] overflow-hidden rounded-2xl border-border/10 bg-neutral-50 backdrop-blur-sm sm:h-[550px] lg:h-[627px] lg:rounded-3xl dark:bg-neutral-900">
-              {/* Bottom Status Bar */}
-              <div className="absolute right-0 bottom-0 left-0 rounded-b-2xl border-border/5 border-t bg-neutral-100 px-6 py-6 backdrop-blur-sm lg:rounded-b-3xl lg:px-7 lg:py-7 dark:bg-neutral-800">
-                <div className="flex items-center gap-3 lg:gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/30 sm:h-14 sm:w-14 lg:h-[61px] lg:w-[61px]">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 sm:h-6 sm:w-6"
-                    >
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        className="text-foreground"
-                      />
-                    </svg>
+              ) : (
+                <div className="flex h-full flex-col p-4 sm:p-6">
+                  <div className="mb-4 flex items-center gap-2">
+                    <div className="h-2 w-2 rounded-full bg-green-500" />
+                    <span className="text-foreground text-sm">
+                      AI Interviewer
+                    </span>
                   </div>
-                  <span className="text-muted-foreground text-sm sm:text-base">
-                    Ready to begin
-                  </span>
-                </div>
-              </div>
-
-              {/* Main Content Area */}
-              <div className="absolute inset-0 bg-background/40">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent" />
-
-                {/* AI Interviewer Badge */}
-                <div className="absolute top-4 left-4 flex items-center gap-2 rounded-xl bg-background/60 px-3 py-2 backdrop-blur-sm sm:top-5 sm:left-5 lg:gap-2.5 lg:px-3.5">
-                  <div className="h-2 w-2 rounded-full bg-destructive lg:h-2.5 lg:w-2.5" />
-                  <span className="text-foreground text-sm sm:text-base">
-                    AI Interviewer
-                  </span>
-                </div>
-
-                {/* Center Content - Interview Placeholder */}
-                <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-8 px-4 sm:gap-10 lg:gap-12">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full border border-primary/30 bg-primary/20 sm:h-24 sm:w-24 lg:h-28 lg:w-28">
-                    <svg
-                      width="57"
-                      height="57"
-                      viewBox="0 0 57 57"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-10 w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14"
-                    >
-                      <path
-                        d="M28.5 14L14 28.5L28.5 43"
-                        stroke="currentColor"
-                        strokeWidth="5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="text-primary"
-                      />
-                    </svg>
-                  </div>
-
-                  <div className="flex flex-col items-center gap-8 sm:gap-10 lg:gap-12">
-                    <h2 className="text-center font-bold text-2xl text-foreground sm:text-3xl lg:text-[28px]">
-                      AI Mock Interview
-                    </h2>
-                    <p className="text-center text-base text-muted-foreground sm:text-lg">
-                      Ready to start your practice session
-                    </p>
-                    <Button className="h-14 w-full max-w-xs rounded-2xl bg-primary font-bold text-base shadow-lg hover:bg-primary/90 sm:h-16 sm:text-lg lg:h-[70px] lg:max-w-sm lg:text-[21px]">
-                      <svg
-                        width="29"
-                        height="29"
-                        viewBox="0 0 29 29"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="mr-2 h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7"
-                      >
-                        <path
-                          d="M10 7L20 14.5L10 22V7Z"
-                          stroke="currentColor"
-                          strokeWidth="2.35"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      Start Interview
-                    </Button>
+                  <div className="flex-1 space-y-4 overflow-y-auto">
+                    {transcriptMessages.length === 0 ? (
+                      <div className="flex h-full items-center justify-center">
+                        <p className="text-muted-foreground text-sm">
+                          {status.value === "connecting"
+                            ? "Connecting..."
+                            : "Speak to begin your interview..."}
+                        </p>
+                      </div>
+                    ) : (
+                      transcriptMessages.map((msg, i) => (
+                        <div
+                          key={`${msg.type}-${i}`}
+                          className={`flex ${msg.type === "user_message" ? "justify-end" : "justify-start"}`}
+                        >
+                          <div
+                            className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                              msg.type === "user_message"
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-muted text-foreground"
+                            }`}
+                          >
+                            <p className="text-xs opacity-70">
+                              {msg.type === "user_message"
+                                ? "You"
+                                : "Interviewer"}
+                            </p>
+                            <p className="text-sm">{msg.message?.content}</p>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                    {status.value === "connecting" && (
+                      <div className="flex items-center justify-center gap-2 py-8">
+                        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                        <span className="text-muted-foreground text-sm">
+                          Connecting to AI Interviewer...
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
+              )}
             </Card>
           </div>
 
-          {/* Right - Session Overview */}
           <div className="w-full lg:w-80 xl:w-96">
             <Card className="rounded-2xl border-neutral-200 bg-neutral-50 px-6 pt-6 pb-1 backdrop-blur-sm lg:rounded-3xl dark:border-neutral-800 dark:bg-neutral-900">
               <h3 className="mb-10 font-bold text-foreground text-lg sm:mb-12 sm:text-xl lg:mb-14">
@@ -254,34 +290,31 @@ export function TechnicalInterviewPage() {
                     Total Questions
                   </span>
                   <span className="font-bold text-base text-foreground sm:text-lg">
-                    5
+                    {questionCount}
                   </span>
                 </div>
-
                 <div className="flex items-center justify-between border-border/20 border-b pb-4">
                   <span className="text-muted-foreground text-sm sm:text-base">
                     Completed
                   </span>
                   <span className="font-bold text-base text-primary sm:text-lg">
-                    0
+                    {currentQuestion}
                   </span>
                 </div>
-
                 <div className="flex items-center justify-between border-border/20 border-b pb-4">
                   <span className="text-muted-foreground text-sm sm:text-base">
                     Remaining
                   </span>
                   <span className="font-bold text-base text-primary sm:text-lg">
-                    5
+                    {Math.max(0, questionCount - currentQuestion)}
                   </span>
                 </div>
-
                 <div className="flex items-center justify-between pb-4">
                   <span className="text-muted-foreground text-sm sm:text-base">
-                    Time Left
+                    Status
                   </span>
                   <span className="font-bold text-base text-foreground sm:text-lg">
-                    3:00
+                    {isConnected ? "Active" : "Not Started"}
                   </span>
                 </div>
               </div>
@@ -289,11 +322,14 @@ export function TechnicalInterviewPage() {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <div className="mt-auto">
-        <Footer />
-      </div>
     </div>
+  );
+}
+
+export function TechnicalInterviewPage() {
+  return (
+    <VoiceProvider>
+      <InterviewContent />
+    </VoiceProvider>
   );
 }
