@@ -1,6 +1,8 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: <> */
 /** biome-ignore-all lint/complexity/noThisInStatic: <> */
 
+import { CodingController } from "@/modules/coding";
+import { ProblemController } from "@/modules/problem";
 import { SampleController } from "@/modules/sample";
 
 import { AbstractController } from "./contracts/abstract.controller";
@@ -22,6 +24,18 @@ export class ControllersFactory {
           this._controllers.set(
             controller,
             new SampleController(ServicesFactory.create(Services.SAMPLE)),
+          );
+          break;
+        case Controllers.CODING:
+          this._controllers.set(
+            controller,
+            new CodingController(ServicesFactory.create(Services.CODING)),
+          );
+          break;
+        case Controllers.PROBLEM:
+          this._controllers.set(
+            controller,
+            new ProblemController(ServicesFactory.create(Services.PROBLEM)),
           );
           break;
         default:

@@ -1,0 +1,65 @@
+x-logging: &default-logging
+  logging:
+    driver: json-file
+    options:
+      max-size: 100M
+
+services:
+  # Using bitblazer/judge0-cgv2 fork for cgroup v2 compatibility.
+  # Fixes the "No such file or directory @ rb_sysopen - /box/script.*" error
+  # on modern Linux kernels (Fedora, Ubuntu 22.04+, WSL2).
+  # See: https://github.com/Kamil-Hassan-A/judge0/blob/master/CGROUP_V2_CHANGES.md
+  server:
+    image: bitblazer/judge0-cgv2:latest
+    command: ["./scripts/server"]
+    volumes:
+      - ./judge0.conf:/judge0.conf:ro
+      - ./isolate_job.rb:/api/app/jobs/isolate_job.rb:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    ports:
+      - "2358:2358"
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    cgroup: host
+    <<: *default-logging
+    restart: always
+
+  workers:
+    image: bitblazer/judge0-cgv2:latest
+    command: ["./scripts/workers"]
+    volumes:
+      - ./judge0.conf:/judge0.conf:ro
+      - ./isolate_job.rb:/api/app/jobs/isolate_job.rb:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    cgroup: host
+    <<: *default-logging
+    restart: always
+
+  db:
+    image: postgres:16.2
+    env_file: judge0.conf
+    volumes:
+      - judge0-pgdata:/var/lib/postgresql/data/
+    <<: *default-logging
+    restart: always
+
+  redis:
+    image: redis:7.2.4
+    command:
+      [
+        "bash",
+        "-c",
+        'docker-entrypoint.sh --appendonly no --requirepass "$$REDIS_PASSWORD"',
+      ]
+    env_file: judge0.conf
+    <<: *default-logging
+    restart: always
+
+volumes:
+  judge0-pgdata:

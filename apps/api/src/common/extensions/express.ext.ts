@@ -12,8 +12,10 @@ import { createOpenAPIDocument } from "@/services/openapi/registry";
 
 import { HttpStatus } from "../enums";
 import type { Controller } from "../types";
+import { extendResponse } from "./res.ext";
 
 export const extendExpressApp = (app: Application) => {
+  extendResponse();
   app.registerCors = () => {
     app.use(
       cors({
@@ -63,7 +65,9 @@ export const extendExpressApp = (app: Application) => {
     if (env.isDevelopment) {
       const { serverAdapter } = await import("@/services/bullmq/ui");
       app.use("/api/admin/queues", serverAdapter.getRouter());
-      logger.info("Bull Board mounted at /api/admin/queues");
+      logger.info(
+        "Bull Board mounted at http://localhost:4000/api/admin/queues",
+      );
     }
     return app;
   };
