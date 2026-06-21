@@ -3,6 +3,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { CodingService, codingCacheService } from "@/modules/coding";
+import { DashboardService } from "@/modules/dashboard";
 import { InterviewService } from "@/modules/interview";
 import { ProblemService } from "@/modules/problem";
 import { SampleService } from "@/modules/sample";
@@ -34,6 +35,9 @@ export class ServicesFactory {
           break;
         case Services.INTERVIEW:
           this._services.set(service, new InterviewService(prisma, hume));
+          break;
+        case Services.DASHBOARD:
+          this._services.set(service, new DashboardService(prisma));
           break;
         default:
           throw new InternalException(`Unknown service: ${service}`);
