@@ -1,5 +1,5 @@
 [project]
-name = "ats-parser"
+name = "form-builder"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -10,7 +10,7 @@ dependencies = []
 package = true
 
 [project.scripts]
-ats-parser = "main:main"
+form-builder = "main:main"
 
 [dependency-groups]
 dev = ["ruff>=0.15.16", "ty>=0.0.47"]
