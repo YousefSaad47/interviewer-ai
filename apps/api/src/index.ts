@@ -4,14 +4,12 @@ import "@/core/init";
 import { toNodeHandler } from "better-auth/node";
 import express from "express";
 
-import { ControllersFactory } from "@/common";
+import { ControllersFactory, ServicesFactory } from "@/common";
+import { Services } from "@/common/enums";
 import { extendExpressApp } from "@/common/extensions";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
 import { rateLimitMiddleware } from "@/middlewares";
-import { InterviewService } from "@/modules/interview/interview.service";
-import { humeWebhookHandler } from "@/modules/interview/interview.webhook";
-import { hume } from "@/services/hume";
+import { humeWebhookHandler, InterviewService } from "@/modules/interview";
 
 const app = express();
 
@@ -20,8 +18,10 @@ extendExpressApp(app);
 app.registerCors();
 app.use(rateLimitMiddleware);
 
-// Hume webhook — uses raw parser for HMAC verification
-const interviewService = new InterviewService(prisma, hume);
+const interviewService = ServicesFactory.create<InterviewService>(
+  Services.INTERVIEW,
+);
+
 app.post(
   "/api/hume/webhook",
   express.raw({ type: "application/json" }),

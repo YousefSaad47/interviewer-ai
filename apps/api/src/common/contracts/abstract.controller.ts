@@ -1,5 +1,7 @@
 import { Router } from "express";
 
+import { InternalException } from "@/common/exceptions";
+
 import { AbstractService } from "./abstract.service";
 
 export abstract class AbstractController<TService extends AbstractService> {
@@ -15,7 +17,7 @@ export abstract class AbstractController<TService extends AbstractService> {
 
   public get router(): Router {
     if (this.path.includes("/")) {
-      throw new Error("Path should not contain slashes");
+      throw new InternalException("Path should not contain slashes");
     }
 
     return this._router;

@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { Header } from "@/modules/landing/components";
-import { useProblemsInfinite } from "@/modules/problem/hooks/use-problems-infinite";
+import { Header } from "@/modules/landing";
+import { useProblemsInfinite } from "@/modules/problem";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";

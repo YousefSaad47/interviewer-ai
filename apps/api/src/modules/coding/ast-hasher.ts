@@ -3,6 +3,8 @@ import path from "node:path";
 
 import Parser from "web-tree-sitter";
 
+import { logger } from "@/lib/logger";
+
 let isParserInitialized = false;
 const wasmParsersCache = new Map<string, Parser.Language>();
 
@@ -51,7 +53,7 @@ async function getOrLoadLanguage(
     wasmParsersCache.set(language, lang);
     return lang;
   } catch (err) {
-    console.error(`Failed to load AST WASM for ${language}:`, err);
+    logger.error({ err, language }, "Failed to load AST WASM");
     return null;
   }
 }
@@ -113,7 +115,7 @@ export async function computeAstHash(
 
     return createHash("sha256").update(canonical).digest("hex");
   } catch (err) {
-    console.error("Error computing AST hash:", err);
+    logger.error({ err }, "Error computing AST hash");
     return null;
   }
 }

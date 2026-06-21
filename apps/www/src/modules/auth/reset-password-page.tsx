@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import type { ResetPasswordSubmitFormData } from "@/modules/auth";
-import { AuthLayout, resetPasswordSubmitSchema } from "@/modules/auth";
+import { AuthLayout, resetPasswordSchema } from "@/modules/auth";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 
@@ -26,7 +26,7 @@ export function ResetPasswordPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ResetPasswordSubmitFormData>({
-    resolver: zodResolver(resetPasswordSubmitSchema),
+    resolver: zodResolver(resetPasswordSchema),
     mode: "onSubmit",
   });
 

@@ -8,9 +8,11 @@ import { Play } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
-import type { InterviewSetupFormData } from "@/modules/interview/schemas";
-import { interviewSetupSchema } from "@/modules/interview/schemas";
-import { Footer, Header } from "@/modules/landing/components";
+import {
+  type InterviewSetupFormData,
+  interviewSetupSchema,
+} from "@/modules/interview";
+import { Footer, Header } from "@/modules/landing";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { Label } from "@/shared/components/ui/label";

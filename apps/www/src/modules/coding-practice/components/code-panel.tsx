@@ -13,7 +13,7 @@ import { useTheme } from "next-themes";
 import {
   LANGUAGE_STARTER_CODE,
   type Language,
-} from "@/modules/coding-practice/constants";
+} from "@/modules/coding-practice";
 import { Button } from "@/shared/components/ui/button";
 import {
   ResizableHandle,
@@ -166,7 +166,6 @@ export function CodePanel({ problemId }: CodePanelProps) {
               );
 
               if (!res.ok) {
-                console.error(`Polling failed with status ${res.status}`);
                 setIsPolling(false);
                 setLastSubmission({
                   status: "ERROR",
@@ -200,8 +199,7 @@ export function CodePanel({ problemId }: CodePanelProps) {
                 });
                 return;
               }
-            } catch (err) {
-              console.error("Polling error", err);
+            } catch {
               setIsPolling(false);
               setLastSubmission({
                 status: "ERROR",

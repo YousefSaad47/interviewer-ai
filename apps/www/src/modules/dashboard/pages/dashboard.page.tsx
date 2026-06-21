@@ -1,10 +1,12 @@
-import { Header } from "@/modules/landing/components";
+import { Header } from "@/modules/landing";
 
-import { QuickActions } from "../components/quick-actions";
-import { RecentInterviews } from "../components/recent-interviews";
-import { SkillsOverview } from "../components/skills-overview";
-import { StatsCards } from "../components/stats-cards";
-import { WeeklyGoals } from "../components/weekly-goals";
+import {
+  QuickActions,
+  RecentInterviews,
+  SkillsOverview,
+  StatsCards,
+  WeeklyGoals,
+} from "../components";
 
 export function DashboardPage() {
   return (

@@ -8,8 +8,8 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 
-import { SettingsCard } from "../components/settings-card";
-import { SettingsLayout } from "../layouts/settings-layout";
+import { SettingsCard } from "../components";
+import { SettingsLayout } from "../layouts";
 import type { ProfileAccountFormData } from "../schemas";
 import { profileAccountSchema } from "../schemas";
 
@@ -30,9 +30,9 @@ export function ProfileAccountPage() {
     },
   });
 
-  const onSubmit = async (data: ProfileAccountFormData) => {
-    console.log("Profile data:", data);
-    // TODO: Implement actual save logic
+  const onSubmit = async (_data: ProfileAccountFormData) => {
+    // TODO: Implement actual save via settings API
+    await Promise.resolve();
   };
 
   return (
