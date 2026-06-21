@@ -2,9 +2,11 @@ import type { RequestHandler } from "express";
 
 import { AbstractController } from "@/common/contracts";
 import { HttpStatus } from "@/common/enums";
+import { validationMiddleware } from "@/middlewares";
 import { registerPath } from "@/services/openapi/registry";
 
 import {
+  type ProblemQuery,
   problemDetailResponseSchema,
   problemListResponseSchema,
   problemParamsSchema,
@@ -18,7 +20,12 @@ export class ProblemController extends AbstractController<ProblemService> {
   protected _registerRoutes() {
     this._registerOpenAPI();
 
-    this._router.get("/", this._list);
+    this._router.get(
+      "/",
+      validationMiddleware({ query: problemQuerySchema }),
+      // @ts-expect-error
+      this._list,
+    );
     this._router.get("/:slug", this._getBySlug);
   }
 
@@ -46,11 +53,11 @@ export class ProblemController extends AbstractController<ProblemService> {
     });
   }
 
-  private _list: RequestHandler = async (req, res) => {
-    const query = problemQuerySchema.parse(req.query);
-    const result = await this._service.list(query);
-    res.ok(result);
-  };
+  private _list: RequestHandler<unknown, unknown, unknown, ProblemQuery> =
+    async (req, res) => {
+      const result = await this._service.list(req.query);
+      res.ok(result);
+    };
 
   private _getBySlug: RequestHandler<{ slug: string }> = async (req, res) => {
     const result = await this._service.getBySlug(req.params.slug);

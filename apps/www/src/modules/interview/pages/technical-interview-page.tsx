@@ -5,9 +5,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useVoice, VoiceProvider } from "@humeai/voice-react";
+import { usePostApiInterviewIdFinalize } from "@repo/kubb";
 import { Clock, Loader2, Mic, MicOff, Phone, Target } from "lucide-react";
 
-import { Header } from "@/modules/landing/components";
+import { Header } from "@/modules/landing";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 
@@ -25,6 +26,7 @@ function InterviewContent() {
   const [chatId, setChatId] = useState<string | null>(null);
   const [chatGroupId, setChatGroupId] = useState<string | null>(null);
 
+  const { mutateAsync: finalizeInterview } = usePostApiInterviewIdFinalize();
   const { connect, disconnect, status, messages, isMuted, mute, unmute } =
     useVoice();
 
@@ -43,18 +45,14 @@ function InterviewContent() {
     disconnect();
 
     if (chatId && interviewId) {
-      await fetch(`/api/interview/${interviewId}/finalize`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chatId,
-          chatGroupId: chatGroupId ?? chatId,
-        }),
+      await finalizeInterview({
+        id: interviewId,
+        data: { chatId, chatGroupId: chatGroupId ?? chatId },
       });
     }
 
     router.push("/dashboard");
-  }, [disconnect, chatId, chatGroupId, interviewId, router]);
+  }, [disconnect, chatId, chatGroupId, interviewId, router, finalizeInterview]);
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
 

@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import type { ForgotPasswordSubmitFormData } from "@/modules/auth";
-import { AuthLayout, forgotPasswordSubmitSchema } from "@/modules/auth";
+import { AuthLayout, forgotPasswordSchema } from "@/modules/auth";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 
@@ -22,7 +22,7 @@ export function ForgotPasswordPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ForgotPasswordSubmitFormData>({
-    resolver: zodResolver(forgotPasswordSubmitSchema),
+    resolver: zodResolver(forgotPasswordSchema),
     mode: "onSubmit",
   });
 

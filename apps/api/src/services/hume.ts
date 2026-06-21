@@ -1,5 +1,6 @@
 import { fetchAccessToken, HumeClient } from "hume";
 
+import { InternalException } from "@/common/exceptions";
 import { env } from "@/core/env";
 import { logger } from "@/lib/logger";
 
@@ -24,6 +25,7 @@ export class HumeService {
   private readonly client: HumeClient;
   private cachedToken: { token: string; expiresAt: number } | null = null;
   private cachedConfigId: string | null = null;
+
   constructor(apiKey: string) {
     this.client = new HumeClient({ apiKey });
   }
@@ -97,9 +99,7 @@ export class HumeService {
       configData.webhooks = [
         {
           url: `${env.HUME_WEBHOOK_URL}/api/hume/webhook`,
-          events: ["chat_started", "chat_ended", "tool_call"] as Array<
-            "chat_started" | "chat_ended" | "tool_call"
-          >,
+          events: ["chat_started", "chat_ended", "tool_call"],
         },
       ];
     }
@@ -108,7 +108,9 @@ export class HumeService {
       await this.client.empathicVoice.configs.createConfig(configData);
 
     if (!config.id) {
-      throw new Error("Failed to create Hume config: no id returned");
+      throw new InternalException(
+        "Failed to create Hume config: no id returned",
+      );
     }
 
     this.cachedConfigId = config.id;

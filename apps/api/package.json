@@ -20,7 +20,7 @@
     "db:migrate:reset": "prisma migrate reset",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
-    "db:seed": "prisma db seed",
+    "db:seed": "bun run prisma/seed.ts",
     "db:format": "prisma format",
     "postinstall": "prisma generate",
     "worker:email": "bun run src/services/bullmq/workers/email/init.ts"

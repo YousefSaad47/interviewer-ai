@@ -36,13 +36,8 @@ export class SampleController extends AbstractController<SampleService> {
   private _create: RequestHandler<unknown, unknown, Sample> = async (
     req,
     res,
-    next,
   ) => {
-    try {
-      const result = await this._service.create(req.body);
-      res.status(HttpStatus.CREATED).json(result);
-    } catch (error) {
-      next(error);
-    }
+    const result = await this._service.create(req.body);
+    res.created(result);
   };
 }

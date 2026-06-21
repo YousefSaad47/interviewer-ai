@@ -1,4 +1,5 @@
 import { AbstractService } from "@/common/contracts";
+import { BadRequestException } from "@/common/exceptions";
 import {
   type CodingProblem,
   type PrismaClient,
@@ -25,7 +26,7 @@ export class CodingService extends AbstractService {
   async run(_userId: string, input: CodingRunInput) {
     const languageId = LANGUAGE_TO_JUDGE0_ID[input.language];
     if (!languageId) {
-      throw new Error(`Unsupported language: ${input.language}`);
+      throw new BadRequestException(`Unsupported language: ${input.language}`);
     }
 
     const result = await this.judge0.execute({
@@ -52,7 +53,7 @@ export class CodingService extends AbstractService {
 
     const languageId = LANGUAGE_TO_JUDGE0_ID[input.language];
     if (!languageId) {
-      throw new Error(`Unsupported language: ${input.language}`);
+      throw new BadRequestException(`Unsupported language: ${input.language}`);
     }
 
     const astHash = await computeAstHash(input.code, input.language);
@@ -122,7 +123,10 @@ export class CodingService extends AbstractService {
       languageId,
       problem,
     ).catch((err) => {
-      console.error("Failed to process submission:", err);
+      logger.error(
+        { err, submissionId: submission.id },
+        "Failed to process submission",
+      );
     });
 
     return { id: submission.id, status: submission.status };

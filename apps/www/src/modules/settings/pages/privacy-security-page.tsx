@@ -3,8 +3,8 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/shared/components/ui/button";
 
-import { SettingsCard } from "../components/settings-card";
-import { SettingsLayout } from "../layouts/settings-layout";
+import { SettingsCard } from "../components";
+import { SettingsLayout } from "../layouts";
 
 export function PrivacySecurityPage() {
   return (

@@ -2,15 +2,17 @@
 
 import { CheckCircle, Download, Save } from "lucide-react";
 
-import { Header } from "@/modules/landing/components";
+import { Header } from "@/modules/landing";
 import { Button } from "@/shared/components/ui/button";
 
-import { EducationSection } from "../components/education-section";
-import { PersonalInfoSection } from "../components/personal-info-section";
-import { ResumePreview } from "../components/resume-preview";
-import { SkillsSection } from "../components/skills-section";
-import { WorkExperienceSection } from "../components/work-experience-section";
-import { ResumeProvider } from "../contexts/resume-context";
+import {
+  EducationSection,
+  PersonalInfoSection,
+  ResumePreview,
+  SkillsSection,
+  WorkExperienceSection,
+} from "../components";
+import { ResumeProvider } from "../contexts";
 
 export const ResumeBuilderPage = () => {
   return (
