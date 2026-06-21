@@ -1,5 +1,6 @@
 import type { ComponentProps } from "react";
 
+import { logger } from "@/lib/logger";
 import { emailQueue } from "@/services/bullmq/queues";
 
 import type { ResetPassword, VerifyEmail } from "./templates";
@@ -23,9 +24,9 @@ export function sendEmail<T extends TemplateName>(
       props,
     })
     .then((job) => {
-      console.log(`✅ Email queued: ${job.id} → ${to} [${template}]`);
+      logger.info({ jobId: job.id, to, template }, "Email queued");
     })
     .catch((err) => {
-      console.error(`❌ Failed to queue email → ${to} [${template}]`, err);
+      logger.error({ err, to, template }, "Failed to queue email");
     });
 }

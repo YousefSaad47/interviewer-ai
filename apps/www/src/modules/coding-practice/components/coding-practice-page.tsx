@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useGetApiProblemsSlug } from "@repo/kubb";
 
-import { Header } from "@/modules/landing/components";
+import { Header } from "@/modules/landing";
 import {
   ResizableHandle,
   ResizablePanel,

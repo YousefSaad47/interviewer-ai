@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import type { SignInSubmitFormData } from "@/modules/auth";
-import { AuthLayout, signInSubmitSchema } from "@/modules/auth";
+import { AuthLayout, signInSchema } from "@/modules/auth";
 import { Button } from "@/shared/components/ui/button";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Input } from "@/shared/components/ui/input";
@@ -28,7 +28,7 @@ export function SignInPage() {
     watch,
     setValue,
   } = useForm<SignInSubmitFormData>({
-    resolver: zodResolver(signInSubmitSchema),
+    resolver: zodResolver(signInSchema),
     mode: "onSubmit",
     defaultValues: {
       rememberMe: false,

@@ -443,7 +443,8 @@ async function main() {
         problemId: problem.id,
         userId: user.id,
         results: {
-          create: testCases.map((tc) => {
+          // biome-ignore lint/suspicious/noExplicitAny: <>
+          create: testCases.map((tc: any) => {
             const resultFixture = createCodingResult();
             return {
               passed: resultFixture.passed,

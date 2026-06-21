@@ -1,5 +1,5 @@
 import { AuthGuard } from "@/lib/auth-guard";
-import { ProfileAccountPage } from "@/modules/settings/pages";
+import { ProfileAccountPage } from "@/modules/settings";
 
 export default function ProfilePage() {
   return (

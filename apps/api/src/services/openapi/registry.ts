@@ -94,6 +94,6 @@ export const createOpenAPIDocument = () => {
       version: "1.0.0",
       description: "API documentation for Interviewer AI",
     },
-    servers: [{ url: "/api", description: "API server" }],
+    servers: [{ url: "", description: "API server" }],
   });
 };

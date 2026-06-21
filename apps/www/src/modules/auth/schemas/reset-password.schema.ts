@@ -4,30 +4,19 @@ export const resetPasswordSchema = z
   .object({
     newPassword: z
       .string()
-      .refine(
-        (val) => val.length === 0 || val.length >= 8,
-        "Password must be at least 8 characters",
-      )
-      .refine(
-        (val) => val.length === 0 || val.length <= 100,
-        "Password must be less than 100 characters",
-      )
-      .refine(
-        (val) =>
-          val.length === 0 || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(val),
+      .min(1, "New password is required")
+      .min(8, "Password must be at least 8 characters")
+      .max(100, "Password must be less than 100 characters")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
         "Password must contain at least one uppercase letter, one lowercase letter, and one number",
       ),
-    confirmPassword: z.string(),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
   })
-  .refine(
-    (data) =>
-      data.newPassword.length === 0 ||
-      data.confirmPassword.length === 0 ||
-      data.newPassword === data.confirmPassword,
-    {
-      message: "Passwords don't match",
-      path: ["confirmPassword"],
-    },
-  );
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+export type ResetPasswordSubmitFormData = ResetPasswordFormData;

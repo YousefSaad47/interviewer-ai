@@ -1,3 +1,4 @@
+import { InternalException } from "@/common/exceptions";
 import { env } from "@/core/env";
 import { logger } from "@/lib/logger";
 
@@ -55,7 +56,9 @@ export class Judge0Client {
 
     if (!res.ok) {
       const body = await res.text();
-      throw new Error(`Judge0 submit failed (${res.status}): ${body}`);
+      throw new InternalException(
+        `Judge0 submit failed (${res.status}): ${body}`,
+      );
     }
 
     return res.json() as Promise<Judge0SubmissionResponse>;
@@ -74,7 +77,9 @@ export class Judge0Client {
 
       if (!res.ok) {
         const body = await res.text();
-        throw new Error(`Judge0 getResult failed (${res.status}): ${body}`);
+        throw new InternalException(
+          `Judge0 getResult failed (${res.status}): ${body}`,
+        );
       }
 
       const result = (await res.json()) as Judge0Result;
@@ -86,7 +91,7 @@ export class Judge0Client {
       await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
 
-    throw new Error(`Judge0 polling timeout for token: ${token}`);
+    throw new InternalException(`Judge0 polling timeout for token: ${token}`);
   }
 
   async execute(params: Judge0SubmissionRequest): Promise<Judge0Result> {

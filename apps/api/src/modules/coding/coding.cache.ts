@@ -1,5 +1,6 @@
 import { getRedis } from "@/core/redis";
 import type { SubmissionStatus } from "@/generated/client";
+import { logger } from "@/lib/logger";
 
 export interface CachedSubmissionData {
   status: SubmissionStatus;
@@ -37,7 +38,7 @@ export class CodingCacheService {
     try {
       return JSON.parse(cached) as CachedSubmissionData;
     } catch (err) {
-      console.error("Failed to parse cached submission:", err);
+      logger.error({ err }, "Failed to parse cached submission");
       return null;
     }
   }

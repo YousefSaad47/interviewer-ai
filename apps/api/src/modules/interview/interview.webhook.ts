@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { serialization as HumeSerialization } from "hume";
 
 import {
@@ -56,29 +56,23 @@ function verifyWebhookSignature(
 }
 
 export const humeWebhookHandler =
-  (service: InterviewService) => async (req: Request, res: Response) => {
-    const payloadStr = req.body.toString("utf8");
-
+  (service: InterviewService) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const payloadStr = req.body.toString("utf8");
+
       verifyWebhookSignature(
         payloadStr,
         req.headers as Record<string, unknown>,
       );
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error";
-      logger.error({ error: message }, "Webhook header validation failed");
-      res.status(401).json({ error: "Failed to validate headers" });
-      return;
-    }
 
-    const event = WebhookEvent.parseOrThrow(JSON.parse(payloadStr));
+      const event = WebhookEvent.parseOrThrow(JSON.parse(payloadStr));
 
-    logger.info(
-      { event: event.eventName, chatId: event.chatId },
-      "Hume webhook received",
-    );
+      logger.info(
+        { event: event.eventName, chatId: event.chatId },
+        "Hume webhook received",
+      );
 
-    try {
       switch (event.eventName) {
         case "chat_ended":
           await service.finalizeByChatId(event.chatId, {
@@ -96,20 +90,11 @@ export const humeWebhookHandler =
           }
           break;
         case "tool_call":
-          // Tool calls not used with default speech model — handled via sentinel
           break;
       }
 
-      res
-        .status(200)
-        .json({ status: "success", message: `${event.eventName} processed` });
+      res.noContent();
     } catch (error) {
-      logger.error(
-        { error, event: event.eventName },
-        "Webhook processing failed",
-      );
-      res
-        .status(200)
-        .json({ status: "error", message: "Processing failed, will retry" });
+      next(error);
     }
   };
