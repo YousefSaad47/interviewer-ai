@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import type { SignUpSubmitFormData } from "@/modules/auth";
-import { AuthLayout, signUpSubmitSchema } from "@/modules/auth";
+import { AuthLayout, signUpSchema } from "@/modules/auth";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 
@@ -26,7 +26,7 @@ export function SignUpPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<SignUpSubmitFormData>({
-    resolver: zodResolver(signUpSubmitSchema),
+    resolver: zodResolver(signUpSchema),
     mode: "onSubmit",
   });
 

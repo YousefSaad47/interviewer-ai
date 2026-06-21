@@ -1,5 +1,5 @@
 import { AuthGuard } from "@/lib/auth-guard";
-import { DashboardPage } from "@/modules/dashboard/pages";
+import { DashboardPage } from "@/modules/dashboard";
 
 export default function Page() {
   return (

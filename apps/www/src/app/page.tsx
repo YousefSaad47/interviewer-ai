@@ -9,7 +9,7 @@ import {
   HowItWorksSection,
   PricingSection,
   SuccessStoriesSection,
-} from "@/modules/landing/components";
+} from "@/modules/landing";
 
 export default function Page() {
   return (

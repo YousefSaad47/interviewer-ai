@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Header } from "@/modules/landing/components";
+import { Header } from "@/modules/landing";
 
 interface SettingsLayoutProps {
   children: React.ReactNode;

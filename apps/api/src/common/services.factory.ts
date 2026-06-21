@@ -9,8 +9,9 @@ import { SampleService } from "@/modules/sample";
 import { hume } from "@/services/hume";
 import { judge0 } from "@/services/judge0/judge0";
 
-import { AbstractService } from "./contracts/abstract.service";
+import { AbstractService } from "./contracts";
 import { Services } from "./enums";
+import { InternalException } from "./exceptions";
 
 export class ServicesFactory {
   private static _services: Map<Services, AbstractService> = new Map();
@@ -27,6 +28,7 @@ export class ServicesFactory {
             new CodingService(prisma, judge0, codingCacheService),
           );
           break;
+
         case Services.PROBLEM:
           this._services.set(service, new ProblemService(prisma));
           break;
@@ -34,7 +36,7 @@ export class ServicesFactory {
           this._services.set(service, new InterviewService(prisma, hume));
           break;
         default:
-          throw new Error(`Unknown service: ${service satisfies never}`);
+          throw new InternalException(`Unknown service: ${service}`);
       }
     }
 

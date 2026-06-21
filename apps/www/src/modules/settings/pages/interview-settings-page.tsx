@@ -10,8 +10,8 @@ import {
 } from "@/shared/components/ui/select";
 import { Switch } from "@/shared/components/ui/switch";
 
-import { SettingsCard } from "../components/settings-card";
-import { SettingsLayout } from "../layouts/settings-layout";
+import { SettingsCard } from "../components";
+import { SettingsLayout } from "../layouts";
 
 export function InterviewSettingsPage() {
   return (

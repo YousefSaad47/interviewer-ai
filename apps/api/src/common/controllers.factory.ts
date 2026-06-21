@@ -6,10 +6,9 @@ import { InterviewController } from "@/modules/interview";
 import { ProblemController } from "@/modules/problem";
 import { SampleController } from "@/modules/sample";
 
-import { AbstractController } from "./contracts/abstract.controller";
-import { AbstractService } from "./contracts/abstract.service";
-import { Services } from "./enums";
-import { Controllers } from "./enums/controllers.enum";
+import { AbstractController, AbstractService } from "./contracts";
+import { Controllers, Services } from "./enums";
+import { InternalException } from "./exceptions";
 import { ServicesFactory } from "./services.factory";
 
 export class ControllersFactory {
@@ -46,7 +45,7 @@ export class ControllersFactory {
           );
           break;
         default:
-          throw new Error(`Unknown controller: ${controller satisfies never}`);
+          throw new InternalException(`Unknown controller: ${controller}`);
       }
     }
 
