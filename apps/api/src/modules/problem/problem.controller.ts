@@ -23,7 +23,6 @@ export class ProblemController extends AbstractController<ProblemService> {
     this._router.get(
       "/",
       validationMiddleware({ query: problemQuerySchema }),
-      // @ts-expect-error
       this._list,
     );
     this._router.get("/:slug", this._getBySlug);
@@ -53,11 +52,11 @@ export class ProblemController extends AbstractController<ProblemService> {
     });
   }
 
-  private _list: RequestHandler<unknown, unknown, unknown, ProblemQuery> =
-    async (req, res) => {
-      const result = await this._service.list(req.query);
-      res.ok(result);
-    };
+  private _list: RequestHandler = async (_req, res) => {
+    const query = res.locals.validatedQuery as ProblemQuery;
+    const result = await this._service.list(query);
+    res.ok(result);
+  };
 
   private _getBySlug: RequestHandler<{ slug: string }> = async (req, res) => {
     const result = await this._service.getBySlug(req.params.slug);

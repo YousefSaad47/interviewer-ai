@@ -27,7 +27,7 @@ const actions = [
     icon: Code,
     label: "Coding Practice",
     primary: false,
-    href: "/coding-practice",
+    href: "/problems",
   },
 ];
 
@@ -41,7 +41,7 @@ export function QuickActions() {
       </CardHeader>
 
       <CardContent className="flex flex-col gap-3">
-        {actions.map((action, _index) => {
+        {actions.map((action) => {
           const Icon = action.icon;
           return (
             <Link key={action.href} href={action.href} className="w-full">

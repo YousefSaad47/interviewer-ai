@@ -20,12 +20,27 @@ model User {
   resumes     Resume[]
   submissions CodingSubmission[]
   performance PerformanceSnapshot[]
+  settings    UserSettings?
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@index([createdAt])
   @@map("users")
+}
+
+model UserSettings {
+  id            String  @id @default(uuid()) @db.Uuid()
+  interviewGoal Int     @default(0)
+  problemGoal   Int     @default(0)
+
+  userId String @unique @db.Uuid()
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@map("user_settings")
 }
 
 model Session {

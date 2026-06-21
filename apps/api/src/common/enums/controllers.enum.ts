@@ -3,4 +3,5 @@ export enum Controllers {
   CODING,
   PROBLEM,
   INTERVIEW,
+  DASHBOARD,
 }

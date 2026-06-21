@@ -1,7 +1,15 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler, Response } from "express";
 import { ZodError, ZodType, z } from "zod";
 
 import { ValidationException } from "@/common/exceptions";
+
+declare global {
+  namespace Express {
+    interface Locals {
+      validatedQuery: unknown;
+    }
+  }
+}
 
 type ValidationSchema = {
   body?: ZodType;
@@ -11,30 +19,32 @@ type ValidationSchema = {
 
 export const validationMiddleware =
   (schema: ValidationSchema): RequestHandler =>
-  async (req, _, next) => {
+  async (req, res: Response, next) => {
     try {
-      const { body, query, params } = z.object(schema).parse({
+      const parsed = z.object(schema).parse({
         body: req.body,
         query: req.query,
         params: req.params,
       });
 
-      if (body) {
-        req.body = body;
+      if (parsed.body) {
+        req.body = parsed.body;
       }
 
-      if (query) {
-        Object.assign(req.query, query);
+      if (parsed.params) {
+        Object.assign(req.params, parsed.params);
       }
 
-      if (params) {
-        // biome-ignore lint/suspicious/noExplicitAny: <>
-        req.params = params as any;
+      if (parsed.query) {
+        res.locals.validatedQuery = parsed.query;
       }
     } catch (error) {
-      throw new ValidationException("Validation failed", {
-        details: z.treeifyError(error as ZodError),
-      });
+      if (error instanceof ZodError) {
+        throw new ValidationException("Validation failed", {
+          details: z.treeifyError(error),
+        });
+      }
+      throw error;
     }
 
     next();
