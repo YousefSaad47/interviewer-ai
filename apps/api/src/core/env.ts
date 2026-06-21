@@ -42,6 +42,8 @@ const envSchema = z
     HUME_SECRET_KEY: z.string().default(""),
     HUME_WEBHOOK_SIGNING_KEY: z.string().default(""),
     HUME_WEBHOOK_URL: z.string().default(""),
+    AI_PROVIDER: z.enum(["ollama", "google"]).default("ollama"),
+    AI_MODEL: z.string().default("qwen3.5:9b"),
   })
   .transform((env) => {
     const {
