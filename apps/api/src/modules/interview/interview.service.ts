@@ -3,6 +3,7 @@
 import { AbstractService } from "@/common/contracts";
 import { ConflictException, NotFoundException } from "@/common/exceptions";
 import type { PrismaClient } from "@/generated/client";
+import { evaluateAnswerQueue } from "@/services/bullmq/queues";
 import type { HumeService } from "@/services/hume";
 
 import type {
@@ -132,7 +133,7 @@ export class InterviewService extends AbstractService {
       const confidenceScore = scores["confidence"] ?? null;
       const sentimentScore = scores["sentiment"] ?? null;
 
-      await this.prisma.answer.create({
+      const answer = await this.prisma.answer.create({
         data: {
           transcript: msg.messageText ?? null,
           interviewQuestionId: iq.id,
@@ -152,6 +153,13 @@ export class InterviewService extends AbstractService {
             },
           },
         },
+      });
+
+      await evaluateAnswerQueue.add("evaluate-answer", {
+        answerId: answer.id,
+        questionText: iq.question.text,
+        transcript: msg.messageText ?? "",
+        suggestedAnswer: iq.question.suggestedAnswer,
       });
     }
 
