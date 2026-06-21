@@ -40,7 +40,9 @@ export class ServicesFactory {
           this._services.set(service, new DashboardService(prisma));
           break;
         default:
-          throw new InternalException(`Unknown service: ${service}`);
+          throw new InternalException(
+            `Unknown service: ${service satisfies never}`,
+          );
       }
     }
 

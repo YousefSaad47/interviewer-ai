@@ -52,7 +52,9 @@ export class ControllersFactory {
           );
           break;
         default:
-          throw new InternalException(`Unknown controller: ${controller}`);
+          throw new InternalException(
+            `Unknown controller: ${controller satisfies never}`,
+          );
       }
     }
 
