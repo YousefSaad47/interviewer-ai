@@ -1,103 +1,263 @@
-import "dotenv/config";
-
 import chalk from "chalk";
-import { z } from "zod";
+import dotenv from "dotenv";
 
-enum NodeEnv {
-  DEVELOPMENT = "development",
-  PRODUCTION = "production",
-  TESTING = "testing",
+if (
+  process.env.NODE_ENV !== "production" &&
+  // biome-ignore lint/complexity/useLiteralKeys: bracket notation required for tsconfig index signatures
+  !process.env["RAILWAY_ENVIRONMENT"]
+) {
+  dotenv.config();
 }
 
-const envSchema = z
-  .object({
-    NODE_ENV: z.enum(NodeEnv).default(NodeEnv.DEVELOPMENT),
-    PORT: z.coerce.number().default(4000),
-    PG_HOST: z.string(),
-    PG_PORT: z.coerce.number(),
-    PG_USER: z.string(),
-    PG_PASSWORD: z.string(),
-    PG_DB: z.string(),
-    REDIS_HOST: z.string(),
-    REDIS_PORT: z.coerce.number(),
-    REDIS_USER: z.string(),
-    REDIS_PASSWORD: z.string(),
-    BETTER_AUTH_SECRET: z
-      .string()
-      .min(32, "BETTER_AUTH_SECRET must be at least 32 characters"),
-    BETTER_AUTH_URL: z.string().default("http://localhost:3000"),
-    CORS_ORIGIN: z
-      .string()
-      .default("http://localhost:3000,http://localhost:3001"),
-    MAIL_HOST: z.string().default("localhost"),
-    MAIL_PORT: z.coerce.number().default(1025),
-    MAIL_FROM: z.string().default("noreply@interviewer.ai"),
-    GOOGLE_CLIENT_ID: z.string().default(""),
-    GOOGLE_CLIENT_SECRET: z.string().default(""),
-    GITHUB_CLIENT_ID: z.string().default(""),
-    GITHUB_CLIENT_SECRET: z.string().default(""),
-    JUDGE0_URL: z.string().default("http://localhost:2358"),
-    JUDGE0_AUTH_TOKEN: z.string().default(""),
-    HUME_API_KEY: z.string().default(""),
-    HUME_SECRET_KEY: z.string().default(""),
-    HUME_WEBHOOK_SIGNING_KEY: z.string().default(""),
-    HUME_WEBHOOK_URL: z.string().default(""),
-    AI_PROVIDER: z.enum(["ollama", "google"]).default("ollama"),
-    AI_MODEL: z.string().default("qwen3.5:9b"),
-  })
-  .transform((env) => {
-    const {
-      PG_HOST,
-      PG_PORT,
-      PG_USER,
-      PG_PASSWORD,
-      PG_DB,
-      REDIS_HOST,
-      REDIS_PORT,
-      REDIS_USER,
-      REDIS_PASSWORD,
-      CORS_ORIGIN,
-      ...rest
-    } = env;
-    const corsOrigins = CORS_ORIGIN.split(",")
-      .map((o) => o.trim())
-      .filter(Boolean);
-
-    return {
-      ...rest,
-      DATABASE_URL: `postgresql://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:${PG_PORT}/${PG_DB}`,
-      REDIS_URL: `redis://${REDIS_USER}:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}`,
-      CORS_ORIGIN: corsOrigins,
-    };
-  });
-
-const parsed = envSchema.safeParse(process.env);
-
-if (!parsed.success) {
-  console.error(
-    chalk.red("Failed to parse environment variables"),
-    parsed.error,
-  );
-  process.exit(1);
-}
-
-console.info(
-  parsed.data.NODE_ENV === NodeEnv.DEVELOPMENT
-    ? chalk.dim(`Loaded ${JSON.stringify(parsed.data, null, 2)} env vars`)
-    : chalk.dim(
-        `Loaded ${JSON.stringify(Object.keys(parsed.data), null, 2)} env vars`,
-      ),
-);
-
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv extends z.infer<typeof envSchema> {}
+export const getEnvVariable = (key: string, defaultValue?: string): string => {
+  const value = process.env[key] ?? defaultValue;
+  if (value === undefined) {
+    throw new Error(
+      `Environment variable ${key} is not set and no default value provided.`,
+    );
   }
-}
-
-export const env = {
-  ...parsed.data,
-  isDevelopment: parsed.data.NODE_ENV === NodeEnv.DEVELOPMENT,
-  isProduction: parsed.data.NODE_ENV === NodeEnv.PRODUCTION,
-  isTesting: parsed.data.NODE_ENV === NodeEnv.TESTING,
+  return value;
 };
+
+export const getEnvVarAsNumber = (
+  key: string,
+  defaultValue?: number,
+): number => {
+  const value = process.env[key];
+  if (value === undefined) {
+    if (defaultValue === undefined) {
+      throw new Error(`Environment variable ${key} is not defined`);
+    }
+    return defaultValue;
+  } else {
+    const parsedValue = Number(value);
+    if (Number.isNaN(parsedValue)) {
+      throw new Error(`Environment variable ${key} is not a number`);
+    }
+    return parsedValue;
+  }
+};
+
+export const getEnvVarAsBoolean = (
+  key: string,
+  defaultValue?: boolean,
+): boolean => {
+  const value = process.env[key];
+  if (value === undefined) {
+    if (defaultValue === undefined) {
+      throw new Error(`Environment variable ${key} is not defined`);
+    }
+    return defaultValue;
+  }
+  return value === "true";
+};
+
+const hasInsecureSecretPattern = (value: string): boolean => {
+  const normalized = value.toLowerCase();
+  return (
+    normalized.includes("change-in-production") ||
+    normalized.includes("your-super-secret") ||
+    normalized.includes("default-encryption-key")
+  );
+};
+
+const ensureMinLength = (
+  key: string,
+  value: string,
+  minLength: number,
+): string => {
+  if (value.length < minLength) {
+    throw new Error(
+      `Environment variable ${key} must be at least ${minLength} characters.`,
+    );
+  }
+
+  if (hasInsecureSecretPattern(value)) {
+    throw new Error(
+      `Environment variable ${key} contains an insecure placeholder value.`,
+    );
+  }
+
+  return value;
+};
+
+export const ensureHexLength = (
+  key: string,
+  value: string,
+  expectedHexLength: number,
+): string => {
+  const normalized = value.trim();
+  const hexPattern = /^[0-9a-fA-F]+$/;
+
+  if (normalized.length !== expectedHexLength || !hexPattern.test(normalized)) {
+    throw new Error(
+      `Environment variable ${key} must be a ${expectedHexLength}-character hex string.`,
+    );
+  }
+
+  return normalized;
+};
+
+// 1. App Configuration
+const nodeEnv = getEnvVariable("NODE_ENV", "development");
+export const appConfig = {
+  port: getEnvVarAsNumber("PORT", 8000),
+  nodeEnv,
+  isDevelopment: nodeEnv === "development",
+  isProduction: nodeEnv === "production",
+  isTesting: nodeEnv === "testing",
+  betterAuthSecret: ensureMinLength(
+    "BETTER_AUTH_SECRET",
+    getEnvVariable("BETTER_AUTH_SECRET"),
+    32,
+  ),
+  betterAuthUrl: getEnvVariable("BETTER_AUTH_URL", "http://localhost:8000"),
+};
+
+// 2. Database Configuration (PostgreSQL)
+const pgHost = getEnvVariable("PG_HOST", "localhost");
+const pgPort = getEnvVarAsNumber("PG_PORT", 5432);
+const pgUser = getEnvVariable("PG_USER");
+const pgPassword = getEnvVariable("PG_PASSWORD");
+const pgDb = getEnvVariable("PG_DB");
+export const dbConfig = {
+  host: pgHost,
+  port: pgPort,
+  user: pgUser,
+  password: pgPassword,
+  db: pgDb,
+  databaseUrl: `postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDb}`,
+};
+
+// 3. Redis Configuration
+const redisHost = getEnvVariable("REDIS_HOST", "localhost");
+const redisPort = getEnvVarAsNumber("REDIS_PORT", 6379);
+const redisUser = getEnvVariable("REDIS_USER", "default");
+const redisPassword = getEnvVariable("REDIS_PASSWORD", "password");
+export const redisConfig = {
+  host: redisHost,
+  port: redisPort,
+  user: redisUser,
+  password: redisPassword,
+  url: `redis://${redisUser}:${redisPassword}@${redisHost}:${redisPort}`,
+};
+
+// 4. CORS Configuration
+export const corsConfig = {
+  allowedOrigins: getEnvVariable(
+    "CORS_ORIGIN",
+    "http://localhost:3000,http://localhost:3001",
+  )
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+};
+
+// 5. Email Configuration
+export const emailConfig = {
+  host: getEnvVariable("MAIL_HOST", "localhost"),
+  port: getEnvVarAsNumber("MAIL_PORT", 1025),
+  from: getEnvVariable("MAIL_FROM", "noreply@interviewer.ai"),
+};
+
+// 6. OAuth Configuration
+export const oauthConfig = {
+  googleClientId: getEnvVariable("GOOGLE_CLIENT_ID", ""),
+  googleClientSecret: getEnvVariable("GOOGLE_CLIENT_SECRET", ""),
+  githubClientId: getEnvVariable("GITHUB_CLIENT_ID", ""),
+  githubClientSecret: getEnvVariable("GITHUB_CLIENT_SECRET", ""),
+};
+
+// 7. Judge0 Configuration
+export const judge0Config = {
+  url: getEnvVariable("JUDGE0_URL", "http://localhost:2358"),
+  authToken: getEnvVariable("JUDGE0_AUTH_TOKEN", ""),
+};
+
+// 8. Hume AI Configuration
+export const humeConfig = {
+  apiKey: getEnvVariable("HUME_API_KEY", ""),
+  secretKey: getEnvVariable("HUME_SECRET_KEY", ""),
+  webhookSigningKey: getEnvVariable("HUME_WEBHOOK_SIGNING_KEY", ""),
+  webhookUrl: getEnvVariable("HUME_WEBHOOK_URL", ""),
+};
+
+// 9. AI Feedback Configuration
+export const aiConfig = {
+  provider: getEnvVariable("AI_PROVIDER", "ollama"),
+  model: getEnvVariable("AI_MODEL", "qwen3.5:9b"),
+  googleApiKey: getEnvVariable("GOOGLE_GENERATIVE_AI_API_KEY", ""),
+};
+
+// 10. Unified Export with Flattened Values for Backward Compatibility
+export const env = {
+  appConfig,
+  dbConfig,
+  redisConfig,
+  corsConfig,
+  emailConfig,
+  oauthConfig,
+  judge0Config,
+  humeConfig,
+  aiConfig,
+
+  // Flat properties referenced throughout the project codebase
+  NODE_ENV: appConfig.nodeEnv,
+  PORT: appConfig.port,
+  isDevelopment: appConfig.isDevelopment,
+  isProduction: appConfig.isProduction,
+  isTesting: appConfig.isTesting,
+  DATABASE_URL: dbConfig.databaseUrl,
+  REDIS_URL: redisConfig.url,
+  CORS_ORIGIN: corsConfig.allowedOrigins,
+  BETTER_AUTH_SECRET: appConfig.betterAuthSecret,
+  BETTER_AUTH_URL: appConfig.betterAuthUrl,
+  GOOGLE_CLIENT_ID: oauthConfig.googleClientId,
+  GOOGLE_CLIENT_SECRET: oauthConfig.googleClientSecret,
+  GITHUB_CLIENT_ID: oauthConfig.githubClientId,
+  GITHUB_CLIENT_SECRET: oauthConfig.githubClientSecret,
+  JUDGE0_URL: judge0Config.url,
+  JUDGE0_AUTH_TOKEN: judge0Config.authToken,
+  HUME_API_KEY: humeConfig.apiKey,
+  HUME_SECRET_KEY: humeConfig.secretKey,
+  HUME_WEBHOOK_SIGNING_KEY: humeConfig.webhookSigningKey,
+  HUME_WEBHOOK_URL: humeConfig.webhookUrl,
+  AI_PROVIDER: aiConfig.provider,
+  AI_MODEL: aiConfig.model,
+  GOOGLE_GENERATIVE_AI_API_KEY: aiConfig.googleApiKey,
+  MAIL_HOST: emailConfig.host,
+  MAIL_PORT: emailConfig.port,
+  MAIL_FROM: emailConfig.from,
+};
+
+// Print loaded configuration status
+console.info(
+  env.isDevelopment
+    ? chalk.dim(
+        `Loaded structured environment configurations:\n${JSON.stringify(
+          {
+            appConfig: { ...appConfig, betterAuthSecret: "***" },
+            dbConfig: { ...dbConfig, password: "***" },
+            redisConfig: { ...redisConfig, password: "***" },
+            corsConfig,
+            emailConfig,
+            oauthConfig: {
+              ...oauthConfig,
+              googleClientSecret: "***",
+              githubClientSecret: "***",
+            },
+            judge0Config: { ...judge0Config, authToken: "***" },
+            humeConfig: {
+              ...humeConfig,
+              apiKey: "***",
+              secretKey: "***",
+              webhookSigningKey: "***",
+            },
+            aiConfig: { ...aiConfig, googleApiKey: "***" },
+          },
+          null,
+          2,
+        )}`,
+      )
+    : chalk.dim("Loaded environment configuration variables."),
+);

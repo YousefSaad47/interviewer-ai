@@ -66,7 +66,7 @@ export const extendExpressApp = (app: Application) => {
       const { serverAdapter } = await import("@/services/bullmq/ui");
       app.use("/api/admin/queues", serverAdapter.getRouter());
       logger.info(
-        "Bull Board mounted at http://localhost:4000/api/admin/queues",
+        `Bull Board mounted at http://localhost:${env.PORT}/api/admin/queues`,
       );
     }
     return app;
