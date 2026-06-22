@@ -1,5 +1,5 @@
-import { GuestGuard } from "@/lib/auth-guard";
-import { ForgotPasswordPage } from "@/modules/auth";
+import { GuestGuard } from "@/features/auth/components/auth-guard";
+import { ForgotPasswordPage } from "@/features/auth/components/forgot-password-page";
 
 export default function Page() {
   return (

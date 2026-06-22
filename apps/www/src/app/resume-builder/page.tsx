@@ -1,5 +1,5 @@
-import { AuthGuard } from "@/lib/auth-guard";
-import { ResumeBuilderPage } from "@/modules/resume-builder";
+import { AuthGuard } from "@/features/auth/components/auth-guard";
+import { ResumeBuilderPage } from "@/features/resume-builder/components/resume-builder-page";
 
 export default function Page() {
   return (

@@ -1,5 +1,5 @@
-import { AuthGuard } from "@/lib/auth-guard";
-import { SetupInterviewPage } from "@/modules/interview";
+import { AuthGuard } from "@/features/auth/components/auth-guard";
+import { SetupInterviewPage } from "@/features/interview/components/setup-interview-page";
 
 export default function SetupInterview() {
   return (
