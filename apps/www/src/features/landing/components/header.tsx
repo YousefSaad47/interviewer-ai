@@ -103,8 +103,8 @@ export function Header() {
                       <motion.span
                         layoutId="tab"
                         className={cn(
-                          "absolute inset-0 rounded-[15px] bg-neutral-200 dark:bg-neutral-800",
-                          scrolled && "bg-neutral-300 dark:bg-neutral-700",
+                          "absolute inset-0 rounded-[15px] bg-primary/10",
+                          scrolled && "bg-primary/15",
                         )}
                         transition={{ duration: 0.2 }}
                       />

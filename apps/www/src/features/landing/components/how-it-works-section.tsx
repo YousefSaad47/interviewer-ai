@@ -91,8 +91,8 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section className="relative bg-background py-24">
-      <div className="container mx-auto px-4">
+    <section className="relative bg-transparent py-24 overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <div className="mb-16 text-center">
           <Heading as="h2" className="mb-6">

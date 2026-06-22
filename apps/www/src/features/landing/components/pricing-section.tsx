@@ -115,22 +115,22 @@ export function PricingSection() {
       id="pricing"
     >
       {/* Background effects */}
-      <div className="pointer-events-none absolute inset-0 -z-20">
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <div
-          className="absolute rounded-full"
+          className="absolute rounded-full opacity-30 dark:opacity-60"
           style={{
             top: "50%",
             left: "50%",
             width: "800px",
             height: "800px",
             transform: "translate(-50%, -50%)",
-            background: "rgba(99, 130, 222, 0.05)",
-            filter: "blur(150px)",
+            background: "oklch(0.48 0.15 265.8)",
+            filter: "blur(200px)",
           }}
         />
       </div>
 
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <div className="mb-12 text-center md:mb-16">
           <Heading as="h2" className="mb-4 md:mb-6">
@@ -168,7 +168,7 @@ export function PricingSection() {
                   )}
 
                   <WobbleCard
-                    containerClassName="group mt-3 flex h-full w-full flex-col bg-blue-900 shadow-2xl shadow-black-950/5"
+                    containerClassName="group mt-3 flex h-full w-full flex-col bg-gradient-to-b from-[#6382DE]/90 to-background border border-[#6382DE]/20 shadow-2xl shadow-black-950/5"
                     className="flex h-full w-full flex-col p-6 pt-0 md:p-8"
                   >
                     {/* Icon */}
@@ -298,7 +298,7 @@ export function PricingSection() {
                   )}
 
                   <WobbleCard
-                    containerClassName="group mt-3 flex h-full w-full flex-col bg-blue-900 shadow-2xl shadow-black-950/5 md:scale-105"
+                    containerClassName="group mt-3 flex h-full w-full flex-col bg-gradient-to-b from-[#6382DE]/90 to-background border border-[#6382DE]/20 shadow-2xl shadow-black-950/5 md:scale-105"
                     className="flex h-full w-full flex-col p-8 pt-0"
                   >
                     {/* Icon */}
