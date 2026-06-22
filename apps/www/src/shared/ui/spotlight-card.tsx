@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 export const SpotlightCard = ({
   children,
   className = "",
-  spotlightColor = "oklch(0.5 0 0 / 0.3)",
+  spotlightColor = "oklch(0.545 0.143 265.8 / 0.15)",
 }: {
   children: React.ReactNode;
   className?: string;
@@ -49,7 +49,7 @@ export const SpotlightCard = ({
       onBlur={handleBlur}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-8 transition-colors dark:border-neutral-800 dark:bg-neutral-900 ${className}`}
+      className={`relative overflow-hidden rounded-3xl border border-border bg-card p-8 transition-colors ${className}`}
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out"

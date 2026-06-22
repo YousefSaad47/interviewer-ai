@@ -10,30 +10,33 @@ import { Paragraph } from "@/shared/ui/paragraph";
 
 export function HeroSection() {
   return (
-    <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-background px-4 py-12 sm:min-h-[75vh] sm:py-14 md:min-h-[85vh] md:px-8 md:py-20 lg:min-h-screen lg:py-24">
+    <section className="relative flex min-h-[80vh] items-center justify-center bg-background px-4 py-12 sm:min-h-[75vh] sm:py-14 md:min-h-[85vh] md:px-8 md:py-20 lg:min-h-screen lg:py-24">
+      {/* Grid Background Effect */}
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(47,92,214,0.11)_1px,transparent_1px),linear-gradient(to_bottom,rgba(47,92,214,0.11)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(99,130,222,0.13)_1px,transparent_1px),linear-gradient(to_bottom,rgba(99,130,222,0.13)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_90%)]" />
+
       {/* Background Effects from Figma */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-visible">
         {/* Gradient ellipses matching Figma positions */}
         <div
-          className="absolute rounded-full opacity-80"
+          className="absolute rounded-full opacity-65 dark:opacity-90"
           style={{
-            top: "-300px",
-            left: "-400px",
-            width: "660px",
-            height: "665.25px",
-            background: "oklch(0.545 0.143 265.8)",
-            filter: "blur(250px)",
+            top: "-260px",
+            left: "-360px",
+            width: "700px",
+            height: "700px",
+            background: "oklch(0.48 0.15 265.8)",
+            filter: "blur(200px)",
           }}
         />
         <div
-          className="absolute hidden rounded-full opacity-80 lg:block"
+          className="absolute hidden rounded-full opacity-65 dark:opacity-90 lg:block"
           style={{
-            bottom: "-50px",
-            right: "-450px",
-            width: "660px",
-            height: "665.25px",
-            background: "oklch(0.545 0.143 265.8)",
-            filter: "blur(250px)",
+            bottom: "-30px",
+            right: "-360px",
+            width: "700px",
+            height: "700px",
+            background: "oklch(0.48 0.15 265.8)",
+            filter: "blur(200px)",
           }}
         />
       </div>
@@ -42,7 +45,7 @@ export function HeroSection() {
         {/* Badge - Animated Badge */}
         <div
           className="mb-8 md:mb-16.5"
-          style={{ marginTop: "clamp(80px, 15vw, 176px)" }}
+          style={{ marginTop: "clamp(40px, 8vw, 100px)" }}
         >
           <AnimatedBadge
             text="AI-Powered Interview Preparation"
@@ -110,6 +113,15 @@ export function HeroSection() {
           </div>
         </div>
       </div>
+
+      {/* Smooth transition to the dark section below */}
+      <div
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 z-[5]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to top, #05070c 0%, rgba(5, 7, 12, 0.8) 35%, rgba(5, 7, 12, 0) 100%)",
+        }}
+      />
     </section>
   );
 }
