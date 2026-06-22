@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
-import { GuestGuard } from "@/lib/auth-guard";
-import { ResetPasswordPage } from "@/modules/auth";
+import { GuestGuard } from "@/features/auth/components/auth-guard";
+import { ResetPasswordPage } from "@/features/auth/components/reset-password-page";
 
 export default function Page() {
   return (

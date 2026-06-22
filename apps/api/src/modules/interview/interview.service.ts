@@ -84,7 +84,13 @@ export class InterviewService extends AbstractService {
     };
   }
 
-  async finalize(interviewId: string, input: InterviewFinalizeInput) {
+  async finalize(
+    interviewId: string,
+    userId: string | null,
+    input: InterviewFinalizeInput,
+  ) {
+    await this._getInterviewForFinalize(interviewId, userId);
+
     const page = await this.hume.fetchChatEvents(input.chatId);
 
     const allEvents: Array<{
@@ -202,12 +208,17 @@ export class InterviewService extends AbstractService {
       throw new ConflictException("Interview has already been finalized");
     }
 
-    return this.finalize(interview.id, input);
+    return this.finalize(interview.id, null, input);
   }
 
-  async linkChat(interviewId: string, chatId: string, chatGroupId: string) {
+  async linkChat(
+    interviewId: string,
+    userId: string,
+    chatId: string,
+    chatGroupId: string,
+  ) {
     await this.prisma.interview.update({
-      where: { id: interviewId },
+      where: { id: interviewId, userId },
       data: {
         humeChatId: chatId,
         humeChatGroupId: chatGroupId,
@@ -229,15 +240,32 @@ export class InterviewService extends AbstractService {
     });
   }
 
-  async getProgress(interviewId: string) {
+  async getProgress(interviewId: string, userId: string) {
     const interview = await this.prisma.interview.findUniqueOrThrow({
-      where: { id: interviewId },
+      where: { id: interviewId, userId },
       select: {
         currentQuestion: true,
         questionCount: true,
         status: true,
       },
     });
+
+    return interview;
+  }
+
+  private async _getInterviewForFinalize(
+    interviewId: string,
+    userId: string | null,
+  ) {
+    const interview = await this.prisma.interview.findUniqueOrThrow({
+      where:
+        userId === null ? { id: interviewId } : { id: interviewId, userId },
+      select: { id: true, status: true },
+    });
+
+    if (interview.status === "COMPLETED") {
+      throw new ConflictException("Interview has already been finalized");
+    }
 
     return interview;
   }

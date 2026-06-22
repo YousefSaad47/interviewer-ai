@@ -133,7 +133,7 @@
         "@kubb/plugin-ts": "^4.38.0",
         "@repo/typescript-config": "workspace:*",
         "@types/bun": "latest",
-        "dotenv": "^16.4.5"
+        "dotenv": "^16.4.5",
       },
       "peerDependencies": {
         "typescript": "^5",

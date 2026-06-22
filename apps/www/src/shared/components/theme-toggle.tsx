@@ -4,8 +4,8 @@ import { motion, useMotionValue, useTransform } from "motion/react";
 import { useTheme } from "next-themes";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/shared/components/ui/button";
 import { useIsMounted } from "@/shared/hooks/use-is-mounted";
+import { Button } from "@/shared/ui/button";
 
 export const ThemeToggle = ({ className }: { className?: string }) => {
   const { theme, setTheme } = useTheme();
