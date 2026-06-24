@@ -2,6 +2,14 @@
 help: # Run `make help` to get help on the make commands
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: run
+run: ## Run the FastAPI server
+	@uv run uvicorn src.main:app --reload
+
+.PHONY: test
+test: ## Run tests
+	@uv run pytest src/tests/ -v
+
 .PHONY: type-check
 type-check: ## Run type checking
 	@uvx ty check
@@ -28,7 +36,7 @@ CLEAN_PATTERNS := \
     .ruff_cache \
     .pytest_cache \
     *.egg-info \
-		.venv
+    .venv
 
 .PHONY: clean
 clean: ## Clean Python cache and build artifacts
@@ -37,3 +45,11 @@ clean: ## Clean Python cache and build artifacts
 		find . -name "$$pattern" -exec rm -rf {} + 2>/dev/null || true; \
 	done
 	@echo "Clean complete."
+
+.PHONY: setup
+setup: ## Setup the project (install dependencies)
+	@uv sync
+
+.PHONY: dev
+dev: ## Run development server with hot reload
+	@make run
