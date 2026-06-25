@@ -66,7 +66,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative border-border border-t bg-background/95 backdrop-blur">
+    <footer className="relative border-t border-white/[0.04] bg-[#030408]/95 backdrop-blur-xl">
       <div className="container mx-auto px-4 py-16">
         {/* Main Footer Content */}
         <div className="mb-12 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">

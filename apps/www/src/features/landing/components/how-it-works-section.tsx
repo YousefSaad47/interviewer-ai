@@ -91,7 +91,7 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section className="relative bg-transparent py-24 overflow-hidden">
+    <section className="relative bg-gradient-to-b from-[#070a17] to-[#0c1224] py-24 overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <div className="mb-16 text-center">
@@ -121,7 +121,7 @@ export function HowItWorksSection() {
                 {/* Card */}
                 <SpotlightCard className="group pt-8 pr-6 pb-6 pl-8">
                   {/* Icon */}
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/10 bg-gradient-to-br from-primary/12 to-primary/3 text-primary transition-all duration-500 group-hover:scale-105 group-hover:border-primary/30 group-hover:bg-primary/20 group-hover:shadow-[0_0_20px_rgba(90,125,255,0.2)]">
                     {step.icon}
                   </div>
 

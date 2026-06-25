@@ -127,7 +127,7 @@ export function AdditionalFeaturesSection() {
   ];
 
   return (
-    <section className="relative bg-transparent py-24 overflow-hidden">
+    <section className="relative bg-gradient-to-b from-[#0a0e1c] to-[#070a17] py-24 overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <div className="mb-16 text-center">
@@ -144,7 +144,7 @@ export function AdditionalFeaturesSection() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <SpotlightCard key={index} className="group p-6">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/10 bg-gradient-to-br from-primary/12 to-primary/3 text-primary transition-all duration-500 group-hover:scale-105 group-hover:border-primary/30 group-hover:bg-primary/20 group-hover:shadow-[0_0_20px_rgba(90,125,255,0.2)]">
                 {feature.icon}
               </div>
               <h3 className="mb-3 font-bold text-foreground text-xl">

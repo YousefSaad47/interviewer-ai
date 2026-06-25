@@ -42,7 +42,7 @@ export function SuccessStoriesSection() {
   ];
 
   return (
-    <section className="relative bg-transparent py-24 overflow-hidden">
+    <section className="relative bg-gradient-to-b from-[#0c1224] to-[#05070f] py-24 overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         {/* Success Stories Header */}
         <div className="mb-16 text-center">
@@ -103,13 +103,16 @@ export function SuccessStoriesSection() {
         </div>
 
         {/* Stats */}
-        <div className="mb-24 grid grid-cols-2 gap-8 text-center md:grid-cols-4 md:divide-x lg:gap-12">
+        <div className="mb-24 grid grid-cols-2 gap-8 text-center md:grid-cols-4 md:divide-x md:divide-white/[0.06] lg:gap-12">
           {stats.map((stat, index) => (
-            <div key={index} className="space-y-2 md:space-y-4">
-              <div className="font-bold text-3xl text-foreground md:text-4xl lg:text-5xl">
+            <div
+              key={index}
+              className="space-y-2 md:space-y-3 transition-transform duration-300 hover:scale-105"
+            >
+              <div className="bg-gradient-to-r from-white via-indigo-100 to-primary bg-clip-text text-transparent font-extrabold text-4xl md:text-5xl lg:text-6xl tracking-tight drop-shadow-[0_2px_10px_rgba(90,125,255,0.15)]">
                 {stat.value}
               </div>
-              <p className="text-muted-foreground text-xs md:text-sm lg:text-base">
+              <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider md:text-sm lg:text-base">
                 {stat.label}
               </p>
             </div>
@@ -130,16 +133,24 @@ export function SuccessStoriesSection() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {team.map((member, index) => (
             <div key={index} className="group text-center">
-              <div className="relative mb-4 aspect-3/4 overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300">
-                <div className="absolute inset-0 flex items-center justify-center font-bold text-6xl text-foreground/10">
+              <div className="relative mb-5 aspect-3/4 overflow-hidden rounded-2xl border border-white/[0.04] bg-gradient-to-b from-[#111c33]/20 via-[#0d1426]/40 to-[#060814]/80 transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:border-primary/35 group-hover:shadow-[0_20px_40px_rgba(90,125,255,0.08)]">
+                {/* Glow behind initials */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(90,125,255,0.04),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+                {/* Initials Text */}
+                <div className="absolute inset-0 flex items-center justify-center font-bold text-7xl tracking-tighter bg-gradient-to-b from-white/15 to-white/3 bg-clip-text text-transparent select-none transition-all duration-500 group-hover:from-white/25 group-hover:to-white/5 group-hover:scale-105">
                   {member.name
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
                 </div>
               </div>
-              <h3 className="mb-1 font-bold text-foreground">{member.name}</h3>
-              <p className="text-muted-foreground text-sm">{member.role}</p>
+              <h3 className="mb-1 font-bold text-foreground text-lg transition-colors group-hover:text-primary">
+                {member.name}
+              </h3>
+              <p className="text-muted-foreground text-sm font-medium">
+                {member.role}
+              </p>
             </div>
           ))}
         </div>

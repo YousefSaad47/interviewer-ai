@@ -9,7 +9,7 @@ import { SubHeading } from "@/shared/ui/sub-heading";
 export function FeaturesSection() {
   return (
     <section
-      className="relative bg-transparent px-4 py-8 md:px-8 md:py-12"
+      className="relative border-t border-white/[0.02] bg-gradient-to-b from-[#060814] to-[#0a0e1c] px-4 py-8 md:px-8 md:py-12"
       style={{ paddingTop: "clamp(40px, 8vw, 90px)" }}
     >
       <div className="container mx-auto max-w-7xl relative z-10">
@@ -45,7 +45,7 @@ export function FeaturesSection() {
           <div className="relative order-2 px-6 md:px-8 lg:order-1 lg:px-0">
             <div className="space-y-4 md:space-y-6 lg:space-y-7.5">
               {/* Header */}
-              <div className="space-y-3 pb-4 md:pb-6 lg:pb-[37.35px]">
+              <div className="space-y-3 pb-0">
                 <div className="flex flex-wrap items-center gap-2 md:gap-3">
                   <Brain className="size-6 text-primary md:size-8 lg:size-10" />
                   <h3
@@ -90,19 +90,19 @@ export function FeaturesSection() {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-3 md:gap-[24.16px]">
-                <Badge className="rounded-full border-none bg-muted px-[17px] py-[3px] text-foreground text-xs leading-[1.21em] md:text-sm">
+                <Badge className="rounded-full border border-white/[0.04] bg-white/[0.02] hover:border-primary/20 hover:bg-primary/[0.04] transition-all duration-300 px-[17px] py-[3.5px] text-neutral-300 hover:text-white text-xs leading-[1.21em] md:text-sm">
                   Data Structure
                 </Badge>
-                <Badge className="rounded-full border-none bg-muted px-[15px] py-[3px] text-foreground text-xs leading-[1.21em] md:text-sm">
+                <Badge className="rounded-full border border-white/[0.04] bg-white/[0.02] hover:border-primary/20 hover:bg-primary/[0.04] transition-all duration-300 px-[15px] py-[3.5px] text-neutral-300 hover:text-white text-xs leading-[1.21em] md:text-sm">
                   Algorithims
                 </Badge>
-                <Badge className="rounded-full border-none bg-muted px-[18px] py-[3px] text-foreground text-xs leading-[1.21em] md:text-sm">
+                <Badge className="rounded-full border border-white/[0.04] bg-white/[0.02] hover:border-primary/20 hover:bg-primary/[0.04] transition-all duration-300 px-[18px] py-[3.5px] text-neutral-300 hover:text-white text-xs leading-[1.21em] md:text-sm">
                   Behavioral
                 </Badge>
-                <Badge className="rounded-full border-none bg-muted px-[25px] py-[3px] text-foreground text-xs leading-[1.29em] md:text-sm">
+                <Badge className="rounded-full border border-white/[0.04] bg-white/[0.02] hover:border-primary/20 hover:bg-primary/[0.04] transition-all duration-300 px-[25px] py-[3.5px] text-neutral-300 hover:text-white text-xs leading-[1.29em] md:text-sm">
                   System Design
                 </Badge>
-                <Badge className="rounded-full border-none bg-muted px-5 py-[3px] text-foreground text-xs leading-[1.21em] md:text-sm">
+                <Badge className="rounded-full border border-white/[0.04] bg-white/[0.02] hover:border-primary/20 hover:bg-primary/[0.04] transition-all duration-300 px-5 py-[3.5px] text-neutral-300 hover:text-white text-xs leading-[1.21em] md:text-sm">
                   Java Script
                 </Badge>
               </div>
@@ -111,7 +111,7 @@ export function FeaturesSection() {
 
           {/* Right side - Image */}
           <div className="order-1 mx-auto my-2 w-full max-w-60 lg:order-2 lg:my-0 lg:max-w-none">
-            <div className="relative aspect-405/443 w-full overflow-hidden rounded-lg lg:rounded-none">
+            <div className="relative aspect-405/443 w-full overflow-hidden rounded-lg lg:rounded-none animate-float-slow">
               <Image
                 src="/images/ai-interview-preview-36af0e.png"
                 alt="AI Mock Interview Interface"
@@ -130,7 +130,7 @@ export function FeaturesSection() {
         >
           {/* Left side - Image */}
           <div className="mx-auto my-2 w-full max-w-60 lg:my-0 lg:max-w-none">
-            <div className="relative aspect-457/297 w-full overflow-hidden rounded-lg lg:rounded-none">
+            <div className="relative aspect-457/297 w-full overflow-hidden rounded-lg lg:rounded-none animate-float-delayed">
               <Image
                 src="/images/coding-practice-preview-16338e.png"
                 alt="Coding Practice Interface"
@@ -144,7 +144,7 @@ export function FeaturesSection() {
           <div className="relative px-6 md:px-8 lg:px-0">
             <div className="space-y-4 md:space-y-6 lg:space-y-[37.12px]">
               {/* Header */}
-              <div className="space-y-3 pb-4 md:pb-8 lg:pb-[49.85px]">
+              <div className="space-y-3 pb-0">
                 <div className="flex flex-wrap items-center gap-2 md:gap-3">
                   <Brain className="size-6 text-primary md:size-7" />
                   <h3
@@ -239,7 +239,7 @@ export function FeaturesSection() {
           <div className="relative order-2 px-6 md:px-8 lg:order-1 lg:px-0">
             <div className="space-y-4 md:space-y-6 lg:space-y-7.5">
               {/* Header */}
-              <div className="space-y-3 pb-4 md:pb-6 lg:pb-[37.35px]">
+              <div className="space-y-3 pb-0">
                 <div className="flex flex-wrap items-center gap-2 md:gap-3">
                   <Brain className="size-6 text-primary md:size-8 lg:size-10" />
                   <h3
@@ -284,16 +284,16 @@ export function FeaturesSection() {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-3 md:gap-[24.16px]">
-                <Badge className="rounded-full border-none bg-muted px-[17px] py-[3px] text-foreground text-xs leading-[1.21em] md:text-sm">
+                <Badge className="rounded-full border border-white/[0.04] bg-white/[0.02] hover:border-primary/20 hover:bg-primary/[0.04] transition-all duration-300 px-[17px] py-[3.5px] text-neutral-300 hover:text-white text-xs leading-[1.21em] md:text-sm">
                   Data Structure
                 </Badge>
-                <Badge className="rounded-full border-none bg-muted px-[15px] py-[3px] text-foreground text-xs leading-[1.21em] md:text-sm">
+                <Badge className="rounded-full border border-white/[0.04] bg-white/[0.02] hover:border-primary/20 hover:bg-primary/[0.04] transition-all duration-300 px-[15px] py-[3.5px] text-neutral-300 hover:text-white text-xs leading-[1.21em] md:text-sm">
                   Algorithims
                 </Badge>
-                <Badge className="rounded-full border-none bg-muted px-[18px] py-[3px] text-foreground text-xs leading-[1.21em] md:text-sm">
+                <Badge className="rounded-full border border-white/[0.04] bg-white/[0.02] hover:border-primary/20 hover:bg-primary/[0.04] transition-all duration-300 px-[18px] py-[3.5px] text-neutral-300 hover:text-white text-xs leading-[1.21em] md:text-sm">
                   Behavioral
                 </Badge>
-                <Badge className="rounded-full border-none bg-muted px-5 py-[3px] text-foreground text-xs leading-none md:text-sm">
+                <Badge className="rounded-full border border-white/[0.04] bg-white/[0.02] hover:border-primary/20 hover:bg-primary/[0.04] transition-all duration-300 px-5 py-[3.5px] text-neutral-300 hover:text-white text-xs leading-none md:text-sm">
                   LinkedIn Profile
                 </Badge>
               </div>
@@ -302,7 +302,7 @@ export function FeaturesSection() {
 
           {/* Right side - Image */}
           <div className="order-1 mx-auto my-2 w-full max-w-60 lg:order-2 lg:my-0 lg:max-w-none">
-            <div className="relative aspect-405/443 w-full overflow-hidden rounded-lg lg:rounded-none">
+            <div className="relative aspect-405/443 w-full overflow-hidden rounded-lg lg:rounded-none animate-float-slow">
               <Image
                 src="/images/resume-builder-preview-36af0e.png"
                 alt="Resume Builder Interface"
