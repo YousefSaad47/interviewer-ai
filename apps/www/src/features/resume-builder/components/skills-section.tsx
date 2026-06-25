@@ -28,8 +28,8 @@ export function SkillsSection() {
   };
 
   return (
-    <Card className="rounded-[15px] border-border bg-card dark:bg-card">
-      <CardHeader>
+    <Card className="overflow-hidden rounded-lg border-border bg-card/80 dark:bg-card/90">
+      <CardHeader className="border-border border-b pb-4">
         <CardTitle className="font-bold text-foreground text-xl">
           Skills
         </CardTitle>
@@ -45,11 +45,11 @@ export function SkillsSection() {
                 }
               }}
               placeholder="Add skill..."
-              className="h-9 w-full rounded-lg border-border bg-white text-sm sm:w-32 dark:border-border dark:bg-surface-secondary"
+              className="h-9 w-full rounded-lg border-border bg-white/70 text-sm shadow-none focus-visible:ring-primary/20 sm:w-40 dark:border-border dark:bg-surface-secondary/70"
             />
             <Button
               onClick={handleAddSkill}
-              className="w-full gap-1 rounded-lg bg-primary px-4 py-2 text-sm text-white hover:bg-primary/90 sm:w-auto"
+              className="h-9 w-full gap-1 rounded-lg bg-primary px-3 text-primary-foreground text-sm hover:bg-primary/90 sm:w-auto"
             >
               <Plus className="h-4 w-4" />
               Add
@@ -58,11 +58,11 @@ export function SkillsSection() {
         </CardAction>
       </CardHeader>
 
-      <CardContent className="flex flex-wrap gap-2">
+      <CardContent className="flex flex-wrap gap-2 p-4 sm:p-5">
         {data.skills.map((skill, index) => (
           <div
             key={index}
-            className="flex items-center gap-2 rounded-lg border border-border bg-white/75 px-3 py-2 dark:bg-surface-secondary"
+            className="flex items-center gap-2 rounded-lg border border-border bg-white/60 px-3 py-2 dark:bg-surface-secondary/55"
           >
             <Input
               type="text"

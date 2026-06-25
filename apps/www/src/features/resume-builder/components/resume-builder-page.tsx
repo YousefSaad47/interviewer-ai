@@ -20,18 +20,16 @@ export const ResumeBuilderPage = () => {
     <ResumeProvider>
       <div className="relative min-h-screen w-full overflow-x-hidden bg-background">
         <Header />
-        {/* Background mesh pattern */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.39] dark:opacity-[0.2]"
+          className="pointer-events-none absolute inset-0 opacity-[0.24] dark:opacity-[0.14]"
           style={{
             backgroundImage: "url('/mesh.svg')",
             backgroundSize: "cover",
           }}
         />
 
-        {/* Background blur effects */}
         <div
-          className="pointer-events-none absolute opacity-50 dark:opacity-100"
+          className="pointer-events-none absolute opacity-35 dark:opacity-70"
           style={{
             left: "-517px",
             top: "-385px",
@@ -42,7 +40,7 @@ export const ResumeBuilderPage = () => {
           }}
         />
         <div
-          className="pointer-events-none absolute opacity-50 dark:opacity-100"
+          className="pointer-events-none absolute opacity-25 dark:opacity-60"
           style={{
             right: "-180px",
             top: "423px",
@@ -54,60 +52,87 @@ export const ResumeBuilderPage = () => {
           }}
         />
 
-        {/* Main Content */}
-        <div className="relative px-4 pt-28 pb-20 sm:px-8 md:px-12 lg:px-16 xl:px-20">
-          {/* Header */}
-          <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="space-y-2">
-              <h1 className="font-bold text-2xl text-foreground md:text-3xl lg:text-4xl">
-                Resume Builder
-              </h1>
-              <p className="text-base text-muted-foreground md:text-lg">
-                Create a professional resume with AI assistance
-              </p>
-            </div>
+        <main className="relative mx-auto w-full max-w-[1500px] px-4 pt-28 pb-20 sm:px-6 md:px-8 lg:px-10 xl:px-12">
+          <section className="mb-6 overflow-hidden rounded-lg border border-border bg-card/80 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:shadow-[0_30px_90px_rgba(0,0,0,0.3)]">
+            <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_420px]">
+              <div className="relative p-6 sm:p-8">
+                <div className="absolute top-0 right-8 h-44 w-44 -translate-y-20 rounded-full bg-primary/15 blur-3xl" />
+                <div className="relative">
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 font-semibold text-primary text-xs">
+                    Resume studio
+                    <span className="h-1 w-1 rounded-full bg-primary" />
+                    Live preview
+                  </div>
+                  <h1 className="font-bold text-3xl text-foreground tracking-tight sm:text-4xl lg:text-5xl">
+                    Shape your resume like a working document
+                  </h1>
+                  <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
+                    Edit the content on the left and keep the final page in
+                    sight. No marketing cards, just a focused writing surface.
+                  </p>
+                </div>
+              </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-2 md:gap-3">
-              <Button
-                variant="outline"
-                className="gap-2 rounded-lg border-border bg-card text-foreground text-sm hover:bg-accent"
-              >
-                <CheckCircle className="h-4 w-4" />
-                <span className="hidden sm:inline">ATS Checker</span>
-                <span className="sm:hidden">ATS</span>
-              </Button>
-              <Button
-                variant="outline"
-                className="gap-2 rounded-lg border-border bg-card text-foreground text-sm hover:bg-accent"
-              >
-                <Save className="h-4 w-4" />
-                Save
-              </Button>
-              <Button className="gap-2 rounded-lg bg-primary px-4 py-2 text-sm text-white hover:bg-primary/90">
-                <Download className="h-4 w-4" />
-                <span className="hidden sm:inline">Export PDF</span>
-                <span className="sm:hidden">PDF</span>
-              </Button>
-            </div>
-          </div>
+              <div className="border-border border-t bg-surface-product/70 p-6 sm:p-8 lg:border-t-0 lg:border-l dark:bg-surface-secondary/55">
+                <div className="grid h-full content-between gap-5">
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      ["ATS", "Ready"],
+                      ["Format", "1 page"],
+                      ["Mode", "Draft"],
+                    ].map(([label, value]) => (
+                      <div
+                        key={label}
+                        className="rounded-lg border border-border bg-card/70 p-3 text-center"
+                      >
+                        <p className="text-muted-foreground text-xs">{label}</p>
+                        <p className="mt-1 font-semibold text-foreground text-sm">
+                          {value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
 
-          {/* Two Column Layout */}
-          <div className="flex flex-col gap-8 lg:flex-row">
-            {/* Left Panel - Form Sections */}
-            <div className="flex-1 space-y-8">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Button
+                      variant="outline"
+                      className="h-10 gap-2 rounded-lg border-border bg-card/70 text-foreground text-sm hover:border-primary/30 hover:bg-card"
+                    >
+                      <CheckCircle className="h-4 w-4" />
+                      <span className="hidden sm:inline">ATS Checker</span>
+                      <span className="sm:hidden">ATS</span>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="h-10 gap-2 rounded-lg border-border bg-card/70 text-foreground text-sm hover:border-primary/30 hover:bg-card"
+                    >
+                      <Save className="h-4 w-4" />
+                      Save
+                    </Button>
+                    <Button className="h-10 gap-2 rounded-lg bg-primary px-4 text-primary-foreground text-sm shadow-[0_14px_35px_rgba(16,185,129,0.2)] hover:bg-primary/90">
+                      <Download className="h-4 w-4" />
+                      <span className="hidden sm:inline">Export PDF</span>
+                      <span className="sm:hidden">PDF</span>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px]">
+            <div className="space-y-5">
               <PersonalInfoSection />
               <WorkExperienceSection />
               <EducationSection />
               <SkillsSection />
             </div>
 
-            {/* Right Panel - Resume Preview */}
-            <div className="w-full lg:w-105">
+            <div className="w-full">
               <ResumePreview />
             </div>
           </div>
-        </div>
+        </main>
       </div>
     </ResumeProvider>
   );

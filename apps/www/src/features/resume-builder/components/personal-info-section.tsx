@@ -28,19 +28,25 @@ export const PersonalInfoSection = () => {
   });
 
   return (
-    <Card className="rounded-[15px] border-border bg-card dark:bg-card">
-      <CardHeader>
+    <Card className="overflow-hidden rounded-lg border-border bg-card/80 dark:bg-card/90">
+      <CardHeader className="border-border border-b pb-4">
         <CardTitle className="flex items-center gap-2 font-bold text-foreground text-xl">
-          <User className="h-5 w-5 text-primary" />
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-primary/15 bg-primary/10 text-primary">
+            <User className="h-4 w-4" />
+          </span>
           Personal Information
         </CardTitle>
+        <p className="text-muted-foreground text-sm">
+          The header details that anchor the resume.
+        </p>
       </CardHeader>
 
-      <CardContent className="space-y-4">
-        {/* Row 1 */}
-        <div className="flex flex-col gap-4 md:flex-row">
+      <CardContent className="space-y-4 p-4 sm:p-5">
+        <div className="grid gap-4 md:grid-cols-2">
           <div className="flex-1 space-y-2">
-            <Label className="text-muted-foreground text-sm">Full Name</Label>
+            <Label className="font-semibold text-foreground text-xs">
+              Full Name
+            </Label>
             <Input
               {...register("fullName", {
                 onChange: (e) =>
@@ -48,7 +54,7 @@ export const PersonalInfoSection = () => {
               })}
               type="text"
               className={cn(
-                "rounded-lg border-border bg-white dark:border-border dark:bg-surface-secondary",
+                "h-10 rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border dark:bg-surface-secondary/70",
                 errors.fullName && "border-destructive",
               )}
             />
@@ -59,14 +65,16 @@ export const PersonalInfoSection = () => {
             )}
           </div>
           <div className="flex-1 space-y-2">
-            <Label className="text-muted-foreground text-sm">Email</Label>
+            <Label className="font-semibold text-foreground text-xs">
+              Email
+            </Label>
             <Input
               {...register("email", {
                 onChange: (e) => updatePersonalInfo({ email: e.target.value }),
               })}
               type="email"
               className={cn(
-                "rounded-lg border-border bg-white dark:border-border dark:bg-surface-secondary",
+                "h-10 rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border dark:bg-surface-secondary/70",
                 errors.email && "border-destructive",
               )}
             />
@@ -74,19 +82,17 @@ export const PersonalInfoSection = () => {
               <p className="text-destructive text-xs">{errors.email.message}</p>
             )}
           </div>
-        </div>
-
-        {/* Row 2 */}
-        <div className="flex flex-col gap-4 md:flex-row">
           <div className="flex-1 space-y-2">
-            <Label className="text-muted-foreground text-sm">Phone</Label>
+            <Label className="font-semibold text-foreground text-xs">
+              Phone
+            </Label>
             <Input
               {...register("phone", {
                 onChange: (e) => updatePersonalInfo({ phone: e.target.value }),
               })}
               type="tel"
               className={cn(
-                "rounded-lg border-border bg-white dark:border-border dark:bg-surface-secondary",
+                "h-10 rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border dark:bg-surface-secondary/70",
                 errors.phone && "border-destructive",
               )}
             />
@@ -95,7 +101,9 @@ export const PersonalInfoSection = () => {
             )}
           </div>
           <div className="flex-1 space-y-2">
-            <Label className="text-muted-foreground text-sm">Location</Label>
+            <Label className="font-semibold text-foreground text-xs">
+              Location
+            </Label>
             <Input
               {...register("location", {
                 onChange: (e) =>
@@ -103,7 +111,7 @@ export const PersonalInfoSection = () => {
               })}
               type="text"
               className={cn(
-                "rounded-lg border-border bg-white dark:border-border dark:bg-surface-secondary",
+                "h-10 rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border dark:bg-surface-secondary/70",
                 errors.location && "border-destructive",
               )}
             />
@@ -115,9 +123,8 @@ export const PersonalInfoSection = () => {
           </div>
         </div>
 
-        {/* Professional Summary */}
         <div className="space-y-2">
-          <Label className="text-muted-foreground text-sm">
+          <Label className="font-semibold text-foreground text-xs">
             Professional Summary
           </Label>
           <Textarea
@@ -126,7 +133,7 @@ export const PersonalInfoSection = () => {
             })}
             rows={3}
             className={cn(
-              "rounded-lg border-border bg-white dark:border-border dark:bg-surface-secondary",
+              "min-h-24 rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border dark:bg-surface-secondary/70",
               errors.summary && "border-destructive",
             )}
           />

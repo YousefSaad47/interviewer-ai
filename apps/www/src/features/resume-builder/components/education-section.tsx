@@ -19,15 +19,15 @@ export function EducationSection() {
   const { data, addEducation, updateEducation, removeEducation } = useResume();
 
   return (
-    <Card className="rounded-[15px] border-border bg-card dark:bg-card">
-      <CardHeader>
+    <Card className="overflow-hidden rounded-lg border-border bg-card/80 dark:bg-card/90">
+      <CardHeader className="border-border border-b pb-4">
         <CardTitle className="font-bold text-foreground text-xl">
           Education
         </CardTitle>
         <CardAction>
           <Button
             onClick={addEducation}
-            className="gap-1 rounded-lg bg-primary px-4 py-2 text-sm text-white hover:bg-primary/90"
+            className="h-9 gap-1 rounded-lg bg-primary px-3 text-primary-foreground text-sm hover:bg-primary/90"
           >
             <Plus className="h-4 w-4" />
             Add
@@ -35,15 +35,14 @@ export function EducationSection() {
         </CardAction>
       </CardHeader>
 
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-3 p-4 sm:p-5">
         {data.education.map((edu, index) => (
           <div
             key={edu.id}
-            className="space-y-3 rounded-lg bg-white/75 p-4 dark:bg-surface-secondary"
+            className="space-y-3 rounded-lg border border-border bg-white/60 p-4 dark:bg-surface-secondary/55"
           >
-            {/* Entry Header */}
             <div className="flex items-center justify-between">
-              <Label className="text-muted-foreground text-sm">
+              <Label className="font-semibold text-foreground text-sm">
                 Education {index + 1}
               </Label>
               {data.education.length > 1 && (
@@ -57,9 +56,10 @@ export function EducationSection() {
               )}
             </div>
 
-            {/* School */}
             <div className="space-y-1.5">
-              <Label className="text-muted-foreground text-xs">School</Label>
+              <Label className="font-semibold text-foreground text-xs">
+                School
+              </Label>
               <Input
                 type="text"
                 value={edu.school}
@@ -67,14 +67,15 @@ export function EducationSection() {
                   updateEducation(edu.id, { school: e.target.value })
                 }
                 placeholder="Enter school or university name"
-                className="w-full rounded-lg border-border bg-white dark:border-border-interactive dark:bg-surface-elevated"
+                className="h-10 w-full rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border-interactive dark:bg-surface-elevated"
               />
             </div>
 
-            {/* Degree & Year */}
             <div className="flex flex-col gap-3 sm:flex-row">
               <div className="flex-1 space-y-1.5">
-                <Label className="text-muted-foreground text-xs">Degree</Label>
+                <Label className="font-semibold text-foreground text-xs">
+                  Degree
+                </Label>
                 <Input
                   type="text"
                   value={edu.degree}
@@ -82,11 +83,13 @@ export function EducationSection() {
                     updateEducation(edu.id, { degree: e.target.value })
                   }
                   placeholder="e.g., Bachelor of Science"
-                  className="rounded-lg border-border bg-white dark:border-border-interactive dark:bg-surface-elevated"
+                  className="h-10 rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border-interactive dark:bg-surface-elevated"
                 />
               </div>
               <div className="flex-1 space-y-1.5">
-                <Label className="text-muted-foreground text-xs">Year</Label>
+                <Label className="font-semibold text-foreground text-xs">
+                  Year
+                </Label>
                 <Input
                   type="text"
                   value={edu.year}
@@ -94,7 +97,7 @@ export function EducationSection() {
                     updateEducation(edu.id, { year: e.target.value })
                   }
                   placeholder="e.g., 2020-2024"
-                  className="rounded-lg border-border bg-white dark:border-border-interactive dark:bg-surface-elevated"
+                  className="h-10 rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border-interactive dark:bg-surface-elevated"
                 />
               </div>
             </div>
