@@ -2,8 +2,11 @@ import type { RequestHandler } from "express";
 
 import { AbstractController } from "@/common/contracts";
 import { HttpStatus } from "@/common/enums";
-import { UnauthorizedException } from "@/common/exceptions";
-import { authMiddleware, validationMiddleware } from "@/middlewares";
+import {
+  authMiddleware,
+  getAuthenticatedUserId,
+  validationMiddleware,
+} from "@/middlewares";
 import { registerPath } from "@/services/openapi/registry";
 
 import {
@@ -11,6 +14,7 @@ import {
   type InterviewStartInput,
   interviewFinalizeParamsSchema,
   interviewFinalizeSchema,
+  interviewLinkChatSchema,
   interviewStartSchema,
 } from "./interview.schema";
 import { InterviewService } from "./interview.service";
@@ -31,12 +35,26 @@ export class InterviewController extends AbstractController<InterviewService> {
 
     this._router.post(
       "/:id/finalize",
-      validationMiddleware({ body: interviewFinalizeSchema }),
+      validationMiddleware({
+        params: interviewFinalizeParamsSchema,
+        body: interviewFinalizeSchema,
+      }),
       this._finalize,
     );
 
-    this._router.post("/:id/link-chat", this._linkChat);
-    this._router.get("/:id/progress", this._getProgress);
+    this._router.post(
+      "/:id/link-chat",
+      validationMiddleware({
+        params: interviewFinalizeParamsSchema,
+        body: interviewLinkChatSchema,
+      }),
+      this._linkChat,
+    );
+    this._router.get(
+      "/:id/progress",
+      validationMiddleware({ params: interviewFinalizeParamsSchema }),
+      this._getProgress,
+    );
   }
 
   private _registerOpenAPI() {
@@ -64,10 +82,10 @@ export class InterviewController extends AbstractController<InterviewService> {
 
   private _start: RequestHandler<unknown, unknown, InterviewStartInput> =
     async (req, res) => {
-      if (!req.userId) {
-        throw new UnauthorizedException();
-      }
-      const result = await this._service.start(req.userId, req.body);
+      const result = await this._service.start(
+        getAuthenticatedUserId(req),
+        req.body,
+      );
       res.created(result);
     };
 
@@ -76,24 +94,34 @@ export class InterviewController extends AbstractController<InterviewService> {
     unknown,
     InterviewFinalizeInput
   > = async (req, res) => {
-    if (!req.userId) {
-      throw new UnauthorizedException();
-    }
-    const result = await this._service.finalize(req.params.id, req.body);
+    const result = await this._service.finalize(
+      req.params.id,
+      getAuthenticatedUserId(req),
+      req.body,
+    );
     res.ok(result);
   };
 
-  private _linkChat: RequestHandler<{ id: string }> = async (req, res) => {
-    const { chatId, chatGroupId } = req.body as {
-      chatId: string;
-      chatGroupId: string;
-    };
-    await this._service.linkChat(req.params.id, chatId, chatGroupId);
+  private _linkChat: RequestHandler<
+    { id: string },
+    unknown,
+    InterviewFinalizeInput
+  > = async (req, res) => {
+    const { chatId, chatGroupId } = req.body;
+    await this._service.linkChat(
+      req.params.id,
+      getAuthenticatedUserId(req),
+      chatId,
+      chatGroupId,
+    );
     res.ok({ success: true });
   };
 
   private _getProgress: RequestHandler<{ id: string }> = async (req, res) => {
-    const interview = await this._service.getProgress(req.params.id);
+    const interview = await this._service.getProgress(
+      req.params.id,
+      getAuthenticatedUserId(req),
+    );
     res.ok(interview);
   };
 }

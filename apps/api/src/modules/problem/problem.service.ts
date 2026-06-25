@@ -1,5 +1,6 @@
 import { AbstractService } from "@/common/contracts";
-import type { Prisma } from "@/generated/client";
+import { NotFoundException } from "@/common/exceptions";
+import { type Prisma, ProblemDifficulty } from "@/generated/client";
 
 import { decodeCursor, encodeCursor } from "./cursor.util";
 import type { ProblemQuery } from "./problem.schema";
@@ -41,22 +42,21 @@ export class ProblemService extends AbstractService {
         createdAt: p.createdAt.toISOString(),
         updatedAt: p.updatedAt.toISOString(),
       })),
-      nextCursor: hasNextPage
-        ? encodeCursor(
-            data.at(-1)?.id ?? "",
-            data.at(-1)?.createdAt.toISOString() ?? "",
-          )
-        : null,
+      nextCursor: hasNextPage ? this._encodeNextCursor(data) : null,
     };
   }
 
   async getBySlug(slug: string) {
-    const problem = await this.prisma.codingProblem.findUniqueOrThrow({
+    const problem = await this.prisma.codingProblem.findUnique({
       where: { slug },
       include: {
         testCases: { select: { id: true }, orderBy: { sortOrder: "asc" } },
       },
     });
+
+    if (!problem) {
+      throw new NotFoundException("Problem not found");
+    }
 
     return {
       id: problem.id,
@@ -72,15 +72,26 @@ export class ProblemService extends AbstractService {
     };
   }
 
+  private _encodeNextCursor(
+    data: { id: string; createdAt: Date }[],
+  ): string | null {
+    const lastProblem = data.at(-1);
+    if (!lastProblem) {
+      return null;
+    }
+
+    return encodeCursor(lastProblem.id, lastProblem.createdAt.toISOString());
+  }
+
   private _buildWhere(
-    difficulty?: string,
+    difficulty?: ProblemDifficulty,
     search?: string,
   ): Prisma.CodingProblemWhereInput {
     let where: Prisma.CodingProblemWhereInput = {};
 
     if (difficulty) {
       where = {
-        AND: [where, { difficulty } as Prisma.CodingProblemWhereInput],
+        AND: [where, { difficulty }],
       };
     }
 

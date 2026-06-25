@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 
-import { GuestGuard } from "@/lib/auth-guard";
-import { VerifyCodePage } from "@/modules/auth";
+import { GuestGuard, VerifyCodePage } from "@/features/auth";
 
 export default function Page() {
   return (

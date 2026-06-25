@@ -27,6 +27,8 @@ export const interviewFinalizeSchema = z.object({
   chatGroupId: z.string().min(1),
 });
 
+export const interviewLinkChatSchema = interviewFinalizeSchema;
+
 export const interviewFinalizeParamsSchema = z.object({
   id: z.uuid(),
 });

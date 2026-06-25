@@ -38,7 +38,7 @@ async function getOrLoadLanguage(
   wasmFile: string,
 ): Promise<Parser.Language | null> {
   if (wasmParsersCache.has(language)) {
-    return wasmParsersCache.get(language) as Parser.Language;
+    return wasmParsersCache.get(language) ?? null;
   }
 
   try {
@@ -92,7 +92,7 @@ function getCanonicalString(
       if (!idMap.has(name)) {
         idMap.set(name, `_${idMap.size}`);
       }
-      return idMap.get(name) as string;
+      return idMap.get(name) ?? name;
     }
     return node.text;
   }

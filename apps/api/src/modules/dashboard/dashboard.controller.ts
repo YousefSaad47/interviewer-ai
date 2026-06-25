@@ -2,8 +2,7 @@ import type { RequestHandler } from "express";
 
 import { AbstractController } from "@/common/contracts";
 import { HttpStatus } from "@/common/enums";
-import { UnauthorizedException } from "@/common/exceptions";
-import { authMiddleware } from "@/middlewares";
+import { authMiddleware, getAuthenticatedUserId } from "@/middlewares";
 import { registerPath } from "@/services/openapi/registry";
 
 import {
@@ -67,26 +66,22 @@ export class DashboardController extends AbstractController<DashboardService> {
   }
 
   private _getStats: RequestHandler = async (req, res) => {
-    if (!req.userId) throw new UnauthorizedException();
-    const result = await this._service.getStats(req.userId);
+    const result = await this._service.getStats(getAuthenticatedUserId(req));
     res.ok(result);
   };
 
   private _getRecent: RequestHandler = async (req, res) => {
-    if (!req.userId) throw new UnauthorizedException();
-    const result = await this._service.getRecent(req.userId);
+    const result = await this._service.getRecent(getAuthenticatedUserId(req));
     res.ok(result);
   };
 
   private _getSkills: RequestHandler = async (req, res) => {
-    if (!req.userId) throw new UnauthorizedException();
-    const result = await this._service.getSkills(req.userId);
+    const result = await this._service.getSkills(getAuthenticatedUserId(req));
     res.ok(result);
   };
 
   private _getGoals: RequestHandler = async (req, res) => {
-    if (!req.userId) throw new UnauthorizedException();
-    const result = await this._service.getGoals(req.userId);
+    const result = await this._service.getGoals(getAuthenticatedUserId(req));
     res.ok(result);
   };
 }

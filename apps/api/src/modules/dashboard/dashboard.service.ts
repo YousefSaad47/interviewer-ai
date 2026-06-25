@@ -79,11 +79,11 @@ export class DashboardService extends AbstractService {
         category: i.category,
         difficulty: i.difficulty,
         status: i.status,
-        score:
+        score: this._averageScore(
           i.answers
             .flatMap((a) => a.feedback.map((f) => f.overallScore))
-            .filter((s): s is number => s != null)
-            .reduce((a, b) => a + b, 0) / i.answers.length || null,
+            .filter((s): s is number => s != null),
+        ),
         completedAt: i.completedAt?.toISOString() ?? null,
         startedAt: i.startedAt.toISOString(),
       })),
@@ -172,5 +172,13 @@ export class DashboardService extends AbstractService {
       problemGoal: settings?.problemGoal ?? 0,
       problemsDone,
     };
+  }
+
+  private _averageScore(scores: number[]): number | null {
+    if (scores.length === 0) {
+      return null;
+    }
+
+    return scores.reduce((a, b) => a + b, 0) / scores.length;
   }
 }

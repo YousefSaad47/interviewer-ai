@@ -1,0 +1,249 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-heading: var(--heading);
+  --color-subheading: var(--subheading);
+  --color-paragraph: var(--paragraph);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Graphite & Emerald Custom Utilities */
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-strong: var(--surface-strong);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-elevated: var(--border-elevated);
+  --color-border-interactive: var(--border-interactive);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: #f6f9ff;
+  --foreground: #17211d;
+  --heading: #0b1713;
+  --subheading: #1f302b;
+  --paragraph: #4a5d57;
+  --card: rgb(255 255 255 / 0.82);
+  --card-foreground: #17211d;
+  --popover: #ffffff;
+  --popover-foreground: #17211d;
+  --primary: #10b981;
+  --primary-foreground: #06110d;
+  --secondary: #eaf8f2;
+  --secondary-foreground: #12251f;
+  --muted: #edf6f2;
+  --muted-foreground: #61736d;
+  --accent: rgb(16 185 129 / 0.12);
+  --accent-foreground: #0c1d17;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: rgb(16 185 129 / 0.18);
+  --input: rgb(16 185 129 / 0.20);
+  --ring: #10b981;
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: #f6f9ff;
+  --sidebar-foreground: #17211d;
+  --sidebar-primary: #10b981;
+  --sidebar-primary-foreground: #06110d;
+  --sidebar-accent: #eaf8f2;
+  --sidebar-accent-foreground: #12251f;
+  --sidebar-border: rgb(16 185 129 / 0.18);
+  --sidebar-ring: #10b981;
+
+  --surface-secondary: #eaf8f2;
+  --surface-elevated: #ffffff;
+  --surface-strong: #dff4eb;
+  --surface-product: #f7fbf9;
+
+  --border-subtle: rgb(16 185 129 / 0.12);
+  --border-elevated: rgb(16 185 129 / 0.24);
+  --border-interactive: rgb(16 185 129 / 0.42);
+}
+
+.dark {
+  --background: #080B0F; /* Graphite Base */
+  --foreground: #A5B4AF; /* Warm Slate Emerald Body text */
+  --heading: #F4F7F6; /* Crisp off-white */
+  --subheading: #EEF4F1; /* Secondary headings */
+  --paragraph: #ACBAB5;
+  --card: #11191E; /* Primary graphite surface */
+  --card-foreground: #F4F7F6;
+  --popover: #0B1014;
+  --popover-foreground: #F4F7F6;
+  --primary: #34D399; /* Primary Emerald Accent */
+  --primary-foreground: #080B0F;
+  --secondary: #142027; /* Secondary surface */
+  --secondary-foreground: #C0CBC7;
+  --muted: #0D151A; /* Muted surface */
+  --muted-foreground: #73827D; /* Muted text */
+  --accent: rgba(52, 211, 153, 0.16); /* Emerald Accent highlight */
+  --accent-foreground: #ffffff;
+  --destructive: #FB7185; /* Soft red danger */
+  --border: rgba(167, 243, 208, 0.12); /* Subtle green-tinted border */
+  --input: rgba(167, 243, 208, 0.12);
+  --ring: #34D399;
+
+  /* Custom elevated surfaces inside dark mode */
+  --surface-secondary: #142027;
+  --surface-elevated: #18272E;
+  --surface-strong: #1C2D34;
+  --surface-product: #0D151A;
+
+  --border-subtle: rgba(167, 243, 208, 0.08);
+  --border-elevated: rgba(110, 231, 183, 0.18);
+  --border-interactive: rgba(52, 211, 153, 0.32);
+
+  --chart-1: #34D399;
+  --chart-2: #2DD4BF;
+  --chart-3: #67E8F9;
+  --chart-4: #4ADE80;
+  --chart-5: #FBBF24;
+  
+  --sidebar: #080B0F;
+  --sidebar-foreground: #A5B4AF;
+  --sidebar-primary: #34D399;
+  --sidebar-primary-foreground: #080B0F;
+  --sidebar-accent: #142027;
+  --sidebar-accent-foreground: #C0CBC7;
+  --sidebar-border: rgba(167, 243, 208, 0.12);
+  --sidebar-ring: #34D399;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50 max-w-full;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(circle at 8% -10%, rgb(52 211 153 / 0.16), transparent 32rem),
+      radial-gradient(circle at 100% 14%, rgb(45 212 191 / 0.12), transparent 28rem);
+    background-attachment: fixed;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+/* Figma Landing Page Exact Colors */
+:root {
+  /* Primary Colors from Figma */
+  --figma-bg-black: #000000;
+  --figma-bg-card: #161b29;
+  --figma-primary-blue: #6382de;
+  --figma-light-blue: #85a3ff;
+  --figma-blue-accent: #657dc4;
+
+  /* Text Colors */
+  --figma-text-white: #ffffff;
+  --figma-text-dimmed: rgba(255, 255, 255, 0.6);
+  --figma-text-secondary: rgba(255, 255, 255, 0.8);
+
+  /* Border & Stroke */
+  --figma-border-light: rgba(255, 255, 255, 0.05);
+  --figma-border-neutral: rgba(255, 255, 255, 0.15);
+
+  /* Backgrounds with opacity */
+  --figma-bg-blue-10: rgba(16, 185, 129, 0.1);
+  --figma-bg-blue-17: rgba(16, 185, 129, 0.17);
+  --figma-bg-blue-20: rgba(16, 185, 129, 0.2);
+  --figma-bg-blue-70: rgba(16, 185, 129, 0.7);
+  --figma-bg-white-05: rgba(255, 255, 255, 0.05);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.008);
+  }
+}
+
+.animate-float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+@keyframes waveform {
+  0%, 100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.animate-waveform {
+  animation: waveform 1s ease-in-out infinite;
+}
+
+@keyframes scan {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(220px);
+  }
+}
+
+.animate-scan {
+  animation: scan 4s ease-in-out infinite;
+}
+
+.text-gradient-primary {
+  background: linear-gradient(90deg, #A7F3D0 0%, #34D399 48%, #2DD4BF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
