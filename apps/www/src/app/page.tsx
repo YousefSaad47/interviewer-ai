@@ -53,7 +53,7 @@ export default function Page() {
         <HeroSection />
 
         {/* Unified black background wrapper from FeaturesSection to SuccessStoriesSection */}
-        <div className="relative bg-[#05070c] text-foreground dark overflow-hidden">
+        <div className="relative bg-[#060814] text-foreground dark overflow-hidden">
           {/* Blue highlight glows distributed across the unified section */}
           <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
             {/* Glow 1: Top Right behind Comprehensive Platform header */}

@@ -88,40 +88,40 @@
 }
 
 .dark {
-  --background: oklch(0.095 0.025 265.8); /* Perfect sweet spot: soft charcoal-black background with a touch of blue */
-  --foreground: oklch(0.95 0.01 265.8); /* Soft off-white to prevent glare */
-  --heading: oklch(0.97 0.015 265.8); /* Header text with very subtle blue tint */
-  --subheading: oklch(0.90 0.015 265.8); /* Softer secondary text */
-  --paragraph: oklch(0.82 0.01 265.8); /* Easy-to-read body text */
-  --card: oklch(0.15 0.03 265.8 / 55%); /* Dark blue-gray card with glassmorphism opacity */
-  --card-foreground: oklch(0.95 0.01 265.8);
-  --popover: oklch(0.13 0.03 265.8);
-  --popover-foreground: oklch(0.95 0.01 265.8);
-  --primary: oklch(0.48 0.15 265.8); /* Rich royal blue instead of lighter blue */
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.15 0.03 265.8);
-  --secondary-foreground: oklch(0.95 0.01 265.8);
-  --muted: oklch(0.15 0.03 265.8);
-  --muted-foreground: oklch(0.72 0.01 265.8);
-  --accent: oklch(0.18 0.04 265.8);
-  --accent-foreground: oklch(0.95 0.01 265.8);
+  --background: #060814; /* Deep rich navy black */
+  --foreground: #f3f4f6; /* Crisp soft off-white */
+  --heading: #ffffff; /* Pure white */
+  --subheading: #e5e7eb; /* Soft silver */
+  --paragraph: #9ca3af; /* Muted gray */
+  --card: rgba(13, 20, 38, 0.45); /* Elegant glass-like dark blue card */
+  --card-foreground: #f3f4f6;
+  --popover: #0d1222;
+  --popover-foreground: #f3f4f6;
+  --primary: #5A7DFF; /* Rich royal blue accent */
+  --primary-foreground: #ffffff;
+  --secondary: #0d1426;
+  --secondary-foreground: #e5e7eb;
+  --muted: rgba(17, 24, 39, 0.65);
+  --muted-foreground: #9ca3af;
+  --accent: rgba(90, 125, 255, 0.15);
+  --accent-foreground: #ffffff;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.20 0.03 265.8 / 75%); /* Subtle dark-blue border */
-  --input: oklch(1 0 0 / 10%);
-  --ring: oklch(0.48 0.15 265.8);
+  --border: rgba(255, 255, 255, 0.05); /* Very thin elegant border */
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: #5A7DFF;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.095 0.025 265.8);
-  --sidebar-foreground: oklch(0.95 0.01 265.8);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.15 0.03 265.8);
-  --sidebar-accent-foreground: oklch(0.95 0.01 265.8);
-  --sidebar-border: oklch(0.20 0.03 265.8 / 75%);
-  --sidebar-ring: oklch(0.545 0.143 265.8);
+  --sidebar: #060814;
+  --sidebar-foreground: #f3f4f6;
+  --sidebar-primary: #5A7DFF;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #0d1426;
+  --sidebar-accent-foreground: #f3f4f6;
+  --sidebar-border: rgba(255, 255, 255, 0.05);
+  --sidebar-ring: #5A7DFF;
 }
 
 @layer base {
@@ -161,4 +161,22 @@
   --figma-bg-blue-20: rgba(101, 125, 196, 0.2);
   --figma-bg-blue-70: rgba(99, 130, 222, 0.7);
   --figma-bg-white-05: rgba(255, 255, 255, 0.05);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.008);
+  }
+}
+
+.animate-float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 3s;
 }

@@ -10,33 +10,43 @@ import { Paragraph } from "@/shared/ui/paragraph";
 
 export function HeroSection() {
   return (
-    <section className="relative flex min-h-[80vh] items-center justify-center bg-background px-4 py-12 sm:min-h-[75vh] sm:py-14 md:min-h-[85vh] md:px-8 md:py-20 lg:min-h-screen lg:py-24">
-      {/* Grid Background Effect */}
-      <div className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(47,92,214,0.11)_1px,transparent_1px),linear-gradient(to_bottom,rgba(47,92,214,0.11)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(99,130,222,0.13)_1px,transparent_1px),linear-gradient(to_bottom,rgba(99,130,222,0.13)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_90%)]" />
+    <section className="relative flex min-h-[80vh] items-center justify-center bg-[#060814] px-4 py-12 sm:min-h-[75vh] sm:py-14 md:min-h-[85vh] md:px-8 md:py-20 lg:min-h-screen lg:py-24 overflow-hidden">
+      {/* Premium Grid overlay */}
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(99,130,222,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(99,130,222,0.04)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]" />
 
-      {/* Background Effects from Figma */}
+      {/* Modern Lighting and Glow Effects */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-visible">
-        {/* Gradient ellipses matching Figma positions */}
+        {/* Soft Indigo Top Center glow */}
         <div
-          className="absolute rounded-full opacity-65 dark:opacity-90"
+          className="absolute left-1/2 top-[-10%] -translate-x-1/2 rounded-full opacity-60"
           style={{
-            top: "-260px",
-            left: "-360px",
-            width: "700px",
-            height: "700px",
-            background: "oklch(0.48 0.15 265.8)",
-            filter: "blur(200px)",
+            width: "900px",
+            height: "500px",
+            background:
+              "radial-gradient(ellipse at center, rgba(79, 70, 229, 0.15), rgba(79, 70, 229, 0))",
+            filter: "blur(120px)",
           }}
         />
+        {/* Soft Purple Left glow */}
         <div
-          className="absolute hidden rounded-full opacity-65 dark:opacity-90 lg:block"
+          className="absolute left-[-20%] top-[20%] rounded-full opacity-40"
           style={{
-            bottom: "-30px",
-            right: "-360px",
-            width: "700px",
-            height: "700px",
-            background: "oklch(0.48 0.15 265.8)",
-            filter: "blur(200px)",
+            width: "600px",
+            height: "600px",
+            background:
+              "radial-gradient(circle, rgba(139, 92, 246, 0.1), transparent 70%)",
+            filter: "blur(130px)",
+          }}
+        />
+        {/* Soft Cyan Right glow */}
+        <div
+          className="absolute right-[-10%] bottom-[10%] rounded-full opacity-45"
+          style={{
+            width: "650px",
+            height: "650px",
+            background:
+              "radial-gradient(circle, rgba(6, 182, 212, 0.08), transparent 75%)",
+            filter: "blur(140px)",
           }}
         />
       </div>
@@ -83,7 +93,7 @@ export function HeroSection() {
             <Button
               size="lg"
               variant="outline"
-              className="h-[50.94px] w-full rounded-[15px] border border-border bg-transparent px-[40.75px] py-[10.19px] font-medium text-base text-foreground leading-[1.43em] shadow-[0px_1.27px_2.55px_0px_rgba(26,26,26,0.05)] hover:bg-accent md:w-auto md:text-[17.83px]"
+              className="h-[50.94px] w-full rounded-[15px] border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm px-[40.75px] py-[10.19px] font-medium text-base text-neutral-300 leading-[1.43em] shadow-[0_2px_8px_rgba(0,0,0,0.4)] transition-all duration-300 hover:bg-white/[0.06] hover:text-white hover:border-white/20 active:scale-[0.96] md:w-auto md:text-[17.83px]"
               style={{ fontFamily: "Geist" }}
             >
               Practice Coding
