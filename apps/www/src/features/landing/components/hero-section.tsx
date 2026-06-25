@@ -1,3 +1,7 @@
+"use client";
+
+import { type PointerEvent, useEffect, useRef, useState } from "react";
+
 import Link from "next/link";
 
 import { CheckIcon } from "lucide-react";
@@ -11,10 +15,64 @@ import {
 } from "@/shared/ui";
 
 export function HeroSection() {
+  const heroRef = useRef<HTMLElement | null>(null);
+  const cursorRef = useRef<HTMLDivElement | null>(null);
+  const pointerRef = useRef({
+    currentX: 0,
+    currentY: 0,
+    targetX: 0,
+    targetY: 0,
+  });
+  const [isPointerInside, setIsPointerInside] = useState(false);
+
+  useEffect(() => {
+    let frameId = 0;
+
+    const animate = () => {
+      const pointer = pointerRef.current;
+      pointer.currentX += (pointer.targetX - pointer.currentX) * 0.14;
+      pointer.currentY += (pointer.targetY - pointer.currentY) * 0.14;
+
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${pointer.currentX}px, ${pointer.currentY}px, 0) translate(-50%, -50%)`;
+      }
+
+      frameId = requestAnimationFrame(animate);
+    };
+
+    frameId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
+  const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
+    const bounds = heroRef.current?.getBoundingClientRect();
+    if (!bounds) return;
+
+    pointerRef.current.targetX = event.clientX - bounds.left;
+    pointerRef.current.targetY = event.clientY - bounds.top;
+    setIsPointerInside(true);
+  };
+
   return (
-    <section className="relative flex h-[100vh] items-center justify-center overflow-hidden bg-[#F7FAFF] px-4 py-12 md:px-8 dark:bg-[#080B0F]">
+    <section
+      ref={heroRef}
+      className="relative flex h-[100vh] items-center justify-center overflow-hidden bg-[#F7FAFF] px-4 py-12 md:px-8 dark:bg-[#080B0F]"
+      onPointerEnter={() => setIsPointerInside(true)}
+      onPointerLeave={() => setIsPointerInside(false)}
+      onPointerMove={handlePointerMove}
+    >
       {/* Premium Grid overlay */}
       <div className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.07)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.07)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.07)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.07)_1px,transparent_1px)]" />
+
+      <div
+        ref={cursorRef}
+        className="pointer-events-none absolute top-0 left-0 z-[1] hidden h-36 w-36 rounded-full bg-emerald-400/25 blur-2xl transition-opacity duration-300 ease-out md:block dark:bg-emerald-300/18"
+        style={{
+          opacity: isPointerInside ? 1 : 0,
+          willChange: "transform, opacity",
+        }}
+      />
 
       {/* Modern Lighting and Glow Effects */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-visible">
