@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo, useState } from "react";
+
 import { MoreHorizontal, Plus, Sparkles } from "lucide-react";
 
 import {
@@ -14,7 +16,13 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Separator,
+  Skeleton,
 } from "@/shared/ui";
 
 import {
@@ -27,12 +35,25 @@ import {
   adminStats,
   adminUsers,
 } from "../../data";
+import {
+  useAdminInterviews,
+  useAdminUsers,
+  useDebouncedValue,
+  useUpdateAdminUserStatus,
+} from "../../hooks";
 import type { AdminModalMode, DrawerContent } from "../../types";
+import type {
+  AdminInterviewStatus,
+  AdminUserRole,
+  AdminUserStatus,
+} from "../../types/admin-api.types";
+import { mapAdminInterviewListItem, mapAdminUserListItem } from "../../utils";
 import { InterviewDrawer, ResumeDrawer, UserDrawer } from "../admin-drawers";
 import {
   ActionMenu,
   Avatar,
   ChartCard,
+  ControlledTableFilters,
   DataPanel,
   DifficultyBadge,
   MetricCard,
@@ -44,6 +65,28 @@ import {
   StatusBadge,
   TableFilters,
 } from "../admin-primitives";
+
+const ADMIN_LIST_LIMIT = 5;
+
+const userStatusOptions = [
+  { label: "All statuses", value: "all" },
+  { label: "Active", value: "ACTIVE" },
+  { label: "Disabled", value: "DISABLED" },
+];
+
+const userRoleOptions = [
+  { label: "All roles", value: "all" },
+  { label: "Users", value: "USER" },
+  { label: "Admins", value: "ADMIN" },
+  { label: "Super admins", value: "SUPER_ADMIN" },
+];
+
+const interviewStatusOptions = [
+  { label: "All statuses", value: "all" },
+  { label: "Reviewed", value: "COMPLETED" },
+  { label: "Processing", value: "IN_PROGRESS" },
+  { label: "Flagged", value: "ABANDONED" },
+];
 
 export function OverviewSection({
   onDrawerOpen,
@@ -134,9 +177,69 @@ export function UsersSection({
 }: {
   onDrawerOpen: (drawer: DrawerContent) => void;
 }) {
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<string>("all");
+  const [role, setRole] = useState<string>("all");
+  const [page, setPage] = useState(1);
+  const debouncedSearch = useDebouncedValue(search);
+  const statusMutation = useUpdateAdminUserStatus();
+
+  const query = useMemo(
+    () => ({
+      limit: ADMIN_LIST_LIMIT,
+      page,
+      ...(debouncedSearch.trim() && { search: debouncedSearch.trim() }),
+      ...(status !== "all" && { status: status as AdminUserStatus }),
+      ...(role !== "all" && { role: role as AdminUserRole }),
+    }),
+    [debouncedSearch, page, role, status],
+  );
+
+  const usersQuery = useAdminUsers(query);
+  const users = useMemo(
+    () => usersQuery.data?.data.map(mapAdminUserListItem) ?? [],
+    [usersQuery.data],
+  );
+
+  const resetPage = () => setPage(1);
+
   return (
     <DataPanel
-      actions={<TableFilters />}
+      actions={
+        <ControlledTableFilters
+          extraSelect={
+            <Select
+              onValueChange={(value) => {
+                setRole(value);
+                resetPage();
+              }}
+              value={role}
+            >
+              <SelectTrigger className="w-full sm:w-36">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {userRoleOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          }
+          onSearchChange={(value) => {
+            setSearch(value);
+            resetPage();
+          }}
+          onStatusChange={(value) => {
+            setStatus(value);
+            resetPage();
+          }}
+          search={search}
+          status={status}
+          statusOptions={userStatusOptions}
+        />
+      }
       title="User directory"
       description="Search, filter, review, and act on user accounts."
     >
@@ -151,44 +254,103 @@ export function UsersSection({
           "",
         ]}
       >
-        {adminUsers.map((user) => (
-          <tr className="admin-row" key={user.email}>
-            <td className="admin-cell">
-              <div className="flex items-center gap-3">
-                <Avatar name={user.name} />
-                <div>
-                  <p className="font-semibold text-heading text-sm">
-                    {user.name}
-                  </p>
-                  <p className="text-muted-foreground text-xs">{user.email}</p>
-                </div>
-              </div>
-            </td>
-            <td className="admin-cell">{user.date}</td>
-            <td className="admin-cell">{user.interviews}</td>
-            <td className="admin-cell">{user.coding}</td>
-            <td className="admin-cell">{user.resumes}</td>
-            <td className="admin-cell">
-              <StatusBadge status={user.status} />
-            </td>
-            <td className="admin-cell text-right">
-              <ActionMenu
-                destructive="Delete"
-                onPrimary={() =>
-                  onDrawerOpen({
-                    eyebrow: user.plan,
-                    title: user.name,
-                    body: <UserDrawer user={user} />,
-                  })
-                }
-                primary="View details"
-                secondary="Disable"
-              />
-            </td>
-          </tr>
-        ))}
+        {usersQuery.isLoading &&
+          Array.from({ length: ADMIN_LIST_LIMIT }).map((_, index) => (
+            <SkeletonRow colSpan={7} key={`users-loading-${index}`} />
+          ))}
+
+        {!usersQuery.isLoading && usersQuery.isError && (
+          <MessageRow
+            actionLabel="Retry"
+            colSpan={7}
+            message="Unable to load users."
+            onAction={() => usersQuery.refetch()}
+          />
+        )}
+
+        {!usersQuery.isLoading && !usersQuery.isError && users.length === 0 && (
+          <MessageRow
+            colSpan={7}
+            message={
+              search || status !== "all" || role !== "all"
+                ? "No users match the current filters."
+                : "No users found."
+            }
+          />
+        )}
+
+        {!usersQuery.isLoading &&
+          !usersQuery.isError &&
+          users.map((user) => {
+            const nextStatus =
+              user.rawStatus === "ACTIVE" ? "DISABLED" : "ACTIVE";
+            const isMutatingThisUser =
+              statusMutation.isPending &&
+              statusMutation.variables?.userId === user.id;
+
+            return (
+              <tr className="admin-row" key={user.id}>
+                <td className="admin-cell">
+                  <div className="flex items-center gap-3">
+                    <Avatar name={user.name} />
+                    <div>
+                      <p className="font-semibold text-heading text-sm">
+                        {user.name}
+                      </p>
+                      <p className="text-muted-foreground text-xs">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td className="admin-cell">{user.date}</td>
+                <td className="admin-cell">{user.interviews}</td>
+                <td className="admin-cell">{user.coding}</td>
+                <td className="admin-cell">{user.resumes}</td>
+                <td className="admin-cell">
+                  <StatusBadge status={user.status} />
+                </td>
+                <td className="admin-cell text-right">
+                  <ActionMenu
+                    destructive="Delete"
+                    disabled={isMutatingThisUser}
+                    onPrimary={() =>
+                      onDrawerOpen({
+                        eyebrow: user.plan,
+                        title: user.name,
+                        body: (
+                          <UserDrawer fetchDetails key={user.id} user={user} />
+                        ),
+                      })
+                    }
+                    onSecondary={() =>
+                      statusMutation.mutate({
+                        userId: user.id,
+                        status: nextStatus,
+                      })
+                    }
+                    primary="View details"
+                    secondary={
+                      isMutatingThisUser
+                        ? "Updating..."
+                        : nextStatus === "DISABLED"
+                          ? "Disable"
+                          : "Enable"
+                    }
+                  />
+                </td>
+              </tr>
+            );
+          })}
       </ResponsiveTable>
-      <Pagination />
+      <Pagination
+        disabled={usersQuery.isFetching}
+        onNext={() => setPage((currentPage) => currentPage + 1)}
+        onPrevious={() =>
+          setPage((currentPage) => Math.max(1, currentPage - 1))
+        }
+        pagination={usersQuery.data?.pagination}
+      />
     </DataPanel>
   );
 }
@@ -198,9 +360,46 @@ export function InterviewsSection({
 }: {
   onDrawerOpen: (drawer: DrawerContent) => void;
 }) {
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<string>("all");
+  const [page, setPage] = useState(1);
+  const debouncedSearch = useDebouncedValue(search);
+
+  const query = useMemo(
+    () => ({
+      limit: ADMIN_LIST_LIMIT,
+      page,
+      ...(debouncedSearch.trim() && { search: debouncedSearch.trim() }),
+      ...(status !== "all" && { status: status as AdminInterviewStatus }),
+    }),
+    [debouncedSearch, page, status],
+  );
+
+  const interviewsQuery = useAdminInterviews(query);
+  const interviews = useMemo(
+    () => interviewsQuery.data?.data.map(mapAdminInterviewListItem) ?? [],
+    [interviewsQuery.data],
+  );
+
+  const resetPage = () => setPage(1);
+
   return (
     <DataPanel
-      actions={<TableFilters />}
+      actions={
+        <ControlledTableFilters
+          onSearchChange={(value) => {
+            setSearch(value);
+            resetPage();
+          }}
+          onStatusChange={(value) => {
+            setStatus(value);
+            resetPage();
+          }}
+          search={search}
+          status={status}
+          statusOptions={interviewStatusOptions}
+        />
+      }
       title="Mock interview sessions"
       description="Review session quality, scores, transcripts, and processing state."
     >
@@ -215,42 +414,81 @@ export function InterviewsSection({
           "",
         ]}
       >
-        {adminInterviews.map((interview) => (
-          <tr
-            className="admin-row"
-            key={`${interview.candidate}-${interview.type}`}
-          >
-            <td className="admin-cell font-medium text-heading">
-              {interview.type}
-            </td>
-            <td className="admin-cell">{interview.candidate}</td>
-            <td className="admin-cell">{interview.date}</td>
-            <td className="admin-cell">{interview.duration}</td>
-            <td className="admin-cell">
-              <ScorePill value={interview.score} />
-            </td>
-            <td className="admin-cell">
-              <StatusBadge status={interview.status} />
-            </td>
-            <td className="admin-cell text-right">
-              <Button
-                className="rounded-lg"
-                onClick={() =>
-                  onDrawerOpen({
-                    eyebrow: interview.type,
-                    title: `${interview.candidate}'s session`,
-                    body: <InterviewDrawer interview={interview} />,
-                  })
-                }
-                variant="outline"
-              >
-                View session
-              </Button>
-            </td>
-          </tr>
-        ))}
+        {interviewsQuery.isLoading &&
+          Array.from({ length: ADMIN_LIST_LIMIT }).map((_, index) => (
+            <SkeletonRow colSpan={7} key={`interviews-loading-${index}`} />
+          ))}
+
+        {!interviewsQuery.isLoading && interviewsQuery.isError && (
+          <MessageRow
+            actionLabel="Retry"
+            colSpan={7}
+            message="Unable to load interviews."
+            onAction={() => interviewsQuery.refetch()}
+          />
+        )}
+
+        {!interviewsQuery.isLoading &&
+          !interviewsQuery.isError &&
+          interviews.length === 0 && (
+            <MessageRow
+              colSpan={7}
+              message={
+                search || status !== "all"
+                  ? "No interviews match the current filters."
+                  : "No interviews found."
+              }
+            />
+          )}
+
+        {!interviewsQuery.isLoading &&
+          !interviewsQuery.isError &&
+          interviews.map((interview) => (
+            <tr className="admin-row" key={interview.id}>
+              <td className="admin-cell font-medium text-heading">
+                {interview.type}
+              </td>
+              <td className="admin-cell">{interview.candidate}</td>
+              <td className="admin-cell">{interview.date}</td>
+              <td className="admin-cell">{interview.duration}</td>
+              <td className="admin-cell">
+                <ScorePill value={interview.score} />
+              </td>
+              <td className="admin-cell">
+                <StatusBadge status={interview.status} />
+              </td>
+              <td className="admin-cell text-right">
+                <Button
+                  className="rounded-lg"
+                  onClick={() =>
+                    onDrawerOpen({
+                      eyebrow: interview.type,
+                      title: `${interview.candidate}'s session`,
+                      body: (
+                        <InterviewDrawer
+                          fetchDetails
+                          interview={interview}
+                          key={interview.id}
+                        />
+                      ),
+                    })
+                  }
+                  variant="outline"
+                >
+                  View session
+                </Button>
+              </td>
+            </tr>
+          ))}
       </ResponsiveTable>
-      <Pagination />
+      <Pagination
+        disabled={interviewsQuery.isFetching}
+        onNext={() => setPage((currentPage) => currentPage + 1)}
+        onPrevious={() =>
+          setPage((currentPage) => Math.max(1, currentPage - 1))
+        }
+        pagination={interviewsQuery.data?.pagination}
+      />
     </DataPanel>
   );
 }
@@ -532,7 +770,7 @@ function RecentSessions({
                 {interview.candidate}
               </p>
               <p className="text-muted-foreground text-sm">
-                {interview.type} · {interview.duration}
+                {interview.type} - {interview.duration}
               </p>
             </div>
             <ScorePill value={interview.score} />
@@ -599,5 +837,42 @@ function LatestUsers({
         ))}
       </CardContent>
     </Card>
+  );
+}
+
+function SkeletonRow({ colSpan }: { colSpan: number }) {
+  return (
+    <tr className="admin-row">
+      <td className="admin-cell" colSpan={colSpan}>
+        <Skeleton className="h-11 w-full rounded-lg" />
+      </td>
+    </tr>
+  );
+}
+
+function MessageRow({
+  actionLabel,
+  colSpan,
+  message,
+  onAction,
+}: {
+  actionLabel?: string;
+  colSpan: number;
+  message: string;
+  onAction?: () => void;
+}) {
+  return (
+    <tr className="admin-row">
+      <td className="admin-cell" colSpan={colSpan}>
+        <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-border border-dashed bg-surface-secondary/35 p-8 text-center">
+          <p className="font-medium text-heading text-sm">{message}</p>
+          {actionLabel && onAction && (
+            <Button className="rounded-lg" onClick={onAction} variant="outline">
+              {actionLabel}
+            </Button>
+          )}
+        </div>
+      </td>
+    </tr>
   );
 }
