@@ -14,19 +14,22 @@ import { InterviewService } from "./interview.service";
 
 const { WebhookEvent } = HumeSerialization.empathicVoice;
 
-function verifyWebhookSignature(
-  payload: string,
-  headers: Record<string, unknown>,
-): void {
-  const timestamp = headers["x-hume-ai-webhook-timestamp"] as string;
-  if (!timestamp) {
-    throw new BadRequestException("Missing webhook timestamp header");
+function getWebhookHeader(headers: Request["headers"], name: string): string {
+  const value = headers[name];
+
+  if (typeof value !== "string" || value.trim().length === 0) {
+    throw new BadRequestException(`Missing webhook ${name} header`);
   }
 
-  const signature = headers["x-hume-ai-webhook-signature"] as string;
-  if (!signature) {
-    throw new BadRequestException("Missing webhook signature header");
-  }
+  return value;
+}
+
+function verifyWebhookSignature(
+  payload: string,
+  headers: Request["headers"],
+): void {
+  const timestamp = getWebhookHeader(headers, "x-hume-ai-webhook-timestamp");
+  const signature = getWebhookHeader(headers, "x-hume-ai-webhook-signature");
 
   const message = `${payload}.${timestamp}`;
   const expectedSig = crypto
@@ -59,14 +62,27 @@ export const humeWebhookHandler =
   (service: InterviewService) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!Buffer.isBuffer(req.body)) {
+        throw new BadRequestException("Invalid webhook payload");
+      }
+
       const payloadStr = req.body.toString("utf8");
 
-      verifyWebhookSignature(
-        payloadStr,
-        req.headers as Record<string, unknown>,
-      );
+      verifyWebhookSignature(payloadStr, req.headers);
 
-      const event = WebhookEvent.parseOrThrow(JSON.parse(payloadStr));
+      let payload: unknown;
+      try {
+        payload = JSON.parse(payloadStr);
+      } catch {
+        throw new BadRequestException("Invalid webhook JSON payload");
+      }
+
+      let event: ReturnType<typeof WebhookEvent.parseOrThrow>;
+      try {
+        event = WebhookEvent.parseOrThrow(payload);
+      } catch {
+        throw new BadRequestException("Invalid webhook payload");
+      }
 
       logger.info(
         { event: event.eventName, chatId: event.chatId },

@@ -85,6 +85,10 @@ export type CodingRunInput = z.infer<typeof codingRunSchema>;
 
 export type CodingSubmitInput = z.infer<typeof codingSubmitSchema>;
 
+export const codingSubmissionParamsSchema = z.object({
+  id: z.uuid(),
+});
+
 const submissionStatus = z.enum(SubmissionStatus);
 
 const problemDifficulty = z.enum(["EASY", "MEDIUM", "HARD"]);

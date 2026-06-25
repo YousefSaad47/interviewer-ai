@@ -1,5 +1,5 @@
-import { AuthGuard } from "@/lib/auth-guard";
-import { PrivacySecurityPage } from "@/modules/settings";
+import { AuthGuard } from "@/features/auth";
+import { PrivacySecurityPage } from "@/features/settings";
 
 export default function PrivacyPage() {
   return (

@@ -15,7 +15,8 @@
     "@kubb/plugin-client": "^4.38.0",
     "@kubb/plugin-oas": "^4.38.0",
     "@kubb/plugin-react-query": "^4.38.0",
-    "@kubb/plugin-ts": "^4.38.0"
+    "@kubb/plugin-ts": "^4.38.0",
+    "dotenv": "^16.4.5"
   },
   "peerDependencies": {
     "typescript": "^5"
