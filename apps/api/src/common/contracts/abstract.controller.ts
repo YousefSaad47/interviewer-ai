@@ -16,8 +16,8 @@ export abstract class AbstractController<TService extends AbstractService> {
   protected abstract _registerRoutes(): void;
 
   public get router(): Router {
-    if (this.path.includes("/")) {
-      throw new InternalException("Path should not contain slashes");
+    if (this.path.startsWith("/") || this.path.endsWith("/")) {
+      throw new InternalException("Path should not start or end with slashes");
     }
 
     return this._router;

@@ -4,4 +4,5 @@ export enum Controllers {
   PROBLEM,
   INTERVIEW,
   DASHBOARD,
+  ADMIN_USERS,
 }

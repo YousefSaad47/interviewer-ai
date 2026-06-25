@@ -4,4 +4,5 @@ export enum Services {
   PROBLEM,
   INTERVIEW,
   DASHBOARD,
+  ADMIN_USERS,
 }
