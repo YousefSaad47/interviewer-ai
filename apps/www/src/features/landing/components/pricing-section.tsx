@@ -124,17 +124,17 @@ export function PricingSection() {
             width: "800px",
             height: "800px",
             transform: "translate(-50%, -50%)",
-            background: "oklch(0.48 0.15 265.8)",
+            background: "rgba(52, 211, 153, 0.08)",
             filter: "blur(200px)",
           }}
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container relative z-10 mx-auto px-4">
         {/* Section Header */}
         <div className="mb-12 text-center md:mb-16">
           <Heading as="h2" className="mb-4 md:mb-6">
-            Choose Your Plan
+            Choose Your <span className="text-primary">Plan</span>
           </Heading>
           <Paragraph className="mx-auto max-w-2xl">
             Select the perfect plan for your interview preparation journey
@@ -162,35 +162,35 @@ export function PricingSection() {
                 <>
                   {/* Popular Badge */}
                   {plan.badge && (
-                    <div className="absolute -top-3 left-1/2 z-50 -translate-x-1/2 rounded-full bg-white px-6 py-2 font-medium text-blue-900 text-sm shadow-lg">
+                    <div className="absolute -top-3 left-1/2 z-50 -translate-x-1/2 rounded-full border border-[#34D399]/30 bg-[#A7F3D0] px-6 py-2 font-semibold text-[#047857] text-sm shadow-[0_4px_20px_rgba(52,211,153,0.25)]">
                       {plan.badge}
                     </div>
                   )}
 
                   <WobbleCard
-                    containerClassName="group mt-3 flex h-full w-full flex-col bg-gradient-to-b from-[#6382DE]/90 to-background border border-[#6382DE]/20 shadow-2xl shadow-black-950/5"
+                    containerClassName="group mt-3 flex h-full w-full flex-col bg-gradient-to-b from-[#10B981]/80 to-background border border-[#10B981]/30 shadow-[0_20px_50px_rgba(52,211,153,0.06)]"
                     className="flex h-full w-full flex-col p-6 pt-0 md:p-8"
                   >
                     {/* Icon */}
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-foreground text-primary md:mb-6">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-[#10B981]/20 bg-[#080B0F] text-[#34D399] md:mb-6">
                       {plan.icon}
                     </div>
 
                     {/* Plan Name */}
-                    <h3 className="mb-2 font-bold text-primary-foreground text-xl md:text-2xl">
+                    <h3 className="mb-2 font-bold text-[#EEF4F1] text-xl md:text-2xl">
                       {plan.name}
                     </h3>
-                    <p className="mb-4 text-primary-foreground/80 text-sm md:mb-6 md:text-base">
+                    <p className="mb-4 text-[#ACBAB5]/80 text-sm md:mb-6 md:text-base">
                       {plan.description}
                     </p>
 
                     {/* Price */}
                     <div className="mb-4 md:mb-6">
                       <div className="flex items-baseline gap-2">
-                        <span className="font-bold text-4xl text-primary-foreground md:text-5xl">
+                        <span className="font-bold text-4xl text-[#EEF4F1] md:text-5xl">
                           {plan.price}
                         </span>
-                        <span className="text-primary-foreground/80 text-sm md:text-base">
+                        <span className="text-[#ACBAB5]/80 text-sm md:text-base">
                           {plan.period}
                         </span>
                       </div>
@@ -198,7 +198,7 @@ export function PricingSection() {
 
                     {/* CTA Button */}
                     <Button
-                      className="relative mb-6 w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 md:mb-8"
+                      className="relative mb-6 w-full bg-[#34D399] text-[#080B0F] hover:bg-[#4ADEAA] md:mb-8"
                       size="lg"
                     >
                       {plan.cta}
@@ -208,8 +208,8 @@ export function PricingSection() {
                     <ul className="flex-1 space-y-3 md:space-y-4">
                       {plan.features.map((feature, i) => (
                         <li key={i} className="flex items-start gap-3">
-                          <CheckIcon className="mt-0.5 h-5 w-5 shrink-0 text-primary-foreground" />
-                          <span className="text-primary-foreground/90 text-sm leading-relaxed">
+                          <CheckIcon className="mt-0.5 h-5 w-5 shrink-0 text-[#34D399]" />
+                          <span className="text-[#ACBAB5]/90 text-sm leading-relaxed">
                             {feature}
                           </span>
                         </li>
@@ -292,43 +292,39 @@ export function PricingSection() {
                 <>
                   {/* Popular Badge */}
                   {plan.badge && (
-                    <div className="absolute -top-3 left-1/2 z-50 -translate-x-1/2 rounded-full bg-white px-6 py-2 font-medium text-blue-900 text-sm shadow-lg">
+                    <div className="absolute -top-3 left-1/2 z-50 -translate-x-1/2 rounded-full border border-[#34D399]/30 bg-[#A7F3D0] px-6 py-2 font-semibold text-[#047857] text-sm shadow-[0_4px_20px_rgba(52,211,153,0.25)]">
                       {plan.badge}
                     </div>
                   )}
 
                   <WobbleCard
-                    containerClassName="group mt-3 flex h-full w-full flex-col bg-gradient-to-b from-[#6382DE]/90 to-background border border-[#6382DE]/20 shadow-2xl shadow-black-950/5 md:scale-105"
+                    containerClassName="group mt-3 flex h-full w-full flex-col bg-gradient-to-b from-[#10B981]/80 to-background border border-[#10B981]/30 shadow-[0_20px_50px_rgba(52,211,153,0.06)] md:scale-105"
                     className="flex h-full w-full flex-col p-8 pt-0"
                   >
                     {/* Icon */}
-                    <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-foreground text-primary">
+                    <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-[#10B981]/20 bg-[#080B0F] text-[#34D399]">
                       {plan.icon}
                     </div>
 
                     {/* Plan Name */}
-                    <h3 className="mb-2 font-bold text-2xl text-primary-foreground">
+                    <h3 className="mb-2 font-bold text-2xl text-[#EEF4F1]">
                       {plan.name}
                     </h3>
-                    <p className="mb-6 text-primary-foreground/80">
-                      {plan.description}
-                    </p>
+                    <p className="mb-6 text-[#ACBAB5]/80">{plan.description}</p>
 
                     {/* Price */}
                     <div className="mb-6">
                       <div className="flex items-baseline gap-2">
-                        <span className="font-bold text-5xl text-primary-foreground">
+                        <span className="font-bold text-5xl text-[#EEF4F1]">
                           {plan.price}
                         </span>
-                        <span className="text-primary-foreground/80">
-                          {plan.period}
-                        </span>
+                        <span className="text-[#ACBAB5]/80">{plan.period}</span>
                       </div>
                     </div>
 
                     {/* CTA Button */}
                     <Button
-                      className="relative mb-8 w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                      className="relative mb-8 w-full bg-[#34D399] text-[#080B0F] hover:bg-[#4ADEAA]"
                       size="lg"
                     >
                       {plan.cta}
@@ -338,8 +334,8 @@ export function PricingSection() {
                     <ul className="flex-1 space-y-4">
                       {plan.features.map((feature, i) => (
                         <li key={i} className="flex items-start gap-3">
-                          <CheckIcon className="mt-0.5 h-5 w-5 shrink-0 text-primary-foreground" />
-                          <span className="text-primary-foreground/90 text-sm leading-relaxed">
+                          <CheckIcon className="mt-0.5 h-5 w-5 shrink-0 text-[#34D399]" />
+                          <span className="text-[#ACBAB5]/90 text-sm leading-relaxed">
                             {feature}
                           </span>
                         </li>

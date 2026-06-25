@@ -91,14 +91,14 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section className="relative bg-gradient-to-b from-[#070a17] to-[#0c1224] py-24 overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#EEF7F4] to-[#F7FAFF] py-24 dark:from-[#0C1216] dark:to-[#0E171B]">
+      <div className="container relative z-10 mx-auto px-4">
         {/* Section Header */}
         <div className="mb-16 text-center">
-          <Heading as="h2" className="mb-6">
-            How It Work
+          <Heading as="h2" className="mb-6 text-slate-950 dark:text-[#EEF4F1]">
+            How It <span className="text-primary">Works</span>
           </Heading>
-          <Paragraph className="mx-auto max-w-2xl">
+          <Paragraph className="mx-auto max-w-2xl text-slate-600 dark:text-[#ACBAB5]">
             Get started in minutes and begin your journey to interview success
           </Paragraph>
         </div>
@@ -106,30 +106,30 @@ export function HowItWorksSection() {
         {/* Steps */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
-            <div key={index} className="relative">
+            <div key={index} className="relative z-10">
               {/* Connecting line (hidden on last item) */}
-              {/* {index < steps.length - 1 && (
-                <div className="from-primary/50 absolute top-14 left-[calc(50%+32px)] hidden h-0.5 w-[calc(100%-64px)] bg-linear-to-r to-transparent lg:block" />
-              )} */}
+              {index < steps.length - 1 && (
+                <div className="absolute top-20 left-[75%] -z-10 hidden h-[1.5px] w-[70%] bg-gradient-to-r from-[#34D399]/28 via-[#34D399]/10 to-transparent lg:block dark:from-[#34D399]/18 dark:via-[#34D399]/5" />
+              )}
 
               <div className="relative">
                 {/* Number Badge */}
-                <div className="absolute -top-4 -left-4 z-10 flex h-14 w-14 items-center justify-center rounded-full bg-linear-to-br from-primary to-primary/80 font-bold text-lg text-primary-foreground shadow-lg shadow-primary/20">
+                <div className="absolute -top-4 -left-4 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-[#34D399]/40 bg-white font-bold font-mono text-[#047857] text-xs shadow-[0_8px_24px_rgba(16,185,129,0.15)] dark:bg-[#142027] dark:text-[#F4F7F6] dark:shadow-[0_0_12px_rgba(52,211,153,0.13)]">
                   {step.number}
                 </div>
 
                 {/* Card */}
                 <SpotlightCard className="group pt-8 pr-6 pb-6 pl-8">
                   {/* Icon */}
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/10 bg-gradient-to-br from-primary/12 to-primary/3 text-primary transition-all duration-500 group-hover:scale-105 group-hover:border-primary/30 group-hover:bg-primary/20 group-hover:shadow-[0_0_20px_rgba(90,125,255,0.2)]">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/10 bg-gradient-to-br from-primary/12 to-primary/3 text-primary transition-all duration-500 group-hover:scale-105 group-hover:border-primary/30 group-hover:bg-primary/20 group-hover:shadow-[0_0_20px_rgba(52,211,153,0.18)]">
                     {step.icon}
                   </div>
 
                   {/* Content */}
-                  <h3 className="mb-3 font-bold text-foreground text-xl">
+                  <h3 className="mb-3 font-bold text-slate-950 text-xl dark:text-[#EEF4F1]">
                     {step.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-slate-600 text-sm leading-relaxed dark:text-[#ACBAB5]/85">
                     {step.description}
                   </p>
                 </SpotlightCard>

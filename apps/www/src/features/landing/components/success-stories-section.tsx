@@ -42,11 +42,11 @@ export function SuccessStoriesSection() {
   ];
 
   return (
-    <section className="relative bg-gradient-to-b from-[#0c1224] to-[#05070f] py-24 overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#F7FAFF] to-[#EEF7F4] py-24 dark:from-[#0A1014] dark:to-[#0B1216]">
+      <div className="container relative z-10 mx-auto px-4">
         {/* Success Stories Header */}
         <div className="mb-16 text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/75 px-4 py-2 shadow-emerald-900/5 shadow-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/60">
             <svg
               className="h-5 w-5 text-primary"
               fill="currentColor"
@@ -54,14 +54,14 @@ export function SuccessStoriesSection() {
             >
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
             </svg>
-            <span className="font-medium text-foreground text-sm">
+            <span className="font-medium text-slate-700 text-sm dark:text-[#EEF4F1]">
               Trusted by 50,000+ Professionals
             </span>
           </div>
-          <Heading as="h2" className="mb-4">
-            Success Stories
+          <Heading as="h2" className="mb-4 text-slate-950 dark:text-[#EEF4F1]">
+            Success <span className="text-primary">Stories</span>
           </Heading>
-          <Paragraph className="mx-auto max-w-2xl">
+          <Paragraph className="mx-auto max-w-2xl text-slate-600 dark:text-[#ACBAB5]">
             See how professionals landed their dream jobs with our platform
           </Paragraph>
         </div>
@@ -69,12 +69,17 @@ export function SuccessStoriesSection() {
         {/* Testimonials */}
         <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (
-            <SpotlightCard key={index} className="p-6">
+            <SpotlightCard key={index} className="relative overflow-hidden p-6">
+              {/* Background Quote Mark */}
+              <span className="pointer-events-none absolute top-2 right-4 select-none font-serif text-8xl text-slate-900/[0.04] leading-none dark:text-white/[0.03]">
+                ”
+              </span>
+
               <div className="mb-4 flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <svg
                     key={i}
-                    className="h-5 w-5 text-yellow-400"
+                    className="h-4.5 w-4.5 text-[#F6C85F]"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -82,18 +87,19 @@ export function SuccessStoriesSection() {
                   </svg>
                 ))}
               </div>
-              <p className="mb-6 text-muted-foreground italic leading-relaxed">
+              <p className="mb-6 text-slate-600 text-sm italic leading-relaxed dark:text-[#ACBAB5]/95">
                 &ldquo;{testimonial.quote}&rdquo;
               </p>
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-primary to-primary/80 font-bold text-primary-foreground">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(52,211,153,0.32)] bg-gradient-to-br from-[#10B981] via-[#34D399] to-[#2DD4BF] font-bold text-white text-xs shadow-lg">
                   {testimonial.avatar}
                 </div>
-                <div>
-                  <div className="font-semibold text-foreground">
+                <div className="text-left">
+                  <div className="font-semibold text-foreground text-sm">
                     {testimonial.author}
                   </div>
-                  <div className="text-muted-foreground text-sm">
+                  <div className="mt-0.5 flex items-center gap-1.5 font-medium text-slate-500 text-xs dark:text-[#8D9C97]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                     {testimonial.role}
                   </div>
                 </div>
@@ -103,16 +109,16 @@ export function SuccessStoriesSection() {
         </div>
 
         {/* Stats */}
-        <div className="mb-24 grid grid-cols-2 gap-8 text-center md:grid-cols-4 md:divide-x md:divide-white/[0.06] lg:gap-12">
+        <div className="mb-24 grid grid-cols-2 gap-4 text-center md:grid-cols-4 lg:gap-6">
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="space-y-2 md:space-y-3 transition-transform duration-300 hover:scale-105"
+              className="space-y-2 rounded-2xl border border-emerald-100 bg-white/75 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_12px_36px_rgba(15,23,42,0.08)] md:space-y-3 dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/40 dark:hover:border-[rgba(52,211,153,0.32)] dark:hover:shadow-[0_12px_36px_rgba(52,211,153,0.08)]"
             >
-              <div className="bg-gradient-to-r from-white via-indigo-100 to-primary bg-clip-text text-transparent font-extrabold text-4xl md:text-5xl lg:text-6xl tracking-tight drop-shadow-[0_2px_10px_rgba(90,125,255,0.15)]">
+              <div className="bg-gradient-to-r from-slate-950 via-[#059669] to-[#34D399] bg-clip-text font-extrabold text-3xl text-transparent tracking-tight drop-shadow-[0_2px_10px_rgba(52,211,153,0.11)] md:text-4xl lg:text-5xl dark:from-[#F4F7F6] dark:via-[#6EE7B7] dark:to-[#34D399]">
                 {stat.value}
               </div>
-              <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider md:text-sm lg:text-base">
+              <p className="font-semibold text-[10px] text-slate-500 uppercase tracking-wider sm:text-xs dark:text-[#84938E]">
                 {stat.label}
               </p>
             </div>
@@ -121,10 +127,10 @@ export function SuccessStoriesSection() {
 
         {/* Team Section */}
         <div className="mb-12 text-center">
-          <Heading as="h2" className="mb-4">
-            Meet Our Team
+          <Heading as="h2" className="mb-4 text-slate-950 dark:text-[#EEF4F1]">
+            Meet Our <span className="text-primary">Team</span>
           </Heading>
-          <Paragraph className="mx-auto max-w-2xl">
+          <Paragraph className="mx-auto max-w-2xl text-slate-600 dark:text-[#ACBAB5]">
             We&apos;re a team of passionate engineers, designers, and educators
             dedicated to helping you succeed
           </Paragraph>
@@ -133,22 +139,22 @@ export function SuccessStoriesSection() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {team.map((member, index) => (
             <div key={index} className="group text-center">
-              <div className="relative mb-5 aspect-3/4 overflow-hidden rounded-2xl border border-white/[0.04] bg-gradient-to-b from-[#111c33]/20 via-[#0d1426]/40 to-[#060814]/80 transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:border-primary/35 group-hover:shadow-[0_20px_40px_rgba(90,125,255,0.08)]">
+              <div className="relative mb-5 aspect-3/4 overflow-hidden rounded-2xl border border-emerald-100 bg-white transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:border-[#34D399]/40 group-hover:shadow-[0_20px_40px_rgba(15,23,42,0.10)] dark:border-[rgba(167,243,208,0.08)] dark:bg-[#11191E] dark:group-hover:shadow-[0_20px_40px_rgba(52,211,153,0.08)]">
                 {/* Glow behind initials */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(90,125,255,0.04),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.10),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100 dark:bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.04),transparent_70%)]" />
 
                 {/* Initials Text */}
-                <div className="absolute inset-0 flex items-center justify-center font-bold text-7xl tracking-tighter bg-gradient-to-b from-white/15 to-white/3 bg-clip-text text-transparent select-none transition-all duration-500 group-hover:from-white/25 group-hover:to-white/5 group-hover:scale-105">
+                <div className="absolute inset-0 flex select-none items-center justify-center bg-gradient-to-b from-slate-900/35 to-slate-900/5 bg-clip-text font-bold text-7xl text-transparent tracking-tighter transition-all duration-500 group-hover:scale-105 group-hover:from-slate-900/45 group-hover:to-slate-900/10 dark:from-white/15 dark:to-white/3 dark:group-hover:from-white/25 dark:group-hover:to-white/5">
                   {member.name
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
                 </div>
               </div>
-              <h3 className="mb-1 font-bold text-foreground text-lg transition-colors group-hover:text-primary">
+              <h3 className="mb-1 font-bold text-lg text-slate-950 transition-colors group-hover:text-primary dark:text-[#EEF4F1]">
                 {member.name}
               </h3>
-              <p className="text-muted-foreground text-sm font-medium">
+              <p className="font-medium text-slate-500 text-sm dark:text-[#8D9C97]">
                 {member.role}
               </p>
             </div>
