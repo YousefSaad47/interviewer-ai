@@ -12,7 +12,7 @@ export const FlowButton: React.FC<FlowButtonProps> = ({ text, className }) => {
     <button
       type="button"
       className={cn(
-        "group relative flex cursor-pointer items-center justify-center gap-1 overflow-hidden rounded-[15px] border border-white/10 bg-gradient-to-r from-indigo-600 via-primary to-indigo-500 bg-[size:200%_auto] px-[40.75px] py-[10.19px] font-medium text-base text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_15px_rgba(99,130,222,0.3),0_1px_2px_rgba(0,0,0,0.2)] transition-all duration-500 hover:bg-[right_center] hover:rounded-xl hover:border-white/20 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_12px_30px_rgba(99,130,222,0.45)] active:scale-[0.96] md:text-[17.83px]",
+        "group relative flex cursor-pointer items-center justify-center gap-1 overflow-hidden rounded-[15px] border border-[rgba(52,211,153,0.32)] bg-[size:200%_auto] bg-gradient-to-r from-[#10B981] via-[#34D399] to-[#2DD4BF] px-[40.75px] py-[10.19px] font-medium text-base text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_15px_rgba(52,211,153,0.18),0_1px_2px_rgba(0,0,0,0.2)] transition-all duration-500 hover:rounded-xl hover:border-white/20 hover:bg-[right_center] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(52,211,153,0.35)] active:scale-[0.96] md:text-[17.83px]",
         className,
       )}
       style={{ fontFamily: "Geist", height: "50.94px" }}

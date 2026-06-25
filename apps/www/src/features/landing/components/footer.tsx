@@ -66,22 +66,23 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative border-t border-white/[0.04] bg-[#030408]/95 backdrop-blur-xl">
-      <div className="container mx-auto px-4 py-16">
+    <footer className="relative z-10 overflow-hidden border-emerald-100 border-t bg-white/90 backdrop-blur-xl dark:border-[rgba(52,211,153,0.12)] dark:bg-[#050709]">
+      {/* Background subtle glow */}
+      <div className="pointer-events-none absolute -top-[200px] left-1/2 h-[350px] w-[600px] -translate-x-1/2 rounded-full bg-primary/4 blur-[100px]" />
+
+      <div className="container relative z-10 mx-auto px-4 py-16">
         {/* Main Footer Content */}
         <div className="mb-12 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand Section */}
-          <div className="lg:col-span-1">
-            <Link href="/" className="mb-6 flex items-center gap-1">
-              <div className="relative h-5 w-6">
-                <Brain className="size-6 text-primary" />
-              </div>
-              <span className="font-bold text-base text-foreground">
+          <div className="text-left lg:col-span-1">
+            <Link href="/" className="mb-6 flex items-center gap-2">
+              <Brain className="size-6 text-primary" />
+              <span className="font-bold font-sans text-base text-slate-950 dark:text-[#F4F7F6]">
                 Interviewer.Ai
               </span>
             </Link>
-            <p className="mb-6 max-w-xs text-muted-foreground text-sm">
-              The most advanced AI-powered interview preparation
+            <p className="mb-6 max-w-xs text-slate-600 text-sm leading-relaxed dark:text-[#ACBAB5]/70">
+              The most advanced AI-powered interview preparation platform.
             </p>
             {/* Social Links */}
             <div className="flex items-center gap-3">
@@ -89,7 +90,7 @@ export function Footer() {
                 <a
                   key={social.label}
                   href={social.href}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card/50 text-muted-foreground transition-all duration-300 hover:border-neutral-400 hover:bg-card hover:text-foreground dark:hover:border-neutral-600"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-100 bg-slate-50 text-slate-500 transition-all duration-300 hover:border-primary/45 hover:bg-primary/[0.04] hover:text-slate-950 hover:shadow-[0_0_15px_rgba(52,211,153,0.13)] dark:border-[rgba(167,243,208,0.12)] dark:bg-white/[0.02] dark:text-[#ACBAB5]/70 dark:hover:text-white"
                   aria-label={social.label}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -101,14 +102,16 @@ export function Footer() {
           </div>
 
           {/* Service Links */}
-          <div>
-            <h3 className="mb-4 font-bold text-foreground">Service</h3>
+          <div className="text-left">
+            <h3 className="mb-4 font-bold text-slate-950 text-sm uppercase tracking-wider dark:text-[#F4F7F6]">
+              Service
+            </h3>
             <ul className="space-y-3">
               {serviceLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-muted-foreground text-sm transition-colors hover:text-foreground"
+                    className="text-slate-600 text-sm transition-colors hover:text-slate-950 dark:text-[#ACBAB5]/70 dark:hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -118,14 +121,16 @@ export function Footer() {
           </div>
 
           {/* Company Links */}
-          <div>
-            <h3 className="mb-4 font-bold text-foreground">Company</h3>
+          <div className="text-left">
+            <h3 className="mb-4 font-bold text-slate-950 text-sm uppercase tracking-wider dark:text-[#F4F7F6]">
+              Company
+            </h3>
             <ul className="space-y-3">
               {companyLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-muted-foreground text-sm transition-colors hover:text-foreground"
+                    className="text-slate-600 text-sm transition-colors hover:text-slate-950 dark:text-[#ACBAB5]/70 dark:hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -135,14 +140,16 @@ export function Footer() {
           </div>
 
           {/* Resource Links */}
-          <div>
-            <h3 className="mb-4 font-bold text-foreground">Resource</h3>
+          <div className="text-left">
+            <h3 className="mb-4 font-bold text-slate-950 text-sm uppercase tracking-wider dark:text-[#F4F7F6]">
+              Resource
+            </h3>
             <ul className="space-y-3">
               {resourceLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-muted-foreground text-sm transition-colors hover:text-foreground"
+                    className="text-slate-600 text-sm transition-colors hover:text-slate-950 dark:text-[#ACBAB5]/70 dark:hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -153,27 +160,32 @@ export function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="mb-8 h-px bg-border" />
+        <div className="mb-8 h-px bg-emerald-100 dark:bg-[rgba(167,243,208,0.12)]" />
 
         {/* Bottom Bar */}
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <p className="text-muted-foreground text-sm">
-            © 2025 interview.Ai. All rights Reserved
+        <div className="relative z-10 flex flex-col items-center justify-between gap-4 md:flex-row">
+          <p className="text-slate-500 text-xs dark:text-[#ACBAB5]/50">
+            © 2025 Interview.Ai. All rights Reserved.
           </p>
           <div className="flex items-center gap-8">
             <Link
               href="/terms"
-              className="text-muted-foreground text-sm transition-colors hover:text-foreground"
+              className="text-slate-500 text-xs transition-colors hover:text-slate-950 dark:text-[#ACBAB5]/50 dark:hover:text-white"
             >
               Terms and condition
             </Link>
             <Link
               href="/privacy"
-              className="text-muted-foreground text-sm transition-colors hover:text-foreground"
+              className="text-slate-500 text-xs transition-colors hover:text-slate-950 dark:text-[#ACBAB5]/50 dark:hover:text-white"
             >
               Privacy Policy
             </Link>
           </div>
+        </div>
+
+        {/* Large Brand Watermark */}
+        <div className="pointer-events-none absolute bottom-0 left-1/2 -z-10 -translate-x-1/2 select-none whitespace-nowrap font-extrabold font-sans text-[clamp(60px,14vw,180px)] text-slate-900/[0.03] leading-none tracking-tighter dark:text-white/[0.01]">
+          INTERVIEWER.AI
         </div>
       </div>
     </footer>

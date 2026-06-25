@@ -54,7 +54,7 @@ export function Header() {
           className={cn(
             "mx-auto max-w-7xl rounded-3xl px-3 transition-all duration-300 sm:px-6 lg:px-12",
             scrolled &&
-              "bg-[#060814]/75 border border-white/[0.04] shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur-md",
+              "border border-slate-200 bg-white/80 shadow-[0_8px_30px_rgba(15,23,42,0.08)] backdrop-blur-md dark:border-white/[0.04] dark:bg-[#080B0F]/75 dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)]",
           )}
         >
           <motion.div
@@ -104,9 +104,9 @@ export function Header() {
                       <motion.span
                         layoutId="tab"
                         className={cn(
-                          "absolute inset-0 rounded-[15px] bg-white/[0.04] border border-white/[0.02]",
+                          "absolute inset-0 rounded-[15px] border border-slate-200 bg-slate-900/[0.04] dark:border-white/[0.02] dark:bg-white/[0.04]",
                           scrolled &&
-                            "bg-white/[0.06] border border-white/[0.03]",
+                            "border border-slate-200 bg-slate-900/[0.06] dark:border-white/[0.03] dark:bg-white/[0.06]",
                         )}
                         transition={{ duration: 0.2 }}
                       />
