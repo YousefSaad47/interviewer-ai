@@ -64,9 +64,8 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      {/* Background textures */}
       <div
-        className="pointer-events-none fixed inset-0 opacity-35 dark:opacity-60"
+        className="pointer-events-none fixed inset-0 opacity-25 dark:opacity-45"
         style={{
           backgroundImage: "url('/noise-texture.png')",
           backgroundRepeat: "repeat",
@@ -75,9 +74,8 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
         }}
       />
 
-      {/* Blurry backgrounds */}
       <div
-        className="pointer-events-none fixed opacity-35 dark:opacity-60"
+        className="pointer-events-none fixed opacity-30 dark:opacity-60"
         style={{
           top: "-385px",
           left: "-517px",
@@ -88,7 +86,7 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
         }}
       />
       <div
-        className="pointer-events-none fixed opacity-30 dark:opacity-55"
+        className="pointer-events-none fixed opacity-25 dark:opacity-50"
         style={{
           top: "423px",
           right: "-180px",
@@ -100,8 +98,7 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
         }}
       />
 
-      <div className="relative z-10 flex min-h-screen flex-col pt-20 lg:flex-row">
-        {/* Mobile Navigation - Horizontal Scroll */}
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1480px] flex-col px-4 pt-24 pb-14 sm:px-6 lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-8 lg:px-8 xl:px-10">
         <div className="sticky top-20 z-20 border-border border-b bg-background/95 backdrop-blur-sm lg:hidden">
           <div className="overflow-x-auto">
             <nav className="flex gap-2 px-4 py-3">
@@ -134,15 +131,25 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
           </div>
         </div>
 
-        {/* Sidebar - Desktop */}
-        <aside className="hidden w-64 p-5 lg:block xl:w-72">
-          <div className="rounded-3xl border border-border bg-white/75 p-6 shadow-[0_16px_48px_rgba(15,23,42,0.07)] backdrop-blur-md lg:p-8 dark:bg-card dark:shadow-[0_20px_60px_rgba(0,0,0,0.28)]">
-            <div className="mb-9 flex items-center gap-1.25">
-              <SettingsIcon className="h-6 w-6" />
-              <h2 className="font-normal text-lg">Settings</h2>
+        <aside className="hidden lg:block">
+          <div className="sticky top-28 overflow-hidden rounded-lg border border-border bg-card/80 shadow-[0_18px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:bg-card/90 dark:shadow-[0_20px_60px_rgba(0,0,0,0.28)]">
+            <div className="border-border border-b p-5">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/15 bg-primary/10 text-primary">
+                  <SettingsIcon className="h-5 w-5" />
+                </span>
+                <div>
+                  <h2 className="font-bold text-foreground text-lg">
+                    Settings
+                  </h2>
+                  <p className="text-muted-foreground text-xs">
+                    Account controls
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <nav className="space-y-6">
+            <nav className="space-y-1 p-3">
               {navigation.map((item) => {
                 const isActive = pathname === item.href;
                 return (
@@ -150,20 +157,27 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "group flex items-center gap-2 rounded-lg border-b px-2 py-2 text-sm transition-colors",
+                      "group flex items-center gap-3 rounded-lg border px-3 py-3 text-sm transition-colors",
                       isActive
-                        ? "border-primary/35 bg-card text-foreground shadow-sm dark:bg-surface-secondary"
-                        : "border-border bg-white/70 text-foreground/75 hover:border-primary/30 hover:bg-card hover:text-foreground dark:bg-card/75 dark:hover:bg-surface-secondary",
+                        ? "border-primary/30 bg-primary/10 text-foreground shadow-sm"
+                        : "border-transparent text-foreground/70 hover:border-border hover:bg-white/60 hover:text-foreground dark:hover:bg-surface-secondary/60",
                     )}
                   >
-                    <item.icon
+                    <span
                       className={cn(
-                        "h-[14.5px] w-[14.5px]",
+                        "flex h-8 w-8 items-center justify-center rounded-md border",
                         isActive
-                          ? "text-foreground"
-                          : "text-foreground/40 group-hover:text-foreground",
+                          ? "border-primary/20 bg-primary/10 text-primary"
+                          : "border-border bg-white/55 text-foreground/45 dark:bg-card/60",
                       )}
-                    />
+                    >
+                      <item.icon
+                        className={cn(
+                          "h-4 w-4",
+                          !isActive && "group-hover:text-foreground",
+                        )}
+                      />
+                    </span>
                     <span className="text-foreground">{item.label}</span>
                   </Link>
                 );
@@ -172,10 +186,7 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
           </div>
         </aside>
 
-        {/* Main content */}
-        <main className="flex-1 px-4 py-8 sm:px-8 md:px-12 lg:px-16 lg:py-24 xl:py-28">
-          {children}
-        </main>
+        <main className="w-full py-8 lg:py-16">{children}</main>
       </div>
     </div>
   );

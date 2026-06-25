@@ -15,32 +15,41 @@ import { SettingsLayout } from "./settings-layout";
 
 export function InterviewSettingsPage() {
   // TODO(settings-api): Load and persist interview preferences when backend settings endpoints exist.
+  const selectClass =
+    "h-10 w-full rounded-lg border-border bg-white/70 px-3 shadow-none hover:border-primary/35 focus:ring-primary/20 dark:border-border dark:bg-surface-secondary/70 dark:hover:border-border-interactive";
+
   return (
     <SettingsLayout>
-      <div className="mx-auto max-w-[872px]">
-        {/* Header */}
-        <div className="mb-16 lg:mb-20">
-          <h1 className="font-bold text-lg sm:text-xl">Interview Settings</h1>
-          <p className="text-muted-foreground text-sm sm:text-base">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-8">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 font-semibold text-primary text-xs">
+            Interview engine
+            <span className="h-1 w-1 rounded-full bg-primary" />
+            Preferences
+          </div>
+          <h1 className="font-bold text-3xl text-foreground tracking-tight">
+            Interview Settings
+          </h1>
+          <p className="mt-2 text-base text-muted-foreground">
             Customize your AI mock interview experience
           </p>
         </div>
 
-        {/* Content */}
-        <div className="space-y-7">
-          {/* Interview Preferences */}
-          <SettingsCard title="Interview Preferences">
-            <div className="space-y-4 lg:space-y-5">
-              {/* Interview Difficulty */}
+        <div className="space-y-5">
+          <SettingsCard
+            title="Interview Preferences"
+            description="Control the shape, pace, and format of your sessions."
+          >
+            <div className="grid gap-4 md:grid-cols-3">
               <div className="space-y-2">
-                <Label htmlFor="difficulty" className="text-sm sm:text-base">
+                <Label
+                  htmlFor="difficulty"
+                  className="font-semibold text-foreground text-xs"
+                >
                   Interview Difficulty
                 </Label>
                 <Select defaultValue="medium">
-                  <SelectTrigger
-                    id="difficulty"
-                    className="h-12 w-full rounded-xl border-border bg-card px-5 hover:border-primary/45 dark:border-border dark:bg-surface-secondary dark:hover:border-border-interactive"
-                  >
+                  <SelectTrigger id="difficulty" className={selectClass}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -51,16 +60,15 @@ export function InterviewSettingsPage() {
                 </Select>
               </div>
 
-              {/* Interview Type */}
               <div className="space-y-2">
-                <Label htmlFor="type" className="text-sm sm:text-base">
+                <Label
+                  htmlFor="type"
+                  className="font-semibold text-foreground text-xs"
+                >
                   Interview Type
                 </Label>
                 <Select defaultValue="video">
-                  <SelectTrigger
-                    id="type"
-                    className="h-12 w-full rounded-xl border-border bg-card px-5 hover:border-primary/45 dark:border-border dark:bg-surface-secondary dark:hover:border-border-interactive"
-                  >
+                  <SelectTrigger id="type" className={selectClass}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -70,16 +78,15 @@ export function InterviewSettingsPage() {
                 </Select>
               </div>
 
-              {/* Session Duration */}
               <div className="space-y-2">
-                <Label htmlFor="duration" className="text-sm sm:text-base">
+                <Label
+                  htmlFor="duration"
+                  className="font-semibold text-foreground text-xs"
+                >
                   Session Duration
                 </Label>
                 <Select defaultValue="30">
-                  <SelectTrigger
-                    id="duration"
-                    className="h-12 w-full rounded-xl border-border bg-card px-5 hover:border-primary/45 dark:border-border dark:bg-surface-secondary dark:hover:border-border-interactive"
-                  >
+                  <SelectTrigger id="duration" className={selectClass}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -93,13 +100,14 @@ export function InterviewSettingsPage() {
             </div>
           </SettingsCard>
 
-          {/* Analysis Features */}
-          <SettingsCard title="Analysis Features">
-            <div className="space-y-4 lg:space-y-5">
-              {/* Emotional Analysis */}
-              <div className="flex items-start justify-between gap-4">
+          <SettingsCard
+            title="Analysis Features"
+            description="Choose which signals the AI should read during practice."
+          >
+            <div className="grid gap-3">
+              <div className="flex items-start justify-between gap-4 rounded-lg border border-border bg-white/60 p-4 dark:bg-surface-secondary/55">
                 <div className="flex-1">
-                  <p className="mb-1 font-normal text-foreground text-sm sm:text-base">
+                  <p className="mb-1 font-semibold text-foreground text-sm">
                     Emotional Analysis
                   </p>
                   <p className="text-muted-foreground text-xs sm:text-sm">
@@ -109,10 +117,9 @@ export function InterviewSettingsPage() {
                 <Switch defaultChecked />
               </div>
 
-              {/* Verbal Analysis */}
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start justify-between gap-4 rounded-lg border border-border bg-white/60 p-4 dark:bg-surface-secondary/55">
                 <div className="flex-1">
-                  <p className="mb-1 font-normal text-foreground text-sm sm:text-base">
+                  <p className="mb-1 font-semibold text-foreground text-sm">
                     Verbal Analysis
                   </p>
                   <p className="text-muted-foreground text-xs sm:text-sm">
@@ -122,10 +129,9 @@ export function InterviewSettingsPage() {
                 <Switch defaultChecked />
               </div>
 
-              {/* AI Suggestions */}
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start justify-between gap-4 rounded-lg border border-border bg-white/60 p-4 dark:bg-surface-secondary/55">
                 <div className="flex-1">
-                  <p className="mb-1 font-normal text-foreground text-sm sm:text-base">
+                  <p className="mb-1 font-semibold text-foreground text-sm">
                     AI Suggestions
                   </p>
                   <p className="text-muted-foreground text-xs sm:text-sm">

@@ -16,31 +16,35 @@ export function ProfileAccountPage() {
     formState: { errors, isSubmitting },
     onSubmit,
   } = useProfileAccountForm();
+  const inputClass =
+    "h-10 rounded-lg border-border bg-white/70 shadow-none focus:border-primary/45 focus-visible:ring-primary/20 dark:border-border dark:bg-surface-secondary/70 dark:focus:border-border-interactive";
+  const labelClass = "font-semibold text-foreground text-xs";
 
   return (
     <SettingsLayout>
-      <div className="mx-auto max-w-218">
-        {/* Header */}
-        <div className="mb-16 lg:mb-20">
-          <h1 className="mb-2 font-bold text-foreground text-lg sm:text-xl">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-8">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 font-semibold text-primary text-xs">
+            Account center
+            <span className="h-1 w-1 rounded-full bg-primary" />
+            Profile
+          </div>
+          <h1 className="font-bold text-3xl text-foreground tracking-tight">
             Profile & Account
           </h1>
-          <p className="text-muted-foreground text-sm sm:text-base">
+          <p className="mt-2 text-base text-muted-foreground">
             Manage your account information and preferences
           </p>
         </div>
 
-        {/* Content */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
-          {/* Personal Information */}
-          <SettingsCard title="Personal Information">
-            <div className="space-y-4 lg:space-y-5">
-              {/* Full Name */}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <SettingsCard
+            title="Personal Information"
+            description="The identity details used across your interview workspace."
+          >
+            <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label
-                  htmlFor="fullName"
-                  className="font-medium text-foreground text-sm"
-                >
+                <Label htmlFor="fullName" className={labelClass}>
                   Full Name
                 </Label>
                 <Input
@@ -48,7 +52,7 @@ export function ProfileAccountPage() {
                   id="fullName"
                   type="text"
                   className={cn(
-                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
+                    inputClass,
                     errors.fullName && "border-destructive",
                   )}
                 />
@@ -59,12 +63,8 @@ export function ProfileAccountPage() {
                 )}
               </div>
 
-              {/* Email Address */}
               <div className="space-y-2">
-                <Label
-                  htmlFor="email"
-                  className="font-medium text-foreground text-sm"
-                >
+                <Label htmlFor="email" className={labelClass}>
                   Email Address
                 </Label>
                 <Input
@@ -72,7 +72,7 @@ export function ProfileAccountPage() {
                   id="email"
                   type="email"
                   className={cn(
-                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
+                    inputClass,
                     errors.email && "border-destructive",
                   )}
                 />
@@ -83,12 +83,8 @@ export function ProfileAccountPage() {
                 )}
               </div>
 
-              {/* Phone Number */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="phone"
-                  className="font-medium text-foreground text-sm"
-                >
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="phone" className={labelClass}>
                   Phone Number
                 </Label>
                 <Input
@@ -96,7 +92,7 @@ export function ProfileAccountPage() {
                   id="phone"
                   type="tel"
                   className={cn(
-                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
+                    inputClass,
                     errors.phone && "border-destructive",
                   )}
                 />
@@ -109,15 +105,13 @@ export function ProfileAccountPage() {
             </div>
           </SettingsCard>
 
-          {/* Professional Details */}
-          <SettingsCard title="Professional Details">
-            <div className="space-y-4 lg:space-y-5">
-              {/* Current Role */}
+          <SettingsCard
+            title="Professional Details"
+            description="Help the assistant calibrate interview difficulty and role context."
+          >
+            <div className="grid gap-4 md:grid-cols-3">
               <div className="space-y-2">
-                <Label
-                  htmlFor="currentRole"
-                  className="font-medium text-foreground text-sm"
-                >
+                <Label htmlFor="currentRole" className={labelClass}>
                   Current Role
                 </Label>
                 <Input
@@ -125,7 +119,7 @@ export function ProfileAccountPage() {
                   id="currentRole"
                   type="text"
                   className={cn(
-                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
+                    inputClass,
                     errors.currentRole && "border-destructive",
                   )}
                 />
@@ -136,12 +130,8 @@ export function ProfileAccountPage() {
                 )}
               </div>
 
-              {/* Target Role */}
               <div className="space-y-2">
-                <Label
-                  htmlFor="targetRole"
-                  className="font-medium text-foreground text-sm"
-                >
+                <Label htmlFor="targetRole" className={labelClass}>
                   Target Role
                 </Label>
                 <Input
@@ -149,7 +139,7 @@ export function ProfileAccountPage() {
                   id="targetRole"
                   type="text"
                   className={cn(
-                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
+                    inputClass,
                     errors.targetRole && "border-destructive",
                   )}
                 />
@@ -160,12 +150,8 @@ export function ProfileAccountPage() {
                 )}
               </div>
 
-              {/* Years of Experience */}
               <div className="space-y-2">
-                <Label
-                  htmlFor="experience"
-                  className="font-medium text-foreground text-sm"
-                >
+                <Label htmlFor="experience" className={labelClass}>
                   Years of Experience
                 </Label>
                 <Input
@@ -173,7 +159,7 @@ export function ProfileAccountPage() {
                   id="experience"
                   type="text"
                   className={cn(
-                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
+                    inputClass,
                     errors.experience && "border-destructive",
                   )}
                 />
@@ -186,12 +172,11 @@ export function ProfileAccountPage() {
             </div>
           </SettingsCard>
 
-          {/* Save Button */}
-          <div className="flex justify-end">
+          <div className="flex justify-end rounded-lg border border-border bg-card/70 p-3 backdrop-blur-xl">
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="h-12 rounded-xl bg-primary px-8 hover:bg-primary/90"
+              className="h-10 rounded-lg bg-primary px-6 font-semibold text-primary-foreground hover:bg-primary/90"
             >
               {isSubmitting ? "Saving..." : "Save Changes"}
             </Button>
