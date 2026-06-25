@@ -8,13 +8,16 @@ interface TestResult {
   error: string | null;
 }
 
+interface SubmissionDisplay {
+  status: string;
+  executionTimeMs: number | null;
+  memoryUsedKb: number | null;
+  results: TestResult[];
+  errorMessage?: string | null;
+}
+
 interface TestCaseViewProps {
-  lastSubmission: {
-    status: string;
-    executionTimeMs: number | null;
-    memoryUsedKb: number | null;
-    results: TestResult[];
-  } | null;
+  lastSubmission: SubmissionDisplay | null;
   runResult: {
     output: string | null;
     error: string | null;
@@ -109,12 +112,16 @@ export function TestCaseView({
                 <XCircle className="h-5 w-5 text-red-500" />
               )}
               <div>
-                <p className="font-semibold text-sm">{lastSubmission.status}</p>
+                <p className="font-semibold text-sm">
+                  {lastSubmission.errorMessage ?? lastSubmission.status}
+                </p>
                 <p className="text-muted-foreground text-xs">
-                  {lastSubmission.executionTimeMs != null &&
-                  lastSubmission.memoryUsedKb != null
-                    ? `${lastSubmission.executionTimeMs}ms · ${lastSubmission.memoryUsedKb} KB`
-                    : "—"}
+                  {lastSubmission.errorMessage
+                    ? ""
+                    : lastSubmission.executionTimeMs != null &&
+                        lastSubmission.memoryUsedKb != null
+                      ? `${lastSubmission.executionTimeMs}ms · ${lastSubmission.memoryUsedKb} KB`
+                      : "—"}
                 </p>
               </div>
             </div>

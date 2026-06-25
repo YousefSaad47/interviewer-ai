@@ -46,7 +46,7 @@ export function CodePanel({ problemId }: CodePanelProps) {
   const [code, setCode] = useState<string>(
     LANGUAGE_STARTER_CODE.javascript ?? "",
   );
-  const [lastSubmission, setLastSubmission] = useState<{
+  interface SubmissionDisplay {
     status: string;
     executionTimeMs: number | null;
     memoryUsedKb: number | null;
@@ -55,7 +55,11 @@ export function CodePanel({ problemId }: CodePanelProps) {
       output: string | null;
       error: string | null;
     }>;
-  } | null>(null);
+    errorMessage?: string | null;
+  }
+
+  const [lastSubmission, setLastSubmission] =
+    useState<SubmissionDisplay | null>(null);
 
   const [runResult, setRunResult] = useState<{
     output: string | null;
@@ -67,6 +71,8 @@ export function CodePanel({ problemId }: CodePanelProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [isPolling, setIsPolling] = useState(false);
   const pollingRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pollCountRef = useRef(0);
+  const MAX_POLL_RETRIES = 40;
 
   const { mutate: submitCode, isPending } = usePostApiCodingSubmissions();
 
@@ -90,6 +96,7 @@ export function CodePanel({ problemId }: CodePanelProps) {
   const handleRun = async () => {
     setIsRunning(true);
     setRunResult(null);
+    setLastSubmission(null);
     try {
       const res = await fetch("/api/coding/run", {
         method: "POST",
@@ -135,23 +142,68 @@ export function CodePanel({ problemId }: CodePanelProps) {
     }
   };
 
+  const errorResult = (message?: string | null) => ({
+    status: "ERROR",
+    executionTimeMs: null,
+    memoryUsedKb: null,
+    results: [],
+    errorMessage: message || null,
+  });
+
   const handleSubmit = () => {
     setIsPolling(true);
     setLastSubmission(null);
+    pollCountRef.current = 0;
 
     submitCode(
       {
         data: { problemId, code, language },
       },
       {
-        onSuccess: (initialData: CodingSubmitResponse) => {
+        onSuccess: async (initialData: CodingSubmitResponse) => {
           if (initialData?.status !== "PENDING") {
+            try {
+              const res = await fetch(
+                `/api/coding/submissions/${initialData.id}`,
+                { credentials: "include" },
+              );
+              if (res.ok) {
+                const responseData = await res.json();
+                const data =
+                  responseData &&
+                  typeof responseData === "object" &&
+                  "message" in responseData &&
+                  "data" in responseData
+                    ? responseData.data
+                    : responseData;
+                if (data && data.status !== "PENDING") {
+                  setLastSubmission({
+                    status: data.status ?? "ERROR",
+                    executionTimeMs: data.executionTimeMs ?? null,
+                    memoryUsedKb: data.memoryUsedKb ?? null,
+                    results: (data.results ?? []).map(
+                      (r: SubmissionResult) => ({
+                        passed: r.passed,
+                        output: r.output,
+                        error: r.error,
+                      }),
+                    ),
+                  });
+                  setIsPolling(false);
+                  return;
+                }
+              }
+            } catch {
+              // fall through to basic status display
+            }
             setIsPolling(false);
             setLastSubmission({
               status: initialData?.status ?? "ERROR",
               executionTimeMs: null,
               memoryUsedKb: null,
               results: [],
+              errorMessage:
+                initialData?.status === "ERROR" ? "Submission failed" : null,
             });
             return;
           }
@@ -166,13 +218,9 @@ export function CodePanel({ problemId }: CodePanelProps) {
               );
 
               if (!res.ok) {
+                const body = await res.json().catch(() => null);
                 setIsPolling(false);
-                setLastSubmission({
-                  status: "ERROR",
-                  executionTimeMs: null,
-                  memoryUsedKb: null,
-                  results: [],
-                });
+                setLastSubmission(errorResult(body?.message));
                 return;
               }
 
@@ -201,12 +249,16 @@ export function CodePanel({ problemId }: CodePanelProps) {
               }
             } catch {
               setIsPolling(false);
-              setLastSubmission({
-                status: "ERROR",
-                executionTimeMs: null,
-                memoryUsedKb: null,
-                results: [],
-              });
+              setLastSubmission(errorResult("Failed to check submission"));
+              return;
+            }
+
+            pollCountRef.current += 1;
+            if (pollCountRef.current >= MAX_POLL_RETRIES) {
+              setIsPolling(false);
+              setLastSubmission(
+                errorResult("Submission timed out. Please try again."),
+              );
               return;
             }
 
@@ -215,14 +267,22 @@ export function CodePanel({ problemId }: CodePanelProps) {
 
           pollingRef.current = setTimeout(pollSubmission, 1500);
         },
-        onError: () => {
+        onError: (err: unknown) => {
+          const apiError = err as
+            | {
+                data?: { message?: string };
+                status?: number;
+                statusText?: string;
+              }
+            | undefined;
           setIsPolling(false);
-          setLastSubmission({
-            status: "ERROR",
-            executionTimeMs: null,
-            memoryUsedKb: null,
-            results: [],
-          });
+          setLastSubmission(
+            errorResult(
+              apiError?.data?.message ??
+                apiError?.statusText ??
+                "Submission failed",
+            ),
+          );
         },
       },
     );
