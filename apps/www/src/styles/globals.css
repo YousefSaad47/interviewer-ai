@@ -170,14 +170,12 @@
   }
 }
 
-@layer components {
-  .admin-row {
-    @apply border-border border-b transition-colors hover:bg-accent/45;
-  }
+.admin-row {
+  @apply border-border border-b transition-colors hover:bg-accent/45;
+}
 
-  .admin-cell {
-    @apply whitespace-nowrap px-5 py-4 text-muted-foreground;
-  }
+.admin-cell {
+  @apply whitespace-nowrap px-6 py-4 text-muted-foreground;
 }
 
 /* Figma Landing Page Exact Colors */

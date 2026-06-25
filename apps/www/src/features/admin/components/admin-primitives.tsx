@@ -107,7 +107,7 @@ export function ResponsiveTable({
         <thead className="border-border border-b bg-surface-secondary/40 text-muted-foreground text-xs uppercase">
           <tr>
             {columns.map((column) => (
-              <th className="px-5 py-3 font-semibold" key={column || "actions"}>
+              <th className="px-6 py-3 font-semibold" key={column || "actions"}>
                 {column}
               </th>
             ))}
@@ -121,7 +121,7 @@ export function ResponsiveTable({
 
 export function Pagination() {
   return (
-    <div className="flex flex-col gap-3 border-border border-t px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-3 border-border border-t px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
       <p className="text-muted-foreground text-sm">
         Showing 1-5 of 248 results
       </p>
