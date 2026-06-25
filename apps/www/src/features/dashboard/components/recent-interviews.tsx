@@ -12,7 +12,7 @@ export function RecentInterviews() {
 
   if (isLoading) {
     return (
-      <Card className="rounded-[15px] border-border bg-neutral-100 dark:bg-neutral-900">
+      <Card className="rounded-[15px] border-border bg-card dark:bg-card">
         <CardHeader>
           <CardTitle className="font-bold text-foreground text-xl">
             Recent Interviews
@@ -33,7 +33,7 @@ export function RecentInterviews() {
   const interviews = data?.interviews ?? [];
 
   return (
-    <Card className="rounded-[15px] border-border bg-neutral-100 dark:bg-neutral-900">
+    <Card className="rounded-[15px] border-border bg-card dark:bg-card">
       <CardHeader>
         <CardTitle className="font-bold text-foreground text-xl">
           Recent Interviews
@@ -49,7 +49,7 @@ export function RecentInterviews() {
           interviews.map((interview) => (
             <div
               key={interview.id}
-              className="flex flex-col gap-3 rounded-lg bg-neutral-50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between dark:bg-neutral-800"
+              className="flex flex-col gap-3 rounded-lg bg-white/75 px-4 py-4 sm:flex-row sm:items-center sm:justify-between dark:bg-surface-secondary"
             >
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/20 p-3">

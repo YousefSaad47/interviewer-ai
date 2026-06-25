@@ -53,7 +53,7 @@ export function StatsCards() {
         return (
           <Card
             key={stat.label}
-            className="rounded-[15px] border-border bg-neutral-100 dark:bg-neutral-900"
+            className="rounded-[15px] border-border bg-card dark:bg-card"
           >
             <CardContent className="flex items-center justify-between">
               <Icon className="h-9 w-9 text-primary" />

@@ -113,7 +113,7 @@ export function ProblemsPage() {
                 href={`/problems/${problem.slug}`}
                 className="block"
               >
-                <Card className="cursor-pointer border-neutral-200 p-5 transition-all hover:border-neutral-300 hover:shadow-md sm:p-6 dark:border-neutral-800 dark:hover:border-neutral-700">
+                <Card className="cursor-pointer border-border p-5 transition-all hover:border-border hover:shadow-md sm:p-6 dark:border-border dark:hover:border-border">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 space-y-2">
                       <h2 className="font-semibold text-foreground text-lg sm:text-xl">
@@ -125,7 +125,7 @@ export function ProblemsPage() {
                       <div className="flex items-center gap-3 pt-1">
                         <Badge
                           variant="outline"
-                          className="rounded-md border-neutral-300 px-2 py-0.5 text-xs dark:border-neutral-700"
+                          className="rounded-md border-border px-2 py-0.5 text-xs dark:border-border"
                         >
                           {problem.testCaseCount} test cases
                         </Badge>

@@ -37,8 +37,7 @@ export const ResumeBuilderPage = () => {
             top: "-385px",
             width: "660px",
             height: "665px",
-            background:
-              "radial-gradient(circle, oklch(0.545 0.143 265.8) 0%, transparent 70%)",
+            background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
             filter: "blur(250px)",
           }}
         />
@@ -50,7 +49,7 @@ export const ResumeBuilderPage = () => {
             width: "390px",
             height: "393px",
             background:
-              "radial-gradient(circle, rgba(99, 130, 222, 0.4) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(52, 211, 153, 0.28) 0%, transparent 70%)",
             filter: "blur(358.5px)",
           }}
         />

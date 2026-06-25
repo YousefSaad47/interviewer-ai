@@ -66,7 +66,7 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
       <Header />
       {/* Background textures */}
       <div
-        className="pointer-events-none fixed inset-0 opacity-60"
+        className="pointer-events-none fixed inset-0 opacity-35 dark:opacity-60"
         style={{
           backgroundImage: "url('/noise-texture.png')",
           backgroundRepeat: "repeat",
@@ -77,25 +77,25 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
 
       {/* Blurry backgrounds */}
       <div
-        className="pointer-events-none fixed"
+        className="pointer-events-none fixed opacity-35 dark:opacity-60"
         style={{
           top: "-385px",
           left: "-517px",
           width: "660px",
           height: "665px",
-          background: "oklch(0.545 0.143 265.8)",
+          background: "#10B981",
           filter: "blur(250px)",
         }}
       />
       <div
-        className="pointer-events-none fixed"
+        className="pointer-events-none fixed opacity-30 dark:opacity-55"
         style={{
           top: "423px",
           right: "-180px",
           width: "390px",
           height: "393px",
           background:
-            "linear-gradient(180deg, oklch(0.545 0.143 265.8) 0%, oklch(0.545 0.143 265.8 / 0) 100%)",
+            "linear-gradient(180deg, #10B981 0%, rgb(16 185 129 / 0) 100%)",
           filter: "blur(358.5px)",
         }}
       />
@@ -114,8 +114,8 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
                     className={cn(
                       "flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2 text-sm transition-colors",
                       isActive
-                        ? "border-neutral-300 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
-                        : "border-neutral-200 bg-neutral-50 hover:border-neutral-300 hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 dark:hover:bg-neutral-800",
+                        ? "border-primary/35 bg-card text-foreground shadow-sm dark:bg-surface-secondary"
+                        : "border-border bg-white/70 text-foreground/75 hover:border-primary/30 hover:bg-card hover:text-foreground dark:bg-card/75 dark:hover:bg-surface-secondary",
                     )}
                   >
                     <item.icon
@@ -136,7 +136,7 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
 
         {/* Sidebar - Desktop */}
         <aside className="hidden w-64 p-5 lg:block xl:w-72">
-          <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-6 shadow-lg backdrop-blur-sm lg:p-8 dark:border-neutral-800 dark:bg-neutral-900">
+          <div className="rounded-3xl border border-border bg-white/75 p-6 shadow-[0_16px_48px_rgba(15,23,42,0.07)] backdrop-blur-md lg:p-8 dark:bg-card dark:shadow-[0_20px_60px_rgba(0,0,0,0.28)]">
             <div className="mb-9 flex items-center gap-1.25">
               <SettingsIcon className="h-6 w-6" />
               <h2 className="font-normal text-lg">Settings</h2>
@@ -152,8 +152,8 @@ export function SettingsLayout({ children }: SettingsLayoutProps) {
                     className={cn(
                       "group flex items-center gap-2 rounded-lg border-b px-2 py-2 text-sm transition-colors",
                       isActive
-                        ? "border-neutral-300 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
-                        : "border-neutral-200 bg-neutral-50 hover:border-neutral-300 hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 dark:hover:bg-neutral-800",
+                        ? "border-primary/35 bg-card text-foreground shadow-sm dark:bg-surface-secondary"
+                        : "border-border bg-white/70 text-foreground/75 hover:border-primary/30 hover:bg-card hover:text-foreground dark:bg-card/75 dark:hover:bg-surface-secondary",
                     )}
                   >
                     <item.icon

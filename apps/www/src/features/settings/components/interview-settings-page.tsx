@@ -39,7 +39,7 @@ export function InterviewSettingsPage() {
                 <Select defaultValue="medium">
                   <SelectTrigger
                     id="difficulty"
-                    className="h-12 w-full rounded-xl border-neutral-300 bg-neutral-100 px-5 hover:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-neutral-600"
+                    className="h-12 w-full rounded-xl border-border bg-card px-5 hover:border-primary/45 dark:border-border dark:bg-surface-secondary dark:hover:border-border-interactive"
                   >
                     <SelectValue />
                   </SelectTrigger>
@@ -59,7 +59,7 @@ export function InterviewSettingsPage() {
                 <Select defaultValue="video">
                   <SelectTrigger
                     id="type"
-                    className="h-12 w-full rounded-xl border-neutral-300 bg-neutral-100 px-5 hover:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-neutral-600"
+                    className="h-12 w-full rounded-xl border-border bg-card px-5 hover:border-primary/45 dark:border-border dark:bg-surface-secondary dark:hover:border-border-interactive"
                   >
                     <SelectValue />
                   </SelectTrigger>
@@ -78,7 +78,7 @@ export function InterviewSettingsPage() {
                 <Select defaultValue="30">
                   <SelectTrigger
                     id="duration"
-                    className="h-12 w-full rounded-xl border-neutral-300 bg-neutral-100 px-5 hover:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-neutral-600"
+                    className="h-12 w-full rounded-xl border-border bg-card px-5 hover:border-primary/45 dark:border-border dark:bg-surface-secondary dark:hover:border-border-interactive"
                   >
                     <SelectValue />
                   </SelectTrigger>

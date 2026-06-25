@@ -16,7 +16,7 @@ export function ExampleCase({
       <h3 className="font-medium text-foreground text-sm sm:text-base md:text-lg">
         Example {number}:
       </h3>
-      <div className="rounded-lg border bg-muted/30 p-3 sm:p-3.5 md:p-4 dark:border-[#1a1a1a] dark:bg-[#232323]">
+      <div className="rounded-lg border border-border bg-muted/45 p-3 sm:p-3.5 md:p-4 dark:bg-surface-secondary">
         <div className="space-y-2">
           <div className="flex flex-wrap gap-1">
             <span className="font-mono font-semibold text-primary text-xs md:text-sm">

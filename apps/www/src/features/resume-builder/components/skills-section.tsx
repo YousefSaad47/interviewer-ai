@@ -28,7 +28,7 @@ export function SkillsSection() {
   };
 
   return (
-    <Card className="rounded-[15px] border-border bg-neutral-100 dark:bg-neutral-900">
+    <Card className="rounded-[15px] border-border bg-card dark:bg-card">
       <CardHeader>
         <CardTitle className="font-bold text-foreground text-xl">
           Skills
@@ -45,7 +45,7 @@ export function SkillsSection() {
                 }
               }}
               placeholder="Add skill..."
-              className="h-9 w-full rounded-lg border-neutral-300 bg-white text-sm sm:w-32 dark:border-neutral-700 dark:bg-neutral-800"
+              className="h-9 w-full rounded-lg border-border bg-white text-sm sm:w-32 dark:border-border dark:bg-surface-secondary"
             />
             <Button
               onClick={handleAddSkill}
@@ -62,7 +62,7 @@ export function SkillsSection() {
         {data.skills.map((skill, index) => (
           <div
             key={index}
-            className="flex items-center gap-2 rounded-lg border border-border bg-neutral-50 px-3 py-2 dark:bg-neutral-800"
+            className="flex items-center gap-2 rounded-lg border border-border bg-white/75 px-3 py-2 dark:bg-surface-secondary"
           >
             <Input
               type="text"

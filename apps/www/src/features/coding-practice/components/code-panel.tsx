@@ -53,7 +53,7 @@ export function CodePanel({ problemId }: CodePanelProps) {
     <ResizablePanelGroup orientation="vertical" className="h-full">
       <ResizablePanel defaultSize="60%" minSize="30%" maxSize="80%">
         <div className="flex h-full flex-col">
-          <div className="flex items-center justify-between border-b bg-background px-4 py-3 md:px-6 md:py-3.5 dark:border-[#1a1a1a]">
+          <div className="flex items-center justify-between border-border border-b bg-background/80 px-4 py-3 backdrop-blur-sm md:px-6 md:py-3.5">
             <Select value={language} onValueChange={handleLanguageChange}>
               <SelectTrigger className="w-35 border-none bg-muted font-medium text-xs md:w-40 md:text-sm">
                 <SelectValue placeholder="Select language" />
@@ -101,7 +101,7 @@ export function CodePanel({ problemId }: CodePanelProps) {
             />
           </div>
 
-          <div className="flex justify-end gap-2 border-t bg-background px-4 py-3 md:gap-3 md:px-6 md:py-3.5 dark:border-[#1a1a1a]">
+          <div className="flex justify-end gap-2 border-border border-t bg-background/80 px-4 py-3 backdrop-blur-sm md:gap-3 md:px-6 md:py-3.5">
             <Button
               variant="outline"
               size="sm"

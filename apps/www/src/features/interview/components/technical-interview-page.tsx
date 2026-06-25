@@ -51,7 +51,7 @@ function InterviewContent() {
       <main className="relative px-4 pt-24 pb-20 sm:px-6 md:px-8 lg:px-20 lg:pt-32">
         <div className="mb-8 flex flex-col gap-4 lg:mb-12 lg:flex-row lg:gap-7">
           <div className="w-full lg:flex-1">
-            <div className="flex flex-col gap-4 rounded-3xl bg-neutral-50 p-4 shadow-lg backdrop-blur-sm sm:p-6 md:flex-row md:items-center md:justify-between md:gap-6 lg:rounded-[40px] lg:p-8 dark:bg-neutral-900">
+            <div className="flex flex-col gap-4 rounded-3xl bg-white/75 p-4 shadow-lg backdrop-blur-sm sm:p-6 md:flex-row md:items-center md:justify-between md:gap-6 lg:rounded-[40px] lg:p-8 dark:bg-card">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center md:gap-6 lg:gap-8">
                 <div className="flex items-center gap-3 sm:gap-4">
                   <div className="flex items-center gap-2 rounded-lg bg-primary/20 px-4 py-2 sm:px-5 sm:py-3">
@@ -113,7 +113,7 @@ function InterviewContent() {
               </div>
             </div>
 
-            <Card className="mt-6 rounded-3xl border-primary/20 bg-neutral-50 p-6 backdrop-blur-sm lg:rounded-[40px] lg:p-8 dark:bg-neutral-900">
+            <Card className="mt-6 rounded-3xl border-primary/20 bg-white/75 p-6 backdrop-blur-sm lg:rounded-[40px] lg:p-8 dark:bg-card">
               <div className="flex w-full flex-col gap-4 lg:gap-5">
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-base text-foreground sm:text-lg">
@@ -137,7 +137,7 @@ function InterviewContent() {
 
         <div className="flex flex-col gap-6 lg:flex-row">
           <div className="flex w-full flex-col gap-6 lg:flex-1 lg:gap-7">
-            <Card className="relative h-[500px] overflow-hidden rounded-2xl border-border/10 bg-neutral-50 backdrop-blur-sm sm:h-[550px] lg:h-[627px] lg:rounded-3xl dark:bg-neutral-900">
+            <Card className="relative h-[500px] overflow-hidden rounded-2xl border-border/10 bg-white/75 backdrop-blur-sm sm:h-[550px] lg:h-[627px] lg:rounded-3xl dark:bg-card">
               {!isConnected && status.value !== "connecting" ? (
                 <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-8 px-4">
                   <div className="flex h-20 w-20 items-center justify-center rounded-full border border-primary/30 bg-primary/20 sm:h-24 sm:w-24 lg:h-28 lg:w-28">
@@ -205,7 +205,7 @@ function InterviewContent() {
           </div>
 
           <div className="w-full lg:w-80 xl:w-96">
-            <Card className="rounded-2xl border-neutral-200 bg-neutral-50 px-6 pt-6 pb-1 backdrop-blur-sm lg:rounded-3xl dark:border-neutral-800 dark:bg-neutral-900">
+            <Card className="rounded-2xl border-border bg-white/75 px-6 pt-6 pb-1 backdrop-blur-sm lg:rounded-3xl dark:border-border dark:bg-card">
               <h3 className="mb-10 font-bold text-foreground text-lg sm:mb-12 sm:text-xl lg:mb-14">
                 Session Overview
               </h3>

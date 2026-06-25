@@ -25,7 +25,7 @@ export function WorkExperienceSection() {
   } = useResume();
 
   return (
-    <Card className="rounded-[15px] border-border bg-neutral-100 dark:bg-neutral-900">
+    <Card className="rounded-[15px] border-border bg-card dark:bg-card">
       <CardHeader>
         <CardTitle className="font-bold text-foreground text-xl">
           Work Experience
@@ -45,7 +45,7 @@ export function WorkExperienceSection() {
         {data.workExperience.map((exp, index) => (
           <div
             key={exp.id}
-            className="space-y-3 rounded-lg bg-neutral-50 p-4 dark:bg-neutral-800"
+            className="space-y-3 rounded-lg bg-white/75 p-4 dark:bg-surface-secondary"
           >
             {/* Entry Header */}
             <div className="flex items-center justify-between">
@@ -74,7 +74,7 @@ export function WorkExperienceSection() {
                     updateWorkExperience(exp.id, { company: e.target.value })
                   }
                   placeholder="Enter company name"
-                  className="rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+                  className="rounded-lg border-border bg-white dark:border-border-interactive dark:bg-surface-elevated"
                 />
               </div>
               <div className="flex-1 space-y-1.5">
@@ -88,7 +88,7 @@ export function WorkExperienceSection() {
                     updateWorkExperience(exp.id, { position: e.target.value })
                   }
                   placeholder="Enter position title"
-                  className="rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+                  className="rounded-lg border-border bg-white dark:border-border-interactive dark:bg-surface-elevated"
                 />
               </div>
             </div>
@@ -103,7 +103,7 @@ export function WorkExperienceSection() {
                   updateWorkExperience(exp.id, { duration: e.target.value })
                 }
                 placeholder="e.g., Jan 2020 - Dec 2022"
-                className="w-full rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+                className="w-full rounded-lg border-border bg-white dark:border-border-interactive dark:bg-surface-elevated"
               />
             </div>
 
@@ -119,7 +119,7 @@ export function WorkExperienceSection() {
                 }
                 placeholder="Describe your responsibilities and achievements"
                 rows={3}
-                className="w-full rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+                className="w-full rounded-lg border-border bg-white dark:border-border-interactive dark:bg-surface-elevated"
               />
             </div>
           </div>

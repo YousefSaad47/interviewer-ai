@@ -9,7 +9,7 @@ interface SettingsCardProps {
 
 export function SettingsCard({ title, children }: SettingsCardProps) {
   return (
-    <Card className="rounded-3xl border-neutral-200 bg-neutral-50 shadow-lg backdrop-blur-sm dark:border-neutral-800 dark:bg-neutral-900">
+    <Card className="rounded-3xl border-border bg-white/75 shadow-lg backdrop-blur-sm dark:border-border dark:bg-card">
       <CardHeader>
         <CardTitle className="text-center font-semibold text-base text-foreground">
           {title}
