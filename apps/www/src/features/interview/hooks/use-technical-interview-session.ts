@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -8,6 +8,10 @@ import { useVoice } from "@humeai/voice-react";
 import { usePostApiInterviewIdFinalize } from "@repo/kubb";
 
 import { linkInterviewChat } from "../api";
+import {
+  calculateInterviewProgress,
+  parseInterviewQuestionCount,
+} from "../utils";
 
 export function useTechnicalInterviewSession() {
   const router = useRouter();
@@ -15,20 +19,44 @@ export function useTechnicalInterviewSession() {
   const interviewId = searchParams.get("interviewId") ?? "";
   const accessToken = searchParams.get("accessToken") ?? "";
   const configId = searchParams.get("configId") ?? "";
-  const questionCount = Number.parseInt(
-    searchParams.get("questionCount") ?? "5",
-    10,
+  const questionCount = parseInterviewQuestionCount(
+    searchParams.get("questionCount"),
   );
-
-  const [chatId, setChatId] = useState<string | null>(null);
-  const [chatGroupId, setChatGroupId] = useState<string | null>(null);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const linkedChatIdRef = useRef<string | null>(null);
 
   const { mutateAsync: finalizeInterview } = usePostApiInterviewIdFinalize();
   const { connect, disconnect, status, messages, isMuted, mute, unmute } =
     useVoice();
 
   const isConnected = status.value === "connected";
+  const chatMetadata = useMemo(
+    () => messages.find((message) => message.type === "chat_metadata"),
+    [messages],
+  );
+  const currentQuestion = useMemo(
+    () =>
+      messages.reduce((count, message) => {
+        if (
+          message.type === "assistant_message" &&
+          message.message?.content?.includes("QUESTION_START")
+        ) {
+          return count + 1;
+        }
+
+        return count;
+      }, 0),
+    [messages],
+  );
+  const transcriptMessages = useMemo(
+    () =>
+      messages.filter(
+        (message) =>
+          message.type === "user_message" ||
+          message.type === "assistant_message",
+      ),
+    [messages],
+  );
+  const progress = calculateInterviewProgress(currentQuestion, questionCount);
 
   const handleStart = useCallback(() => {
     connect({
@@ -40,53 +68,35 @@ export function useTechnicalInterviewSession() {
   const handleEnd = useCallback(async () => {
     disconnect();
 
-    if (chatId && interviewId) {
+    if (chatMetadata?.type === "chat_metadata" && interviewId) {
       await finalizeInterview({
         id: interviewId,
-        data: { chatId, chatGroupId: chatGroupId ?? chatId },
+        data: {
+          chatId: chatMetadata.chatId,
+          chatGroupId: chatMetadata.chatGroupId ?? chatMetadata.chatId,
+        },
       });
     }
 
     router.push("/dashboard");
-  }, [disconnect, chatId, chatGroupId, interviewId, router, finalizeInterview]);
+  }, [disconnect, chatMetadata, interviewId, router, finalizeInterview]);
 
   useEffect(() => {
-    const metadataMsg = messages.find((m) => m.type === "chat_metadata");
-    if (metadataMsg?.type !== "chat_metadata" || !interviewId) return;
-
-    setChatId(metadataMsg.chatId);
-    setChatGroupId(metadataMsg.chatGroupId);
-
-    linkInterviewChat(interviewId, {
-      chatId: metadataMsg.chatId,
-      chatGroupId: metadataMsg.chatGroupId,
-    }).catch(() => {});
-  }, [messages, interviewId]);
-
-  useEffect(() => {
-    const assistantMessages = messages.filter(
-      (message) => message.type === "assistant_message",
-    );
-    let count = 0;
-
-    for (const message of assistantMessages) {
-      if (message.message?.content?.includes("QUESTION_START")) {
-        count++;
-      }
+    if (
+      chatMetadata?.type !== "chat_metadata" ||
+      !interviewId ||
+      linkedChatIdRef.current === chatMetadata.chatId
+    ) {
+      return;
     }
 
-    setCurrentQuestion(count);
-  }, [messages]);
+    linkInterviewChat(interviewId, {
+      chatId: chatMetadata.chatId,
+      chatGroupId: chatMetadata.chatGroupId,
+    }).catch(() => {});
 
-  const transcriptMessages = messages.filter(
-    (message) =>
-      message.type === "user_message" || message.type === "assistant_message",
-  );
-
-  const progress = Math.min(
-    Math.round((currentQuestion / questionCount) * 100),
-    100,
-  );
+    linkedChatIdRef.current = chatMetadata.chatId;
+  }, [chatMetadata, interviewId]);
 
   return {
     currentQuestion,
