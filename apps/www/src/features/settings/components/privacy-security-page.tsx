@@ -10,55 +10,60 @@ export function PrivacySecurityPage() {
   // TODO(settings-api): Connect account security/data privacy actions when backend endpoints exist.
   return (
     <SettingsLayout>
-      <div className="mx-auto max-w-[872px]">
-        {/* Header */}
-        <div className="mb-16 lg:mb-20">
-          <h1 className="font-bold text-lg sm:text-xl">Privacy & Security</h1>
-          <p className="text-muted-foreground text-sm sm:text-base">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-8">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 font-semibold text-primary text-xs">
+            Security
+            <span className="h-1 w-1 rounded-full bg-primary" />
+            Data controls
+          </div>
+          <h1 className="font-bold text-3xl text-foreground tracking-tight">
+            Privacy & Security
+          </h1>
+          <p className="mt-2 text-base text-muted-foreground">
             Manage your security settings and data privacy
           </p>
         </div>
 
-        {/* Content */}
-        <div className="space-y-7">
-          {/* Account Security */}
-          <SettingsCard title="Account Security">
-            <div className="space-y-3 lg:space-y-4">
-              {/* Change Password */}
+        <div className="space-y-5">
+          <SettingsCard
+            title="Account Security"
+            description="Protect login access and active sessions."
+          >
+            <div className="grid gap-3">
               <Button
                 variant="outline"
-                className="h-auto w-full justify-start border-border bg-card px-5 py-3 font-normal text-sm hover:border-primary/45 hover:bg-surface-strong dark:border-border dark:bg-surface-secondary dark:hover:border-border-interactive dark:hover:bg-surface-elevated"
+                className="h-auto w-full justify-start rounded-lg border-border bg-white/60 px-4 py-3 font-semibold text-sm hover:border-primary/35 hover:bg-white/85 dark:border-border dark:bg-surface-secondary/55 dark:hover:bg-surface-secondary"
               >
                 Change Password
               </Button>
 
-              {/* View Active Session */}
               <Button
                 variant="outline"
-                className="h-auto w-full justify-start border-border bg-card px-5 py-3 font-normal text-sm hover:border-primary/45 hover:bg-surface-strong dark:border-border dark:bg-surface-secondary dark:hover:border-border-interactive dark:hover:bg-surface-elevated"
+                className="h-auto w-full justify-start rounded-lg border-border bg-white/60 px-4 py-3 font-semibold text-sm hover:border-primary/35 hover:bg-white/85 dark:border-border dark:bg-surface-secondary/55 dark:hover:bg-surface-secondary"
               >
                 View Active Session
               </Button>
             </div>
           </SettingsCard>
 
-          {/* Data Privacy */}
-          <SettingsCard title="Data Privacy">
-            <div className="space-y-3 lg:space-y-4">
-              {/* Download My Data */}
+          <SettingsCard
+            title="Data Privacy"
+            description="Export or remove stored account information."
+          >
+            <div className="grid gap-3">
               <Button
                 variant="outline"
-                className="h-auto w-full justify-start border-border bg-card px-5 py-3 font-normal text-sm hover:border-primary/45 hover:bg-surface-strong dark:border-border dark:bg-surface-secondary dark:hover:border-border-interactive dark:hover:bg-surface-elevated"
+                className="h-auto w-full justify-start rounded-lg border-border bg-white/60 px-4 py-3 font-semibold text-sm hover:border-primary/35 hover:bg-white/85 dark:border-border dark:bg-surface-secondary/55 dark:hover:bg-surface-secondary"
               >
                 Download My Data
               </Button>
 
-              {/* Delete Account */}
               <Button
                 variant="outline"
                 className={cn(
-                  "h-auto w-full justify-start px-5 py-3 font-normal text-sm",
-                  "border-destructive bg-destructive/24 hover:border-destructive/50 hover:bg-destructive/30",
+                  "h-auto w-full justify-start rounded-lg px-4 py-3 font-semibold text-sm",
+                  "border-destructive/40 bg-destructive/10 text-destructive hover:border-destructive/60 hover:bg-destructive/15",
                 )}
               >
                 Delete Account
