@@ -94,6 +94,54 @@ export function TableFilters() {
   );
 }
 
+export type TableFilterOption = {
+  label: string;
+  value: string;
+};
+
+export function ControlledTableFilters({
+  extraSelect,
+  onSearchChange,
+  onStatusChange,
+  search,
+  status,
+  statusOptions,
+}: {
+  extraSelect?: ReactNode;
+  onSearchChange: (value: string) => void;
+  onStatusChange: (value: string) => void;
+  search: string;
+  status: string;
+  statusOptions: TableFilterOption[];
+}) {
+  return (
+    <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="relative">
+        <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          className="w-full pl-9 sm:w-64"
+          onChange={(event) => onSearchChange(event.target.value)}
+          placeholder="Search"
+          value={search}
+        />
+      </div>
+      <Select onValueChange={onStatusChange} value={status}>
+        <SelectTrigger className="w-full sm:w-36">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {statusOptions.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {extraSelect}
+    </div>
+  );
+}
+
 export function ResponsiveTable({
   children,
   columns,
@@ -119,24 +167,67 @@ export function ResponsiveTable({
   );
 }
 
-export function Pagination() {
+export function Pagination({
+  disabled = false,
+  onNext,
+  onPrevious,
+  pagination,
+}: {
+  disabled?: boolean | undefined;
+  onNext?: () => void;
+  onPrevious?: () => void;
+  pagination?:
+    | {
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      }
+    | undefined;
+}) {
+  const start =
+    pagination && pagination.total > 0
+      ? (pagination.page - 1) * pagination.limit + 1
+      : 1;
+  const end = pagination
+    ? Math.min(pagination.page * pagination.limit, pagination.total)
+    : 5;
+
   return (
     <div className="flex flex-col gap-3 border-border border-t px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
       <p className="text-muted-foreground text-sm">
-        Showing 1-5 of 248 results
+        {pagination
+          ? `Showing ${pagination.total === 0 ? 0 : start}-${end} of ${pagination.total} results`
+          : "Showing 1-5 of 248 results"}
       </p>
       <div className="flex items-center gap-2">
-        <Button className="h-9 gap-1 rounded-lg" variant="outline">
+        <Button
+          className="h-9 gap-1 rounded-lg"
+          disabled={
+            disabled || (pagination ? !pagination.hasPreviousPage : false)
+          }
+          onClick={onPrevious}
+          variant="outline"
+        >
           <ChevronLeft className="size-4" />
           Prev
         </Button>
         <Button className="h-9 rounded-lg" variant="secondary">
-          1
+          {pagination?.page ?? 1}
         </Button>
-        <Button className="h-9 rounded-lg" variant="ghost">
-          2
-        </Button>
-        <Button className="h-9 gap-1 rounded-lg" variant="outline">
+        {pagination && pagination.totalPages > pagination.page && (
+          <Button className="h-9 rounded-lg" variant="ghost">
+            {pagination.page + 1}
+          </Button>
+        )}
+        <Button
+          className="h-9 gap-1 rounded-lg"
+          disabled={disabled || (pagination ? !pagination.hasNextPage : false)}
+          onClick={onNext}
+          variant="outline"
+        >
           Next
           <ChevronRight className="size-4" />
         </Button>
@@ -147,12 +238,16 @@ export function Pagination() {
 
 export function ActionMenu({
   destructive,
+  disabled,
+  onSecondary,
   onPrimary,
   primary,
   secondary,
 }: {
   destructive: string;
+  disabled?: boolean | undefined;
   onPrimary: () => void;
+  onSecondary?: () => void;
   primary: string;
   secondary: string;
 }) {
@@ -165,7 +260,9 @@ export function ActionMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={onPrimary}>{primary}</DropdownMenuItem>
-        <DropdownMenuItem>{secondary}</DropdownMenuItem>
+        <DropdownMenuItem disabled={disabled ?? false} onClick={onSecondary}>
+          {secondary}
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive">{destructive}</DropdownMenuItem>
       </DropdownMenuContent>
@@ -208,16 +305,20 @@ export function DifficultyBadge({ difficulty }: { difficulty: string }) {
   );
 }
 
-export function ScorePill({ value }: { value: number }) {
+export function ScorePill({ value }: { value: number | null }) {
+  const score = value ?? 0;
+
   return (
     <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-2.5 py-1">
       <span className="h-1.5 w-10 overflow-hidden rounded-full bg-muted">
         <span
           className="block h-full rounded-full bg-primary"
-          style={{ width: `${value}%` }}
+          style={{ width: `${score}%` }}
         />
       </span>
-      <span className="font-semibold text-heading text-xs">{value}%</span>
+      <span className="font-semibold text-heading text-xs">
+        {value === null ? "--" : `${value}%`}
+      </span>
     </div>
   );
 }
