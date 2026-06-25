@@ -170,6 +170,16 @@
   }
 }
 
+@layer components {
+  .admin-row {
+    @apply border-border border-b transition-colors hover:bg-accent/45;
+  }
+
+  .admin-cell {
+    @apply whitespace-nowrap px-5 py-4 text-muted-foreground;
+  }
+}
+
 /* Figma Landing Page Exact Colors */
 :root {
   /* Primary Colors from Figma */
