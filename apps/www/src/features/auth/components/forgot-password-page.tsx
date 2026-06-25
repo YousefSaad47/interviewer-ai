@@ -6,9 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/shared/ui/button";
-import { Input } from "@/shared/ui/input";
+import { cn } from "@/lib";
+import { Button, Input } from "@/shared/ui";
 
 import { useForgotPassword } from "../hooks";
 import {

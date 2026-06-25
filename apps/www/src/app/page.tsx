@@ -1,11 +1,13 @@
 import Image from "next/image";
 
-import { FeaturesSection } from "@/features/landing/components/features-section";
-import { Footer } from "@/features/landing/components/footer";
-import { Header } from "@/features/landing/components/header";
-import { HeroSection } from "@/features/landing/components/hero-section";
-import { HowItWorksSection } from "@/features/landing/components/how-it-works-section";
-import { SuccessStoriesSection } from "@/features/landing/components/success-stories-section";
+import {
+  FeaturesSection,
+  Footer,
+  Header,
+  HeroSection,
+  HowItWorksSection,
+  SuccessStoriesSection,
+} from "@/features/landing";
 
 export default function Page() {
   return (

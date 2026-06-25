@@ -1,9 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/shared/ui/button";
-import { Input } from "@/shared/ui/input";
-import { Label } from "@/shared/ui/label";
+import { cn } from "@/lib";
+import { Button, Input, Label } from "@/shared/ui";
 
 import { useProfileAccountForm } from "../hooks";
 import { SettingsCard } from "./settings-card";

@@ -9,9 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/shared/ui/button";
-import { Input } from "@/shared/ui/input";
+import { cn } from "@/lib";
+import { Button, Input } from "@/shared/ui";
 
 import { useResetPassword } from "../hooks";
 import {

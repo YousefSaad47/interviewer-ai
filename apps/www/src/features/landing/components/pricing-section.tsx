@@ -3,11 +3,13 @@
 import { CheckIcon } from "lucide-react";
 import { motion } from "motion/react";
 
-import { Button } from "@/shared/ui/button";
-import { Heading } from "@/shared/ui/heading";
-import { Paragraph } from "@/shared/ui/paragraph";
-import { SpotlightCard } from "@/shared/ui/spotlight-card";
-import { WobbleCard } from "@/shared/ui/wobble-card";
+import {
+  Button,
+  Heading,
+  Paragraph,
+  SpotlightCard,
+  WobbleCard,
+} from "@/shared/ui";
 
 export function PricingSection() {
   const plans = [

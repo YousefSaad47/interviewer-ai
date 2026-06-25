@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui";
 
 interface MenuProps {
   open?: boolean;

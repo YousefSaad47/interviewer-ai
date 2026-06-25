@@ -1,5 +1,5 @@
-import { AuthGuard } from "@/features/auth/components/auth-guard";
-import { TechnicalInterviewPage } from "@/features/interview/components/technical-interview-page";
+import { AuthGuard } from "@/features/auth";
+import { TechnicalInterviewPage } from "@/features/interview";
 
 export default function TechnicalInterview() {
   return (

@@ -1,8 +1,6 @@
 "use client";
 
-import { Heading } from "@/shared/ui/heading";
-import { Paragraph } from "@/shared/ui/paragraph";
-import { SpotlightCard } from "@/shared/ui/spotlight-card";
+import { Heading, Paragraph, SpotlightCard } from "@/shared/ui";
 
 interface FeatureCardProps {
   className?: string;

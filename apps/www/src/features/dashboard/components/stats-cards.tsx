@@ -2,8 +2,7 @@
 
 import { BarChart3, Clock, Target, Trophy } from "lucide-react";
 
-import { Card, CardContent } from "@/shared/ui/card";
-import { Skeleton } from "@/shared/ui/skeleton";
+import { Card, CardContent, Skeleton } from "@/shared/ui";
 
 import { useDashboardStats } from "../hooks";
 

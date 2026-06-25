@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/shared/ui/button";
+import { cn } from "@/lib";
+import { Button } from "@/shared/ui";
 
 import { SettingsCard } from "./settings-card";
 import { SettingsLayout } from "./settings-layout";

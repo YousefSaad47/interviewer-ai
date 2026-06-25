@@ -4,19 +4,19 @@ import { useEffect, useState } from "react";
 
 import Link from "next/link";
 
-import { Header } from "@/features/landing/components/header";
-import { Badge } from "@/shared/ui/badge";
-import { Button } from "@/shared/ui/button";
-import { Card } from "@/shared/ui/card";
-import { Input } from "@/shared/ui/input";
+import { Header } from "@/features/landing";
 import {
+  Badge,
+  Button,
+  Card,
+  Input,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select";
-import { Skeleton } from "@/shared/ui/skeleton";
+  Skeleton,
+} from "@/shared/ui";
 
 import { useProblemsInfinite } from "../hooks";
 

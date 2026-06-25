@@ -1,6 +1,6 @@
 "use client";
 
-import { Switch } from "@/shared/ui/switch";
+import { Switch } from "@/shared/ui";
 
 import { SettingsCard } from "./settings-card";
 import { SettingsLayout } from "./settings-layout";

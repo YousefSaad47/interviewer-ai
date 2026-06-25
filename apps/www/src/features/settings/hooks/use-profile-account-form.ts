@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { authClient } from "@/services/auth.service";
+import { authClient } from "@/services";
 
 import { type ProfileAccountFormData, profileAccountSchema } from "../schemas";
 

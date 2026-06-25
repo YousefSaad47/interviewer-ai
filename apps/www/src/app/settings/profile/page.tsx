@@ -1,5 +1,5 @@
-import { AuthGuard } from "@/features/auth/components/auth-guard";
-import { ProfileAccountPage } from "@/features/settings/components/profile-account-page";
+import { AuthGuard } from "@/features/auth";
+import { ProfileAccountPage } from "@/features/settings";
 
 export default function ProfilePage() {
   return (

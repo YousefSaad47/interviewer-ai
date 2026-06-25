@@ -9,19 +9,18 @@ import {
 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
-import { Footer } from "@/features/landing/components/footer";
-import { Header } from "@/features/landing/components/header";
-import { cn } from "@/lib/utils";
-import { Button } from "@/shared/ui/button";
-import { Label } from "@/shared/ui/label";
+import { Footer, Header } from "@/features/landing";
+import { cn } from "@/lib";
 import {
+  Button,
+  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select";
-import { Textarea } from "@/shared/ui/textarea";
+  Textarea,
+} from "@/shared/ui";
 
 import { useStartInterview } from "../hooks";
 import { type InterviewSetupFormData, interviewSetupSchema } from "../schemas";

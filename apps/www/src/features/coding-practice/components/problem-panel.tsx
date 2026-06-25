@@ -1,5 +1,4 @@
-import { Badge } from "@/shared/ui/badge";
-import { ScrollArea } from "@/shared/ui/scroll-area";
+import { Badge, ScrollArea } from "@/shared/ui";
 
 import { ExampleCase } from "./example-case";
 

@@ -13,8 +13,8 @@ import {
   Video,
 } from "lucide-react";
 
-import { Header } from "@/features/landing/components/header";
-import { cn } from "@/lib/utils";
+import { Header } from "@/features/landing";
+import { cn } from "@/lib";
 
 interface SettingsLayoutProps {
   children: React.ReactNode;

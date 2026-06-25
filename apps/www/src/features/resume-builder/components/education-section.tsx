@@ -2,16 +2,16 @@
 
 import { Plus, X } from "lucide-react";
 
-import { Button } from "@/shared/ui/button";
 import {
+  Button,
   Card,
   CardAction,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/shared/ui/card";
-import { Input } from "@/shared/ui/input";
-import { Label } from "@/shared/ui/label";
+  Input,
+  Label,
+} from "@/shared/ui";
 
 import { useResume } from "..";
 
