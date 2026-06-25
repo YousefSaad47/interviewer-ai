@@ -162,6 +162,7 @@ class IsolateJob < ApplicationJob
     -b #{box_id} \
     -M #{metadata_file} \
     --stderr-to-stdout \
+    --share-net \
     -i /dev/null \
     -t #{Config::MAX_CPU_TIME_LIMIT} \
     -x 0 \

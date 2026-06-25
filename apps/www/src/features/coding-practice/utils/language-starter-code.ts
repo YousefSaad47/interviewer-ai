@@ -1,62 +1,77 @@
 import type { Language } from "../types";
 
 export const LANGUAGE_STARTER_CODE: Record<Language, string> = {
-  javascript: `// Write your solution here
-function solve(input) {
-  // Your code here
+  javascript: `/**
+ * @param {string} input - Raw stdin input (parse as needed)
+ * @return {string} Output to stdout
+ */
+function solution(input) {
+  // TODO: Implement your solution here
+  return "";
 }
 
-// Read input and call solve
-const input = require('fs').readFileSync(0, 'utf-8').trim();
-console.log(solve(input));
+// ── Read input ────────────────────────────────────────────
+const input = require("fs").readFileSync(0, "utf-8").trim();
+console.log(solution(input));
 `,
-  python: `# Write your solution here
-def solve(input):
-    # Your code here
-    pass
+  python: `def solution(input_data: str) -> str:
+    """Parse input_data and return the answer as a string."""
+    # TODO: Implement your solution here
+    return ""
 
-# Read input and call solve
+
+# ── Read input ──────────────────────────────────────────────
 import sys
-input = sys.stdin.read().strip()
-print(solve(input))
+print(solution(sys.stdin.read().strip()))
 `,
-  java: `public class Main {
+  java: `import java.util.*;
+
+public class Main {
     public static void main(String[] args) {
-        java.util.Scanner sc = new java.util.Scanner(System.in);
-        String input = sc.nextLine();
-        System.out.println(solve(input));
+        Scanner sc = new Scanner(System.in);
+        StringBuilder sb = new StringBuilder();
+        while (sc.hasNextLine()) sb.append(sc.nextLine()).append("\\n");
+        System.out.print(solution(sb.toString().stripTrailing()));
     }
 
-    public static String solve(String input) {
-        // Your code here
+    public static String solution(String input) {
+        // TODO: Implement your solution here
         return "";
     }
 }
 `,
   cpp: `#include <iostream>
 #include <string>
+#include <sstream>
 using namespace std;
 
-string solve(string input) {
-    // Your code here
+string solution(const string& input) {
+    // TODO: Implement your solution here
     return "";
 }
 
 int main() {
-    string input;
-    getline(cin, input);
-    cout << solve(input) << endl;
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    ostringstream ss;
+    ss << cin.rdbuf();
+    cout << solution(ss.str()) << endl;
     return 0;
 }
 `,
-  typescript: `// Write your solution here
-function solve(input: string): string {
-  // Your code here
+  typescript: `/**
+ * @param input - Raw stdin input (parse as needed)
+ * @returns Output to stdout
+ */
+function solution(input: string): string {
+  // TODO: Implement your solution here
   return "";
 }
 
-// Read input and call solve
-const input = require("fs").readFileSync(0, "utf-8").trim();
-console.log(solve(input));
+// ── Read input ────────────────────────────────────────────
+declare var require: any;
+const fs = require("fs");
+const input = fs.readFileSync(0, "utf-8").trim();
+console.log(solution(input));
 `,
 };
