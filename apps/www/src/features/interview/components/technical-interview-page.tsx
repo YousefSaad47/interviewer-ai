@@ -3,9 +3,8 @@
 import { VoiceProvider } from "@humeai/voice-react";
 import { Clock, Loader2, Mic, MicOff, Phone, Target } from "lucide-react";
 
-import { Header } from "@/features/landing/components/header";
-import { Button } from "@/shared/ui/button";
-import { Card } from "@/shared/ui/card";
+import { Header } from "@/features/landing";
+import { Button, Card } from "@/shared/ui";
 
 import { useTechnicalInterviewSession } from "../hooks";
 

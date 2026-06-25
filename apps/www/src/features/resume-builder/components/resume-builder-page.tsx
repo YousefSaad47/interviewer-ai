@@ -2,8 +2,8 @@
 
 import { CheckCircle, Download, Save } from "lucide-react";
 
-import { Header } from "@/features/landing/components/header";
-import { Button } from "@/shared/ui/button";
+import { Header } from "@/features/landing";
+import { Button } from "@/shared/ui";
 
 import {
   EducationSection,

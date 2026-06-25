@@ -1,5 +1,5 @@
-import { AuthGuard } from "@/features/auth/components/auth-guard";
-import { NotificationsPage } from "@/features/settings/components/notifications-page";
+import { AuthGuard } from "@/features/auth";
+import { NotificationsPage } from "@/features/settings";
 
 export default function NotificationsSettingsPage() {
   return (

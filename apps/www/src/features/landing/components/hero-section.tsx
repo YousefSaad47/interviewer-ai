@@ -2,11 +2,13 @@ import Link from "next/link";
 
 import { CheckIcon } from "lucide-react";
 
-import { AnimatedBadge } from "@/shared/ui/animated-badge";
-import { Button } from "@/shared/ui/button";
-import { FlowButton } from "@/shared/ui/flow-button";
-import { Heading } from "@/shared/ui/heading";
-import { Paragraph } from "@/shared/ui/paragraph";
+import {
+  AnimatedBadge,
+  Button,
+  FlowButton,
+  Heading,
+  Paragraph,
+} from "@/shared/ui";
 
 export function HeroSection() {
   return (

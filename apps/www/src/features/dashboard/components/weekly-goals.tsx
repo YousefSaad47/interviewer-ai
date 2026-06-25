@@ -2,9 +2,14 @@
 
 import { Code2, Target, Video } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
-import { Progress } from "@/shared/ui/progress";
-import { Skeleton } from "@/shared/ui/skeleton";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Progress,
+  Skeleton,
+} from "@/shared/ui";
 
 import { useDashboardGoals } from "../hooks";
 import { getGoalProgress } from "../utils";

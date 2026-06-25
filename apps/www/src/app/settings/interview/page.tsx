@@ -1,5 +1,5 @@
-import { AuthGuard } from "@/features/auth/components/auth-guard";
-import { InterviewSettingsPage } from "@/features/settings/components/interview-settings-page";
+import { AuthGuard } from "@/features/auth";
+import { InterviewSettingsPage } from "@/features/settings";
 
 export default function InterviewPage() {
   return (

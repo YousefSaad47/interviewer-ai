@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 
-import { Header } from "@/features/landing/components/header";
-import { useProblemDetail } from "@/features/problems/hooks/use-problem-detail";
+import { Header } from "@/features/landing";
+import { useProblemDetail } from "@/features/problems";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/shared/ui/resizable";
-import { Skeleton } from "@/shared/ui/skeleton";
+  Skeleton,
+} from "@/shared/ui";
 
 import { CodePanel } from "./code-panel";
 import { ProblemPanel } from "./problem-panel";

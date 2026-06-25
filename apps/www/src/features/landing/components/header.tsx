@@ -8,19 +8,17 @@ import { usePathname } from "next/navigation";
 import { Brain, LogOut, Settings, User } from "lucide-react";
 import { AnimatePresence, motion, useScroll } from "motion/react";
 
-import { cn } from "@/lib/utils";
-import { authClient } from "@/services/auth.service";
-import { Menu } from "@/shared/components/menu";
-import { SettingsIcon } from "@/shared/components/settings-icon";
-import { ThemeToggle } from "@/shared/components/theme-toggle";
-import { Button } from "@/shared/ui/button";
+import { cn } from "@/lib";
+import { authClient } from "@/services";
+import { Menu, SettingsIcon, ThemeToggle } from "@/shared/components";
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/shared/ui/dropdown-menu";
+} from "@/shared/ui";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

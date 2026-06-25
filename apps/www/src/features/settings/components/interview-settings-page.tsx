@@ -1,14 +1,14 @@
 "use client";
 
-import { Label } from "@/shared/ui/label";
 import {
+  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select";
-import { Switch } from "@/shared/ui/switch";
+  Switch,
+} from "@/shared/ui";
 
 import { SettingsCard } from "./settings-card";
 import { SettingsLayout } from "./settings-layout";

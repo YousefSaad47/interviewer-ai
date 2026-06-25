@@ -4,15 +4,15 @@ import { useState } from "react";
 
 import { Plus, X } from "lucide-react";
 
-import { Button } from "@/shared/ui/button";
 import {
+  Button,
   Card,
   CardAction,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/shared/ui/card";
-import { Input } from "@/shared/ui/input";
+  Input,
+} from "@/shared/ui";
 
 import { useResume } from "../contexts/resume-context";
 

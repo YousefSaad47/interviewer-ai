@@ -1,4 +1,4 @@
-import { authClient } from "@/services/auth.service";
+import { authClient } from "@/services";
 
 import type { ForgotPasswordSubmitFormData } from "../schemas/forgot-password.schema";
 import type { ResetPasswordSubmitFormData } from "../schemas/reset-password.schema";

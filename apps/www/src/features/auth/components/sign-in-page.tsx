@@ -8,10 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Github, Lock, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/shared/ui/button";
-import { Checkbox } from "@/shared/ui/checkbox";
-import { Input } from "@/shared/ui/input";
+import { cn } from "@/lib";
+import { Button, Checkbox, Input } from "@/shared/ui";
 
 import { useSignIn } from "../hooks";
 import { type SignInSubmitFormData, signInSchema } from "../schemas";

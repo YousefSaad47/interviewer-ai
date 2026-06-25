@@ -1,5 +1,4 @@
-import { GuestGuard } from "@/features/auth/components/auth-guard";
-import { SignUpPage } from "@/features/auth/components/sign-up-page";
+import { GuestGuard, SignUpPage } from "@/features/auth";
 
 export default function Page() {
   return (

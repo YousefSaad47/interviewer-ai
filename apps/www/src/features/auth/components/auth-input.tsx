@@ -5,8 +5,8 @@ import { forwardRef, useState } from "react";
 
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { Input } from "@/shared/ui/input";
+import { cn } from "@/lib";
+import { Input } from "@/shared/ui";
 
 export interface AuthInputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {

@@ -1,5 +1,5 @@
-import { AuthGuard } from "@/features/auth/components/auth-guard";
-import { ProblemsPage } from "@/features/problems/components/problems-page";
+import { AuthGuard } from "@/features/auth";
+import { ProblemsPage } from "@/features/problems";
 
 export default function Page() {
   return (

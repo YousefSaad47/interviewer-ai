@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef } from "react";
 import type { GetApiProblems200, GetApiProblemsQueryParams } from "@repo/kubb";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import { useIntersectionObserver } from "@/shared/hooks/use-intersection-observer";
+import { useIntersectionObserver } from "@/shared/hooks";
 
 import { getProblems } from "../api";
 

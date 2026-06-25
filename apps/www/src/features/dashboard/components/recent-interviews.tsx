@@ -2,8 +2,13 @@
 
 import { Calendar, Clock, TrendingUp } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
-import { Skeleton } from "@/shared/ui/skeleton";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Skeleton,
+} from "@/shared/ui";
 
 import { useDashboardRecent } from "../hooks";
 

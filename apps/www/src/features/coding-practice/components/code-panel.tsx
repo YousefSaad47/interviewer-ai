@@ -5,20 +5,18 @@ import dynamic from "next/dynamic";
 import { Play, RotateCcw, Send } from "lucide-react";
 import { useTheme } from "next-themes";
 
-import { Button } from "@/shared/ui/button";
 import {
+  Button,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/shared/ui/resizable";
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select";
-import { Skeleton } from "@/shared/ui/skeleton";
+  Skeleton,
+} from "@/shared/ui";
 
 import { useCodeWorkspace } from "../hooks";
 import { TestCaseView } from "./test-case-view";

@@ -1,8 +1,6 @@
 import { Brain, Sparkles } from "lucide-react";
 
-import { Badge } from "@/shared/ui/badge";
-import { Paragraph } from "@/shared/ui/paragraph";
-import { SubHeading } from "@/shared/ui/sub-heading";
+import { Badge, Paragraph, SubHeading } from "@/shared/ui";
 
 import {
   CodingWorkspaceMockup,

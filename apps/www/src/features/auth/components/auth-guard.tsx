@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { authClient } from "@/services/auth.service";
+import { authClient } from "@/services";
 
 function GuardFallback() {
   return (
