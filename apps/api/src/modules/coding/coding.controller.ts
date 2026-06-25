@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/style/noNonNullAssertion: <> */
-
 import type { RequestHandler } from "express";
 
 import { AbstractController } from "@/common/contracts";
@@ -7,6 +5,7 @@ import { HttpStatus } from "@/common/enums";
 import {
   authMiddleware,
   codingRateLimitMiddleware,
+  getAuthenticatedUserId,
   validationMiddleware,
 } from "@/middlewares";
 import { registerPath } from "@/services/openapi/registry";
@@ -15,6 +14,7 @@ import {
   type CodingRunInput,
   type CodingSubmitInput,
   codingRunSchema,
+  codingSubmissionParamsSchema,
   codingSubmitResponseSchema,
   codingSubmitSchema,
 } from "./coding.schema";
@@ -43,7 +43,11 @@ export class CodingController extends AbstractController<CodingService> {
     );
 
     this._router.get("/submissions", this._getSubmissions);
-    this._router.get("/submissions/:id", this._getSubmission);
+    this._router.get(
+      "/submissions/:id",
+      validationMiddleware({ params: codingSubmissionParamsSchema }),
+      this._getSubmission,
+    );
   }
 
   private _registerOpenAPI() {
@@ -63,7 +67,10 @@ export class CodingController extends AbstractController<CodingService> {
     req,
     res,
   ) => {
-    const result = await this._service.run(req.userId!, req.body);
+    const result = await this._service.run(
+      getAuthenticatedUserId(req),
+      req.body,
+    );
     res.ok(result);
   };
 
@@ -71,19 +78,24 @@ export class CodingController extends AbstractController<CodingService> {
     req,
     res,
   ) => {
-    const result = await this._service.submit(req.userId!, req.body);
+    const result = await this._service.submit(
+      getAuthenticatedUserId(req),
+      req.body,
+    );
     res.accepted(result);
   };
 
   private _getSubmissions: RequestHandler = async (req, res) => {
-    const result = await this._service.getSubmissions(req.userId!);
+    const result = await this._service.getSubmissions(
+      getAuthenticatedUserId(req),
+    );
     res.ok(result);
   };
 
   private _getSubmission: RequestHandler<{ id: string }> = async (req, res) => {
     const result = await this._service.getSubmission(
       req.params.id,
-      req.userId!,
+      getAuthenticatedUserId(req),
     );
     res.ok(result);
   };

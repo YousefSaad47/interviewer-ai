@@ -31,7 +31,7 @@ export const getEnvVarAsNumber = (
     return defaultValue;
   } else {
     const parsedValue = Number(value);
-    if (Number.isNaN(parsedValue)) {
+    if (!Number.isFinite(parsedValue)) {
       throw new Error(`Environment variable ${key} is not a number`);
     }
     return parsedValue;
@@ -49,7 +49,13 @@ export const getEnvVarAsBoolean = (
     }
     return defaultValue;
   }
-  return value === "true";
+  if (value === "true") {
+    return true;
+  }
+  if (value === "false") {
+    return false;
+  }
+  throw new Error(`Environment variable ${key} must be "true" or "false"`);
 };
 
 const hasInsecureSecretPattern = (value: string): boolean => {

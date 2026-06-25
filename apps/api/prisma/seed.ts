@@ -427,6 +427,10 @@ async function main() {
     const responseFixture = createCodingSubmissionResponse();
 
     const problem = problems[i % problems.length];
+    if (!problem) {
+      throw new Error("Seed problem fixture was not created");
+    }
+
     const testCases = await prisma.testCase.findMany({
       where: { problemId: problem.id },
       orderBy: { sortOrder: "asc" },
@@ -443,8 +447,7 @@ async function main() {
         problemId: problem.id,
         userId: user.id,
         results: {
-          // biome-ignore lint/suspicious/noExplicitAny: <>
-          create: testCases.map((tc: any) => {
+          create: testCases.map((tc) => {
             const resultFixture = createCodingResult();
             return {
               passed: resultFixture.passed,

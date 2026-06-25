@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 import { InternalException } from "@/common/exceptions";
 import { env } from "@/core/env";
 import { logger } from "@/lib/logger";
@@ -24,6 +26,40 @@ export type Judge0Result = {
   memory: number | null;
   status: { id: number; description: string };
   token: string;
+};
+
+const judge0SubmissionResponseSchema = z.object({
+  token: z.string().min(1),
+}) satisfies z.ZodType<Judge0SubmissionResponse>;
+
+const judge0ResultSchema = z.object({
+  stdout: z.string().nullable(),
+  stderr: z.string().nullable(),
+  compile_output: z.string().nullable(),
+  message: z.string().nullable(),
+  time: z.string().nullable(),
+  memory: z.number().nullable(),
+  status: z.object({ id: z.number().int(), description: z.string() }),
+  token: z.string(),
+}) satisfies z.ZodType<Judge0Result>;
+
+const parseJudge0Json = async <T>(
+  res: Response,
+  schema: z.ZodType<T>,
+  operation: string,
+): Promise<T> => {
+  const body: unknown = await res.json();
+  const parsed = schema.safeParse(body);
+
+  if (!parsed.success) {
+    logger.error(
+      { operation, errors: z.treeifyError(parsed.error) },
+      "Invalid Judge0 response",
+    );
+    throw new InternalException("Invalid response from code execution service");
+  }
+
+  return parsed.data;
 };
 
 export class Judge0Client {
@@ -56,12 +92,11 @@ export class Judge0Client {
 
     if (!res.ok) {
       const body = await res.text();
-      throw new InternalException(
-        `Judge0 submit failed (${res.status}): ${body}`,
-      );
+      logger.error({ status: res.status, body }, "Judge0 submit failed");
+      throw new InternalException("Code execution service submit failed");
     }
 
-    return res.json() as Promise<Judge0SubmissionResponse>;
+    return parseJudge0Json(res, judge0SubmissionResponseSchema, "submit");
   }
 
   async getResult(
@@ -77,12 +112,15 @@ export class Judge0Client {
 
       if (!res.ok) {
         const body = await res.text();
-        throw new InternalException(
-          `Judge0 getResult failed (${res.status}): ${body}`,
-        );
+        logger.error({ status: res.status, body }, "Judge0 getResult failed");
+        throw new InternalException("Code execution service polling failed");
       }
 
-      const result = (await res.json()) as Judge0Result;
+      const result = await parseJudge0Json(
+        res,
+        judge0ResultSchema,
+        "getResult",
+      );
 
       if (result.status.id >= 3) {
         return result;

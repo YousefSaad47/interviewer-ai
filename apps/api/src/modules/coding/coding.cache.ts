@@ -1,5 +1,7 @@
+import { z } from "zod";
+
 import { getRedis } from "@/core/redis";
-import type { SubmissionStatus } from "@/generated/client";
+import { SubmissionStatus } from "@/generated/client";
 import { logger } from "@/lib/logger";
 
 export interface CachedSubmissionData {
@@ -13,6 +15,20 @@ export interface CachedSubmissionData {
     testCaseId: string;
   }[];
 }
+
+const cachedSubmissionDataSchema = z.object({
+  status: z.enum(SubmissionStatus),
+  executionTimeMs: z.number().int().nullable(),
+  memoryUsedKb: z.number().int().nullable(),
+  results: z.array(
+    z.object({
+      passed: z.boolean(),
+      output: z.string().nullable(),
+      error: z.string().nullable(),
+      testCaseId: z.uuid(),
+    }),
+  ),
+}) satisfies z.ZodType<CachedSubmissionData>;
 
 export class CodingCacheService {
   private static readonly CACHE_TTL_SECONDS = 60 * 60 * 24 * 7;
@@ -36,7 +52,7 @@ export class CodingCacheService {
     if (!cached) return null;
 
     try {
-      return JSON.parse(cached) as CachedSubmissionData;
+      return cachedSubmissionDataSchema.parse(JSON.parse(cached));
     } catch (err) {
       logger.error({ err }, "Failed to parse cached submission");
       return null;

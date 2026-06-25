@@ -1,5 +1,7 @@
 /** biome-ignore-all lint/complexity/useLiteralKeys: <> */
 
+import { z } from "zod";
+
 import { AbstractService } from "@/common/contracts";
 import { ConflictException, NotFoundException } from "@/common/exceptions";
 import type { PrismaClient } from "@/generated/client";
@@ -10,6 +12,33 @@ import type {
   InterviewFinalizeInput,
   InterviewStartInput,
 } from "./interview.schema";
+
+const humeChatEventSchema = z.object({
+  type: z.string(),
+  chatId: z.string(),
+  chatGroupId: z.string().optional(),
+  messageText: z.string().optional(),
+  role: z.string().optional(),
+  emotionFeatures: z.string().optional(),
+  metadata: z.string().optional(),
+  timestamp: z.number().optional(),
+});
+
+type HumeChatEvent = z.infer<typeof humeChatEventSchema>;
+
+const emotionScoresSchema = z.record(z.string(), z.number());
+
+function parseEmotionScores(emotionFeatures: string | undefined) {
+  if (!emotionFeatures) {
+    return {};
+  }
+
+  try {
+    return emotionScoresSchema.parse(JSON.parse(emotionFeatures));
+  } catch {
+    return {};
+  }
+}
 
 export class InterviewService extends AbstractService {
   constructor(
@@ -93,19 +122,13 @@ export class InterviewService extends AbstractService {
 
     const page = await this.hume.fetchChatEvents(input.chatId);
 
-    const allEvents: Array<{
-      type: string;
-      chatId: string;
-      chatGroupId?: string;
-      messageText?: string;
-      role?: string;
-      emotionFeatures?: string;
-      metadata?: string;
-      timestamp: number;
-    }> = [];
+    const allEvents: HumeChatEvent[] = [];
 
     for await (const event of page) {
-      allEvents.push(event as unknown as (typeof allEvents)[number]);
+      const parsedEvent = humeChatEventSchema.safeParse(event);
+      if (parsedEvent.success) {
+        allEvents.push(parsedEvent.data);
+      }
     }
 
     const interviewQuestions = await this.prisma.interviewQuestion.findMany({
@@ -125,15 +148,7 @@ export class InterviewService extends AbstractService {
       const iq = interviewQuestions[i];
       if (!msg || !iq) continue;
 
-      // Parse emotion features from the stringified JSON
-      let scores: Record<string, number> = {};
-      if (msg.emotionFeatures) {
-        try {
-          scores = JSON.parse(msg.emotionFeatures) as Record<string, number>;
-        } catch {
-          // Ignore parse errors
-        }
-      }
+      const scores = parseEmotionScores(msg.emotionFeatures);
 
       const fluencyScore = scores["fluency"] ?? null;
       const confidenceScore = scores["confidence"] ?? null;
@@ -185,6 +200,15 @@ export class InterviewService extends AbstractService {
     chatId: string,
     chatGroupId: string,
   ) {
+    const interview = await this.prisma.interview.findUnique({
+      where: { id: interviewId },
+      select: { id: true },
+    });
+
+    if (!interview) {
+      throw new NotFoundException("Interview not found");
+    }
+
     await this.prisma.interview.update({
       where: { id: interviewId },
       data: {
@@ -217,8 +241,17 @@ export class InterviewService extends AbstractService {
     chatId: string,
     chatGroupId: string,
   ) {
-    await this.prisma.interview.update({
+    const interview = await this.prisma.interview.findFirst({
       where: { id: interviewId, userId },
+      select: { id: true },
+    });
+
+    if (!interview) {
+      throw new NotFoundException("Interview not found");
+    }
+
+    await this.prisma.interview.update({
+      where: { id: interview.id },
       data: {
         humeChatId: chatId,
         humeChatGroupId: chatGroupId,
@@ -241,7 +274,7 @@ export class InterviewService extends AbstractService {
   }
 
   async getProgress(interviewId: string, userId: string) {
-    const interview = await this.prisma.interview.findUniqueOrThrow({
+    const interview = await this.prisma.interview.findFirst({
       where: { id: interviewId, userId },
       select: {
         currentQuestion: true,
@@ -250,6 +283,10 @@ export class InterviewService extends AbstractService {
       },
     });
 
+    if (!interview) {
+      throw new NotFoundException("Interview not found");
+    }
+
     return interview;
   }
 
@@ -257,11 +294,15 @@ export class InterviewService extends AbstractService {
     interviewId: string,
     userId: string | null,
   ) {
-    const interview = await this.prisma.interview.findUniqueOrThrow({
+    const interview = await this.prisma.interview.findFirst({
       where:
         userId === null ? { id: interviewId } : { id: interviewId, userId },
       select: { id: true, status: true },
     });
+
+    if (!interview) {
+      throw new NotFoundException("Interview not found");
+    }
 
     if (interview.status === "COMPLETED") {
       throw new ConflictException("Interview has already been finalized");
