@@ -25,7 +25,11 @@ export class ProblemController extends AbstractController<ProblemService> {
       validationMiddleware({ query: problemQuerySchema }),
       this._list,
     );
-    this._router.get("/:slug", this._getBySlug);
+    this._router.get(
+      "/:slug",
+      validationMiddleware({ params: problemParamsSchema }),
+      this._getBySlug,
+    );
   }
 
   private _registerOpenAPI() {

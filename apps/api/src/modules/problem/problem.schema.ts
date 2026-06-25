@@ -28,7 +28,7 @@ export const problemListResponseSchema = z.object({
 export const problemDetailResponseSchema = problemSchema;
 
 export const problemParamsSchema = z.object({
-  slug: z.string(),
+  slug: z.string().min(1),
 });
 
 export type ProblemQuery = z.infer<typeof problemQuerySchema>;

@@ -1,5 +1,5 @@
 import { AbstractService } from "@/common/contracts";
-import { BadRequestException } from "@/common/exceptions";
+import { BadRequestException, NotFoundException } from "@/common/exceptions";
 import {
   type CodingProblem,
   type PrismaClient,
@@ -46,10 +46,14 @@ export class CodingService extends AbstractService {
   }
 
   async submit(userId: string, input: CodingSubmitInput) {
-    const problem = await this.prisma.codingProblem.findUniqueOrThrow({
+    const problem = await this.prisma.codingProblem.findUnique({
       where: { id: input.problemId },
       include: { testCases: { orderBy: { sortOrder: "asc" } } },
     });
+
+    if (!problem) {
+      throw new NotFoundException("Problem not found");
+    }
 
     const languageId = LANGUAGE_TO_JUDGE0_ID[input.language];
     if (!languageId) {
@@ -243,13 +247,17 @@ export class CodingService extends AbstractService {
   }
 
   async getSubmission(submissionId: string, userId: string) {
-    const submission = await this.prisma.codingSubmission.findFirstOrThrow({
+    const submission = await this.prisma.codingSubmission.findFirst({
       where: { id: submissionId, userId },
       include: {
         problem: { select: { id: true, title: true, difficulty: true } },
         results: { orderBy: { createdAt: "asc" }, include: { testCase: true } },
       },
     });
+
+    if (!submission) {
+      throw new NotFoundException("Submission not found");
+    }
 
     if (submission.status === SubmissionStatus.PENDING) {
       return { id: submission.id, status: submission.status };

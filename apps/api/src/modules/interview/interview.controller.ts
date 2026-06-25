@@ -2,8 +2,11 @@ import type { RequestHandler } from "express";
 
 import { AbstractController } from "@/common/contracts";
 import { HttpStatus } from "@/common/enums";
-import { UnauthorizedException } from "@/common/exceptions";
-import { authMiddleware, validationMiddleware } from "@/middlewares";
+import {
+  authMiddleware,
+  getAuthenticatedUserId,
+  validationMiddleware,
+} from "@/middlewares";
 import { registerPath } from "@/services/openapi/registry";
 
 import {
@@ -79,10 +82,10 @@ export class InterviewController extends AbstractController<InterviewService> {
 
   private _start: RequestHandler<unknown, unknown, InterviewStartInput> =
     async (req, res) => {
-      if (!req.userId) {
-        throw new UnauthorizedException();
-      }
-      const result = await this._service.start(req.userId, req.body);
+      const result = await this._service.start(
+        getAuthenticatedUserId(req),
+        req.body,
+      );
       res.created(result);
     };
 
@@ -91,12 +94,9 @@ export class InterviewController extends AbstractController<InterviewService> {
     unknown,
     InterviewFinalizeInput
   > = async (req, res) => {
-    if (!req.userId) {
-      throw new UnauthorizedException();
-    }
     const result = await this._service.finalize(
       req.params.id,
-      req.userId,
+      getAuthenticatedUserId(req),
       req.body,
     );
     res.ok(result);
@@ -107,13 +107,10 @@ export class InterviewController extends AbstractController<InterviewService> {
     unknown,
     InterviewFinalizeInput
   > = async (req, res) => {
-    if (!req.userId) {
-      throw new UnauthorizedException();
-    }
     const { chatId, chatGroupId } = req.body;
     await this._service.linkChat(
       req.params.id,
-      req.userId,
+      getAuthenticatedUserId(req),
       chatId,
       chatGroupId,
     );
@@ -121,12 +118,9 @@ export class InterviewController extends AbstractController<InterviewService> {
   };
 
   private _getProgress: RequestHandler<{ id: string }> = async (req, res) => {
-    if (!req.userId) {
-      throw new UnauthorizedException();
-    }
     const interview = await this._service.getProgress(
       req.params.id,
-      req.userId,
+      getAuthenticatedUserId(req),
     );
     res.ok(interview);
   };

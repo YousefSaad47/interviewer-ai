@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <> */
-
 import {
   OpenAPIRegistry,
   OpenApiGeneratorV31,
@@ -23,16 +21,29 @@ type Method =
   | "options"
   | "trace";
 
+type RegisterPathOptions = Parameters<OpenAPIRegistry["registerPath"]>[0];
+type RequestConfig = NonNullable<RegisterPathOptions["request"]>;
+type JsonRequestBody = NonNullable<
+  NonNullable<RequestConfig["body"]>["content"]["application/json"]
+>;
+type ResponseConfig = Extract<
+  NonNullable<RegisterPathOptions["responses"]>[number],
+  { content?: unknown }
+>;
+type JsonResponseBody = NonNullable<
+  NonNullable<ResponseConfig["content"]>["application/json"]
+>;
+
 type Options = {
   tags: string[];
   method: Method;
   path: string;
   summary: string;
-  bodySchema?: any;
-  responseSchema?: any;
-  paramsSchema?: any;
-  querySchema?: any;
-  headersSchema?: any;
+  bodySchema?: JsonRequestBody["schema"];
+  responseSchema?: JsonResponseBody["schema"];
+  paramsSchema?: RequestConfig["params"];
+  querySchema?: RequestConfig["query"];
+  headersSchema?: RequestConfig["headers"];
   authType?: "bearerAuth";
   statusCode: number;
   responseDescription: string;

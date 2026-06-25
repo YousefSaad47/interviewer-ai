@@ -11,10 +11,12 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   }
 
   logger.error({ err }, "Unhandled error");
+  const stack = err instanceof Error ? err.stack : undefined;
+
   res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
     message: "Internal server error",
     code: "INTERNAL_SERVER_ERROR",
     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-    ...(env.NODE_ENV === "development" && { stack: err.stack }),
+    ...(env.NODE_ENV === "development" && stack && { stack }),
   });
 };
