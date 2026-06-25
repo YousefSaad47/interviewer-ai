@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: <> */
 /** biome-ignore-all lint/complexity/noThisInStatic: <> */
 
+import { AdminUsersController } from "@/modules/admin-users";
 import { CodingController } from "@/modules/coding";
 import { DashboardController } from "@/modules/dashboard";
 import { InterviewController } from "@/modules/interview";
@@ -51,6 +52,14 @@ export class ControllersFactory {
             new DashboardController(ServicesFactory.create(Services.DASHBOARD)),
           );
           break;
+        case Controllers.ADMIN_USERS:
+          this._controllers.set(
+            controller,
+            new AdminUsersController(
+              ServicesFactory.create(Services.ADMIN_USERS),
+            ),
+          );
+          break;
         default:
           throw new InternalException(
             `Unknown controller: ${controller satisfies never}`,
@@ -64,6 +73,13 @@ export class ControllersFactory {
   }
 
   public static get controllers() {
+    this.create(Controllers.SAMPLE);
+    this.create(Controllers.CODING);
+    this.create(Controllers.PROBLEM);
+    this.create(Controllers.INTERVIEW);
+    this.create(Controllers.DASHBOARD);
+    this.create(Controllers.ADMIN_USERS);
+
     return Array.from(this._controllers.values());
   }
 }
