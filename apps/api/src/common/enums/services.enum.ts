@@ -5,4 +5,5 @@ export enum Services {
   INTERVIEW,
   DASHBOARD,
   ADMIN_USERS,
+  ADMIN_INTERVIEWS,
 }
