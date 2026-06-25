@@ -44,7 +44,7 @@ export function SignUpPage() {
 
       {/* Tab Switcher */}
       <div className="flex w-full max-w-105 flex-col items-center gap-4 sm:gap-5">
-        <div className="flex h-8 w-full max-w-65 items-center justify-between gap-1 rounded-[9px] bg-neutral-100 p-1.5 dark:bg-neutral-800">
+        <div className="flex h-8 w-full max-w-65 items-center justify-between gap-1 rounded-[9px] bg-card p-1.5 dark:bg-surface-secondary">
           <Link
             href="/auth/signin"
             className="flex items-center justify-center gap-1 rounded-md px-8 py-2 text-foreground transition-all hover:bg-primary/5 hover:text-foreground sm:px-10 sm:py-2.5"
@@ -69,10 +69,10 @@ export function SignUpPage() {
           <div className="w-full">
             <div
               className={cn(
-                "relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-neutral-800",
+                "relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-surface-secondary",
                 errors.fullName
                   ? "border-destructive"
-                  : "border-neutral-300 focus-within:border-neutral-400 dark:border-neutral-700 dark:focus-within:border-neutral-600",
+                  : "border-border focus-within:border-primary/45 dark:border-border dark:focus-within:border-border-interactive",
               )}
             >
               <User
@@ -98,10 +98,10 @@ export function SignUpPage() {
           <div className="w-full">
             <div
               className={cn(
-                "relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-neutral-800",
+                "relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-surface-secondary",
                 errors.email
                   ? "border-destructive"
-                  : "border-neutral-300 focus-within:border-neutral-400 dark:border-neutral-700 dark:focus-within:border-neutral-600",
+                  : "border-border focus-within:border-primary/45 dark:border-border dark:focus-within:border-border-interactive",
               )}
             >
               <Mail
@@ -128,10 +128,10 @@ export function SignUpPage() {
           <div className="w-full">
             <div
               className={cn(
-                "relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-neutral-800",
+                "relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-surface-secondary",
                 errors.password
                   ? "border-destructive"
-                  : "border-neutral-300 focus-within:border-neutral-400 dark:border-neutral-700 dark:focus-within:border-neutral-600",
+                  : "border-border focus-within:border-primary/45 dark:border-border dark:focus-within:border-border-interactive",
               )}
             >
               <Lock
@@ -169,10 +169,10 @@ export function SignUpPage() {
           <div className="w-full">
             <div
               className={cn(
-                "relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-neutral-800",
+                "relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-surface-secondary",
                 errors.confirmPassword
                   ? "border-destructive"
-                  : "border-neutral-300 focus-within:border-neutral-400 dark:border-neutral-700 dark:focus-within:border-neutral-600",
+                  : "border-border focus-within:border-primary/45 dark:border-border dark:focus-within:border-border-interactive",
               )}
             >
               <Lock

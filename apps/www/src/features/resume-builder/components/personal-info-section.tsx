@@ -28,7 +28,7 @@ export const PersonalInfoSection = () => {
   });
 
   return (
-    <Card className="rounded-[15px] border-border bg-neutral-100 dark:bg-neutral-900">
+    <Card className="rounded-[15px] border-border bg-card dark:bg-card">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 font-bold text-foreground text-xl">
           <User className="h-5 w-5 text-primary" />
@@ -48,7 +48,7 @@ export const PersonalInfoSection = () => {
               })}
               type="text"
               className={cn(
-                "rounded-lg border-neutral-300 bg-white dark:border-neutral-700 dark:bg-neutral-800",
+                "rounded-lg border-border bg-white dark:border-border dark:bg-surface-secondary",
                 errors.fullName && "border-destructive",
               )}
             />
@@ -66,7 +66,7 @@ export const PersonalInfoSection = () => {
               })}
               type="email"
               className={cn(
-                "rounded-lg border-neutral-300 bg-white dark:border-neutral-700 dark:bg-neutral-800",
+                "rounded-lg border-border bg-white dark:border-border dark:bg-surface-secondary",
                 errors.email && "border-destructive",
               )}
             />
@@ -86,7 +86,7 @@ export const PersonalInfoSection = () => {
               })}
               type="tel"
               className={cn(
-                "rounded-lg border-neutral-300 bg-white dark:border-neutral-700 dark:bg-neutral-800",
+                "rounded-lg border-border bg-white dark:border-border dark:bg-surface-secondary",
                 errors.phone && "border-destructive",
               )}
             />
@@ -103,7 +103,7 @@ export const PersonalInfoSection = () => {
               })}
               type="text"
               className={cn(
-                "rounded-lg border-neutral-300 bg-white dark:border-neutral-700 dark:bg-neutral-800",
+                "rounded-lg border-border bg-white dark:border-border dark:bg-surface-secondary",
                 errors.location && "border-destructive",
               )}
             />
@@ -126,7 +126,7 @@ export const PersonalInfoSection = () => {
             })}
             rows={3}
             className={cn(
-              "rounded-lg border-neutral-300 bg-white dark:border-neutral-700 dark:bg-neutral-800",
+              "rounded-lg border-border bg-white dark:border-border dark:bg-surface-secondary",
               errors.summary && "border-destructive",
             )}
           />

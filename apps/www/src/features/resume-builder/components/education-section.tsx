@@ -19,7 +19,7 @@ export function EducationSection() {
   const { data, addEducation, updateEducation, removeEducation } = useResume();
 
   return (
-    <Card className="rounded-[15px] border-border bg-neutral-100 dark:bg-neutral-900">
+    <Card className="rounded-[15px] border-border bg-card dark:bg-card">
       <CardHeader>
         <CardTitle className="font-bold text-foreground text-xl">
           Education
@@ -39,7 +39,7 @@ export function EducationSection() {
         {data.education.map((edu, index) => (
           <div
             key={edu.id}
-            className="space-y-3 rounded-lg bg-neutral-50 p-4 dark:bg-neutral-800"
+            className="space-y-3 rounded-lg bg-white/75 p-4 dark:bg-surface-secondary"
           >
             {/* Entry Header */}
             <div className="flex items-center justify-between">
@@ -67,7 +67,7 @@ export function EducationSection() {
                   updateEducation(edu.id, { school: e.target.value })
                 }
                 placeholder="Enter school or university name"
-                className="w-full rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+                className="w-full rounded-lg border-border bg-white dark:border-border-interactive dark:bg-surface-elevated"
               />
             </div>
 
@@ -82,7 +82,7 @@ export function EducationSection() {
                     updateEducation(edu.id, { degree: e.target.value })
                   }
                   placeholder="e.g., Bachelor of Science"
-                  className="rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+                  className="rounded-lg border-border bg-white dark:border-border-interactive dark:bg-surface-elevated"
                 />
               </div>
               <div className="flex-1 space-y-1.5">
@@ -94,7 +94,7 @@ export function EducationSection() {
                     updateEducation(edu.id, { year: e.target.value })
                   }
                   placeholder="e.g., 2020-2024"
-                  className="rounded-lg border-neutral-300 bg-white dark:border-neutral-600 dark:bg-neutral-700"
+                  className="rounded-lg border-border bg-white dark:border-border-interactive dark:bg-surface-elevated"
                 />
               </div>
             </div>

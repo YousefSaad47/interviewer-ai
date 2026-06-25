@@ -10,7 +10,7 @@ export function ResumePreview() {
   const { personalInfo, workExperience, education, skills } = data;
 
   return (
-    <Card className="rounded-[15px] border-border bg-neutral-100 lg:sticky lg:top-25 dark:bg-neutral-900">
+    <Card className="rounded-[15px] border-border bg-card lg:sticky lg:top-25 dark:bg-card">
       <CardHeader>
         <CardTitle className="font-bold text-foreground text-xl">
           Resume Preview

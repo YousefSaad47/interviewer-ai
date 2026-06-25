@@ -33,7 +33,7 @@ export function TestCaseView({
 }: TestCaseViewProps) {
   return (
     <div className="flex h-full flex-col">
-      <div className="border-b px-4 py-2.5 md:px-5 md:py-3 dark:border-[#1a1a1a]">
+      <div className="border-border border-b px-4 py-2.5 md:px-5 md:py-3">
         <span className="font-medium text-muted-foreground text-xs md:text-sm">
           Test Results
         </span>
@@ -56,13 +56,13 @@ export function TestCaseView({
 
         {!isRunning && !isPending && !lastSubmission && runResult && (
           <div className="space-y-3">
-            <div className="rounded-lg border p-3 md:p-4 dark:border-[#1a1a1a] dark:bg-[#232323]">
+            <div className="rounded-lg border border-border bg-card/75 p-3 md:p-4 dark:bg-surface-secondary">
               {runResult.output && (
                 <div className="space-y-1">
                   <span className="block text-muted-foreground text-xs">
                     Output:
                   </span>
-                  <pre className="overflow-x-auto rounded bg-background p-2 font-mono text-xs dark:bg-[#2d2d2d]">
+                  <pre className="overflow-x-auto rounded bg-muted/70 p-2 font-mono text-xs dark:bg-surface-elevated">
                     {runResult.output}
                   </pre>
                 </div>
@@ -70,7 +70,7 @@ export function TestCaseView({
               {runResult.error && (
                 <div className="mt-2 space-y-1">
                   <span className="block text-red-500 text-xs">Error:</span>
-                  <pre className="overflow-x-auto rounded bg-background p-2 font-mono text-red-400 text-xs dark:bg-[#2d2d2d]">
+                  <pre className="overflow-x-auto rounded bg-muted/70 p-2 font-mono text-red-400 text-xs dark:bg-surface-elevated">
                     {runResult.error}
                   </pre>
                 </div>
@@ -102,7 +102,7 @@ export function TestCaseView({
         {!isPending && lastSubmission && (
           <>
             {/* Status Bar */}
-            <div className="flex items-center gap-3 rounded-lg border bg-muted p-3 md:p-4 dark:border-[#1a1a1a] dark:bg-[#232323]">
+            <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/70 p-3 md:p-4 dark:bg-surface-secondary">
               {lastSubmission.status === "ACCEPTED" ? (
                 <CheckCircle2 className="h-5 w-5 text-green-500" />
               ) : (
@@ -124,7 +124,7 @@ export function TestCaseView({
               {lastSubmission.results.map((result, index) => (
                 <div
                   key={`result-${index}`}
-                  className="rounded-lg border p-3 md:p-4 dark:border-[#1a1a1a] dark:bg-[#232323]"
+                  className="rounded-lg border border-border bg-card/75 p-3 md:p-4 dark:bg-surface-secondary"
                 >
                   <div className="mb-2 flex items-center gap-2">
                     {result.passed ? (
@@ -141,7 +141,7 @@ export function TestCaseView({
                       <span className="block text-muted-foreground text-xs">
                         Output:
                       </span>
-                      <pre className="overflow-x-auto rounded bg-background p-2 font-mono text-xs dark:bg-[#2d2d2d]">
+                      <pre className="overflow-x-auto rounded bg-muted/70 p-2 font-mono text-xs dark:bg-surface-elevated">
                         {result.output}
                       </pre>
                     </div>
@@ -149,7 +149,7 @@ export function TestCaseView({
                   {result.error && (
                     <div className="mt-2 space-y-1">
                       <span className="block text-red-500 text-xs">Error:</span>
-                      <pre className="overflow-x-auto rounded bg-background p-2 font-mono text-red-400 text-xs dark:bg-[#2d2d2d]">
+                      <pre className="overflow-x-auto rounded bg-muted/70 p-2 font-mono text-red-400 text-xs dark:bg-surface-elevated">
                         {result.error}
                       </pre>
                     </div>

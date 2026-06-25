@@ -59,40 +59,49 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(0.985 0.008 265.8); /* Soft ice-blue off-white to reduce screen glare */
-  --foreground: oklch(0.22 0.04 265.8); /* Deep slate-blue for highly readable, soft main text */
-  --heading: oklch(0.18 0.045 265.8); /* Darker slate-blue for prominent headings */
-  --subheading: oklch(0.30 0.04 265.8); /* Softer secondary heading text */
-  --paragraph: oklch(0.42 0.03 265.8); /* Gentle slate-blue for body paragraphs */
-  --card: oklch(1 0.005 265.8 / 80%); /* Crisp white card with glassmorphism transparency */
-  --card-foreground: oklch(0.22 0.04 265.8);
-  --popover: oklch(1 0.005 265.8);
-  --popover-foreground: oklch(0.22 0.04 265.8);
-  --primary: oklch(0.48 0.15 265.8); /* Rich royal blue instead of lighter blue */
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.015 265.8);
-  --secondary-foreground: oklch(0.20 0.04 265.8);
-  --muted: oklch(0.95 0.015 265.8);
-  --muted-foreground: oklch(0.48 0.03 265.8);
-  --accent: oklch(0.93 0.02 265.8); /* Soft blue highlight on hover */
-  --accent-foreground: oklch(0.20 0.04 265.8);
+  --background: #f6f9ff;
+  --foreground: #17211d;
+  --heading: #0b1713;
+  --subheading: #1f302b;
+  --paragraph: #4a5d57;
+  --card: rgb(255 255 255 / 0.82);
+  --card-foreground: #17211d;
+  --popover: #ffffff;
+  --popover-foreground: #17211d;
+  --primary: #10b981;
+  --primary-foreground: #06110d;
+  --secondary: #eaf8f2;
+  --secondary-foreground: #12251f;
+  --muted: #edf6f2;
+  --muted-foreground: #61736d;
+  --accent: rgb(16 185 129 / 0.12);
+  --accent-foreground: #0c1d17;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.015 265.8); /* Soft light-blue border */
-  --input: oklch(0.922 0.015 265.8);
-  --ring: oklch(0.48 0.15 265.8);
+  --border: rgb(16 185 129 / 0.18);
+  --input: rgb(16 185 129 / 0.20);
+  --ring: #10b981;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0.008 265.8);
-  --sidebar-foreground: oklch(0.22 0.04 265.8);
-  --sidebar-primary: oklch(0.545 0.143 265.8);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.93 0.02 265.8);
-  --sidebar-accent-foreground: oklch(0.20 0.04 265.8);
-  --sidebar-border: oklch(0.92 0.015 265.8);
-  --sidebar-ring: oklch(0.545 0.143 265.8);
+  --sidebar: #f6f9ff;
+  --sidebar-foreground: #17211d;
+  --sidebar-primary: #10b981;
+  --sidebar-primary-foreground: #06110d;
+  --sidebar-accent: #eaf8f2;
+  --sidebar-accent-foreground: #12251f;
+  --sidebar-border: rgb(16 185 129 / 0.18);
+  --sidebar-ring: #10b981;
+
+  --surface-secondary: #eaf8f2;
+  --surface-elevated: #ffffff;
+  --surface-strong: #dff4eb;
+  --surface-product: #f7fbf9;
+
+  --border-subtle: rgb(16 185 129 / 0.12);
+  --border-elevated: rgb(16 185 129 / 0.24);
+  --border-interactive: rgb(16 185 129 / 0.42);
 }
 
 .dark {
@@ -150,6 +159,10 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(circle at 8% -10%, rgb(52 211 153 / 0.16), transparent 32rem),
+      radial-gradient(circle at 100% 14%, rgb(45 212 191 / 0.12), transparent 28rem);
+    background-attachment: fixed;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
@@ -176,10 +189,10 @@
   --figma-border-neutral: rgba(255, 255, 255, 0.15);
 
   /* Backgrounds with opacity */
-  --figma-bg-blue-10: rgba(99, 130, 222, 0.1);
-  --figma-bg-blue-17: rgba(101, 125, 196, 0.17);
-  --figma-bg-blue-20: rgba(101, 125, 196, 0.2);
-  --figma-bg-blue-70: rgba(99, 130, 222, 0.7);
+  --figma-bg-blue-10: rgba(16, 185, 129, 0.1);
+  --figma-bg-blue-17: rgba(16, 185, 129, 0.17);
+  --figma-bg-blue-20: rgba(16, 185, 129, 0.2);
+  --figma-bg-blue-70: rgba(16, 185, 129, 0.7);
   --figma-bg-white-05: rgba(255, 255, 255, 0.05);
 }
 

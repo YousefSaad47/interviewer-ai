@@ -68,10 +68,8 @@ export function CodeDigitInput({
           <div
             key={`digit-${index}`}
             className={cn(
-              "relative h-12 w-12 rounded-xl border bg-neutral-100 sm:h-14 sm:w-14 dark:bg-neutral-800",
-              error
-                ? "border-destructive"
-                : "border-neutral-300 dark:border-neutral-700",
+              "relative h-12 w-12 rounded-xl border bg-card sm:h-14 sm:w-14 dark:bg-surface-secondary",
+              error ? "border-destructive" : "border-border dark:border-border",
             )}
           >
             <div className="flex h-full w-full items-center justify-center">

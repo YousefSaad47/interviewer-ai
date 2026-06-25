@@ -45,7 +45,7 @@ export function SkillsOverview() {
         {categories.map((skill) => (
           <Card
             key={skill.name}
-            className="rounded-[15px] border-border bg-neutral-100 dark:bg-neutral-900"
+            className="rounded-[15px] border-border bg-card dark:bg-card"
           >
             <CardContent className="space-y-3">
               <div className="text-muted-foreground text-sm">
@@ -57,7 +57,7 @@ export function SkillsOverview() {
               <div className="flex items-center gap-2">
                 <Progress
                   value={skill.avgScore}
-                  className="h-2 flex-1 bg-neutral-200 dark:bg-neutral-800 [&>div]:bg-primary"
+                  className="h-2 flex-1 bg-surface-strong dark:bg-surface-secondary [&>div]:bg-primary"
                 />
                 <span className="text-muted-foreground text-xs">
                   {skill.count}

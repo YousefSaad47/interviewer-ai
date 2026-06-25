@@ -30,12 +30,12 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
       <div className="w-full">
         <div
           className={cn(
-            "relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-neutral-800",
+            "relative flex w-full items-center rounded-xl border-0 border-b px-4 py-2.5 transition-colors sm:px-5 sm:py-3 dark:bg-surface-secondary",
             error
               ? "border-destructive"
               : isFocused
-                ? "border-neutral-400 dark:border-neutral-600"
-                : "border-neutral-300 dark:border-neutral-700",
+                ? "border-primary/45 dark:border-border-interactive"
+                : "border-border dark:border-border",
             className,
           )}
         >

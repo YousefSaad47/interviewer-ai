@@ -28,7 +28,7 @@ const actions = [
 
 export function QuickActions() {
   return (
-    <Card className="rounded-2xl border-border bg-neutral-100 dark:bg-neutral-900">
+    <Card className="rounded-2xl border-border bg-card dark:bg-card">
       <CardHeader>
         <CardTitle className="font-bold text-foreground text-xl">
           Quick Actions
@@ -44,7 +44,7 @@ export function QuickActions() {
                 className={`flex w-full items-center justify-start gap-3 rounded-lg px-4 py-6 text-base ${
                   action.primary
                     ? "bg-primary text-white hover:bg-primary/90"
-                    : "border-border bg-neutral-50 text-foreground hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+                    : "border-border bg-white/75 text-foreground hover:bg-surface-strong dark:bg-surface-secondary dark:hover:bg-surface-elevated"
                 }`}
               >
                 <Icon className="h-5 w-5" />

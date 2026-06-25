@@ -48,7 +48,7 @@ export function ProfileAccountPage() {
                   id="fullName"
                   type="text"
                   className={cn(
-                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
+                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
                     errors.fullName && "border-destructive",
                   )}
                 />
@@ -72,7 +72,7 @@ export function ProfileAccountPage() {
                   id="email"
                   type="email"
                   className={cn(
-                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
+                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
                     errors.email && "border-destructive",
                   )}
                 />
@@ -96,7 +96,7 @@ export function ProfileAccountPage() {
                   id="phone"
                   type="tel"
                   className={cn(
-                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
+                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
                     errors.phone && "border-destructive",
                   )}
                 />
@@ -125,7 +125,7 @@ export function ProfileAccountPage() {
                   id="currentRole"
                   type="text"
                   className={cn(
-                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
+                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
                     errors.currentRole && "border-destructive",
                   )}
                 />
@@ -149,7 +149,7 @@ export function ProfileAccountPage() {
                   id="targetRole"
                   type="text"
                   className={cn(
-                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
+                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
                     errors.targetRole && "border-destructive",
                   )}
                 />
@@ -173,7 +173,7 @@ export function ProfileAccountPage() {
                   id="experience"
                   type="text"
                   className={cn(
-                    "h-12 rounded-xl border-neutral-300 bg-neutral-100 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600",
+                    "h-12 rounded-xl border-border bg-card focus:border-primary/45 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive",
                     errors.experience && "border-destructive",
                   )}
                 />

@@ -63,7 +63,7 @@ export function SetupInterviewPage() {
           </p>
         </div>
 
-        <Card className="w-full max-w-2xl border-neutral-200 bg-neutral-50 backdrop-blur-sm md:max-w-3xl lg:max-w-4xl dark:border-neutral-800 dark:bg-neutral-900">
+        <Card className="w-full max-w-2xl border-border bg-white/75 backdrop-blur-sm md:max-w-3xl lg:max-w-4xl dark:border-border dark:bg-card">
           <form onSubmit={handleSubmit(submitInterviewSetup)}>
             <div className="flex flex-col gap-6 p-6 sm:gap-8 sm:p-8 md:p-10 lg:gap-10 lg:p-12">
               <div className="flex flex-col gap-2">
@@ -81,7 +81,7 @@ export function SetupInterviewPage() {
                       <SelectTrigger
                         id="target-role"
                         className={cn(
-                          "h-12 border-neutral-300 bg-neutral-100 text-foreground hover:bg-neutral-200 focus:border-neutral-400 focus:ring-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600 dark:focus:ring-neutral-700 dark:hover:bg-neutral-700",
+                          "h-12 border-border bg-card text-foreground hover:bg-surface-strong focus:border-primary/45 focus:ring-primary/25 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive dark:focus:ring-primary/20 dark:hover:bg-surface-elevated",
                           errors.targetRole && "border-destructive",
                         )}
                       >
@@ -127,7 +127,7 @@ export function SetupInterviewPage() {
                       <SelectTrigger
                         id="experience-level"
                         className={cn(
-                          "h-12 border-neutral-300 bg-neutral-100 text-foreground hover:bg-neutral-200 focus:border-neutral-400 focus:ring-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600 dark:focus:ring-neutral-700 dark:hover:bg-neutral-700",
+                          "h-12 border-border bg-card text-foreground hover:bg-surface-strong focus:border-primary/45 focus:ring-primary/25 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive dark:focus:ring-primary/20 dark:hover:bg-surface-elevated",
                           errors.experienceLevel && "border-destructive",
                         )}
                       >
@@ -171,7 +171,7 @@ export function SetupInterviewPage() {
                       <SelectTrigger
                         id="interview-focus"
                         className={cn(
-                          "h-12 border-neutral-300 bg-neutral-100 text-foreground hover:bg-neutral-200 focus:border-neutral-400 focus:ring-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600 dark:focus:ring-neutral-700 dark:hover:bg-neutral-700",
+                          "h-12 border-border bg-card text-foreground hover:bg-surface-strong focus:border-primary/45 focus:ring-primary/25 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive dark:focus:ring-primary/20 dark:hover:bg-surface-elevated",
                           errors.interviewFocus && "border-destructive",
                         )}
                       >
@@ -219,7 +219,7 @@ export function SetupInterviewPage() {
                   id="additional-context"
                   placeholder="Add any specific topics or requirements..."
                   className={cn(
-                    "min-h-25 resize-none border-neutral-300 bg-neutral-100 text-foreground placeholder:text-muted-foreground hover:bg-neutral-200 focus:border-neutral-400 focus:ring-neutral-300 sm:min-h-30 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:border-neutral-600 dark:focus:ring-neutral-700 dark:hover:bg-neutral-700",
+                    "min-h-25 resize-none border-border bg-card text-foreground placeholder:text-muted-foreground hover:bg-surface-strong focus:border-primary/45 focus:ring-primary/25 sm:min-h-30 dark:border-border dark:bg-surface-secondary dark:focus:border-border-interactive dark:focus:ring-primary/20 dark:hover:bg-surface-elevated",
                     errors.additionalContext && "border-destructive",
                   )}
                 />

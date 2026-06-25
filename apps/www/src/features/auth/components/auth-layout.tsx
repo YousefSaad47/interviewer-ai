@@ -21,7 +21,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
             left: "-400px",
             width: "660px",
             height: "665px",
-            background: "oklch(0.545 0.143 265.8)",
+            background: "#10B981",
             filter: "blur(250px)",
           }}
         />
@@ -33,7 +33,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
             right: "-400px",
             width: "660px",
             height: "665px",
-            background: "oklch(0.545 0.143 265.8)",
+            background: "#10B981",
             filter: "blur(250px)",
           }}
         />
@@ -42,7 +42,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
       {/* Main Content */}
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-6 sm:py-12">
         {/* Auth Card */}
-        <div className="w-full max-w-[480px] rounded-[20px] border border-neutral-200 bg-neutral-50 p-5 shadow-[3.5px_1.7px_8.5px_4.3px_rgba(0,0,0,0.3)] backdrop-blur-md sm:p-7 md:p-9 dark:border-neutral-800 dark:bg-neutral-900">
+        <div className="w-full max-w-[480px] rounded-[20px] border border-border bg-white/75 p-5 shadow-[3.5px_1.7px_8.5px_4.3px_rgba(0,0,0,0.3)] backdrop-blur-md sm:p-7 md:p-9 dark:border-border dark:bg-card">
           <div className="flex flex-col items-center gap-4 sm:gap-5 md:gap-6">
             {/* Header with Back and Logo */}
             <div className="flex w-full items-center justify-between">

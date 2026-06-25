@@ -12,7 +12,7 @@ export function WeeklyGoals() {
 
   if (isLoading) {
     return (
-      <Card className="rounded-[15px] border-border bg-neutral-100 dark:bg-neutral-900">
+      <Card className="rounded-[15px] border-border bg-card dark:bg-card">
         <CardHeader>
           <CardTitle className="font-bold text-foreground text-xl">
             Your Goals This Week
@@ -52,7 +52,7 @@ export function WeeklyGoals() {
   ];
 
   return (
-    <Card className="rounded-[15px] border-border bg-neutral-100 dark:bg-neutral-900">
+    <Card className="rounded-[15px] border-border bg-card dark:bg-card">
       <CardHeader>
         <CardTitle className="font-bold text-foreground text-xl">
           Your Goals This Week
@@ -70,7 +70,7 @@ export function WeeklyGoals() {
             </div>
             <Progress
               value={goal.progress}
-              className="h-2 bg-neutral-200 dark:bg-neutral-800 [&>div]:bg-primary"
+              className="h-2 bg-surface-strong dark:bg-surface-secondary [&>div]:bg-primary"
             />
           </div>
         ))}
