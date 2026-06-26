@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
 import { toast } from "sonner";
+
 import { signInWithSocial, signUpWithEmail } from "../api";
 import type { SignUpSubmitFormData } from "../schemas/sign-up.schema";
 import type { AuthProvider } from "../types/auth.types";
