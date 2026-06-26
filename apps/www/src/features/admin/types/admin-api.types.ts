@@ -265,3 +265,148 @@ export type AdminCodingSubmissionDetailsDto = Omit<
   aiFeedback: string | null;
   results: AdminCodingSubmissionResultDto[];
 };
+
+export type AdminResumeStatus = "DRAFT" | "COMPLETE" | "ARCHIVED";
+
+export type AdminResumesQuery = {
+  search?: string;
+  userId?: string;
+  status?: AdminResumeStatus;
+  from?: string;
+  to?: string;
+  page?: number;
+  limit?: number;
+};
+
+export type AdminResumeCandidateDto = {
+  id: string;
+  name: string;
+  email: string;
+  image: string | null;
+};
+
+export type AdminResumeListItemDto = {
+  id: string;
+  candidate: AdminResumeCandidateDto;
+  title: string;
+  status: AdminResumeStatus;
+  atsScore: number | null;
+  grammarScore: number | null;
+  suggestionsCount: number;
+  matchesCount: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AdminResumesListResponse = {
+  data: AdminResumeListItemDto[];
+  pagination: AdminPagination;
+};
+
+export type AdminResumeContentPreviewDto = {
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  location?: string;
+  summary?: string;
+  skills?: string[];
+  experienceCount?: number;
+  educationCount?: number;
+};
+
+export type AdminResumeMatchDto = {
+  id: string;
+  matchPct: number;
+  jobTitle: string;
+  company: string;
+  matchedKeywords: string[];
+  missingKeywords: string[];
+};
+
+export type AdminResumeDetailsDto = Omit<
+  AdminResumeListItemDto,
+  "suggestionsCount" | "matchesCount"
+> & {
+  suggestions: string[];
+  contentPreview: AdminResumeContentPreviewDto;
+  matches: AdminResumeMatchDto[];
+};
+
+export type AdminAnalyticsRange = "7d" | "30d" | "90d";
+export type AdminAnalyticsInterval = "day" | "week";
+
+export type AdminAnalyticsQuery = {
+  range?: AdminAnalyticsRange;
+  interval?: AdminAnalyticsInterval;
+};
+
+export type AdminTimeSeriesPointDto = {
+  date: string;
+  count: number;
+};
+
+export type AdminFeatureUsageDto = {
+  feature: "interviews" | "coding" | "resumes";
+  count: number;
+};
+
+export type AdminAnalyticsResponse = {
+  usersGrowth: AdminTimeSeriesPointDto[];
+  interviewsActivity: AdminTimeSeriesPointDto[];
+  codingActivity: AdminTimeSeriesPointDto[];
+  resumeUsage: AdminTimeSeriesPointDto[];
+  mostUsedFeatures: AdminFeatureUsageDto[];
+  completionRates: {
+    interviews: number;
+    codingAccepted: number;
+    resumesComplete: number;
+  };
+};
+
+export type AdminAccountRole = "ADMIN" | "SUPER_ADMIN";
+export type AdminAccountStatus = "ACTIVE" | "DISABLED";
+
+export type AdminAccountsQuery = {
+  search?: string;
+  status?: AdminAccountStatus;
+  role?: AdminAccountRole;
+  page?: number;
+  limit?: number;
+};
+
+export type AdminAccountListItemDto = {
+  id: string;
+  name: string;
+  email: string;
+  image: string | null;
+  emailVerified: boolean;
+  role: AdminAccountRole;
+  status: AdminAccountStatus;
+  createdAt: string;
+  lastLoginAt: string | null;
+};
+
+export type AdminAccountsListResponse = {
+  data: AdminAccountListItemDto[];
+  pagination: AdminPagination;
+};
+
+export type PromoteAdminBody = {
+  userId: string;
+  role: AdminAccountRole;
+};
+
+export type UpdateAdminBody = {
+  role?: AdminAccountRole;
+  status?: AdminAccountStatus;
+};
+
+export type AdminAccountMutationResponse = {
+  id: string;
+  role: AdminAccountRole;
+  status: AdminAccountStatus;
+};
+
+export type RemoveAdminAccessResponse = {
+  success: true;
+};

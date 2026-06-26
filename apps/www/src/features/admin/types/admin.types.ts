@@ -17,6 +17,11 @@ export type DrawerContent = {
 
 export type AdminModalMode = "add" | "edit" | "delete";
 
+export type AdminModalState = {
+  mode: AdminModalMode;
+  admin?: AdminAccount;
+};
+
 export type AdminStat = {
   label: string;
   value: string;
@@ -169,19 +174,59 @@ export type AdminCodingSubmissionDetailsView = AdminCodingSubmission & {
 };
 
 export type AdminResume = {
+  id: string;
   candidate: string;
-  score: number;
+  candidateEmail: string;
+  candidateImage: string | null;
+  candidateId: string;
+  title: string;
+  score: number | null;
+  grammarScore: number | null;
+  suggestionsCount: number;
+  matchesCount: number;
   date: string;
+  createdAt: string;
+  updatedAt: string;
   status: string;
+  rawStatus: string;
   role: string;
 };
 
+export type AdminResumeDetailsView = AdminResume & {
+  suggestions: string[];
+  contentPreview: {
+    fullName?: string;
+    email?: string;
+    phone?: string;
+    location?: string;
+    summary?: string;
+    skills?: string[];
+    experienceCount?: number;
+    educationCount?: number;
+  };
+  matches: Array<{
+    id: string;
+    matchPct: number;
+    jobTitle: string;
+    company: string;
+    matchedKeywords: string[];
+    missingKeywords: string[];
+  }>;
+};
+
 export type AdminAccount = {
+  id: string;
   name: string;
-  role: string;
   email: string;
+  image: string | null;
+  emailVerified: boolean;
+  role: string;
+  rawRole: "ADMIN" | "SUPER_ADMIN";
   status: string;
+  rawStatus: "ACTIVE" | "DISABLED";
   lastLogin: string;
+  lastLoginAt: string | null;
+  createdAt: string;
 };
 
 export type FeatureUsage = readonly [label: string, value: number];

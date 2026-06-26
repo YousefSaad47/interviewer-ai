@@ -8,6 +8,7 @@ import { Button, Skeleton } from "@/shared/ui";
 import {
   useAdminCodingSubmissionDetails,
   useAdminInterviewDetails,
+  useAdminResumeDetails,
   useAdminUserDetails,
 } from "../hooks";
 import type {
@@ -20,6 +21,7 @@ import type {
 import {
   mapAdminCodingSubmissionDetails,
   mapAdminInterviewDetails,
+  mapAdminResumeDetails,
   mapAdminUserDetails,
 } from "../utils";
 import { Avatar, DetailBlock, DrawerStat, ScorePill } from "./admin-primitives";
@@ -271,34 +273,108 @@ export function InterviewDrawer({
   );
 }
 
-export function ResumeDrawer({ resume }: { resume: AdminResume }) {
+export function ResumeDrawer({
+  fetchDetails = false,
+  resume,
+}: {
+  fetchDetails?: boolean;
+  resume: AdminResume;
+}) {
+  const detailsQuery = useAdminResumeDetails(fetchDetails ? resume.id : null);
+  const details = detailsQuery.data
+    ? mapAdminResumeDetails(detailsQuery.data)
+    : null;
+  const displayResume = details ?? resume;
+
+  if (fetchDetails && detailsQuery.isLoading) {
+    return <DrawerSkeleton />;
+  }
+
+  if (fetchDetails && detailsQuery.isError) {
+    return (
+      <DrawerError
+        message="Unable to load resume details."
+        onRetry={() => detailsQuery.refetch()}
+      />
+    );
+  }
+
+  const previewItems = details
+    ? [
+        details.contentPreview.fullName &&
+          `Name: ${details.contentPreview.fullName}`,
+        details.contentPreview.email &&
+          `Email: ${details.contentPreview.email}`,
+        details.contentPreview.phone &&
+          `Phone: ${details.contentPreview.phone}`,
+        details.contentPreview.location &&
+          `Location: ${details.contentPreview.location}`,
+        details.contentPreview.summary &&
+          `Summary: ${details.contentPreview.summary}`,
+        details.contentPreview.experienceCount !== undefined &&
+          `Experience entries: ${details.contentPreview.experienceCount}`,
+        details.contentPreview.educationCount !== undefined &&
+          `Education entries: ${details.contentPreview.educationCount}`,
+      ].filter((item): item is string => Boolean(item))
+    : [];
+
   return (
     <div className="space-y-5">
       <div className="rounded-lg border border-border bg-card p-4">
         <div className="mb-3 flex items-center justify-between">
-          <p className="font-semibold text-heading">Resume Preview</p>
-          <ScorePill value={resume.score} />
+          <p className="font-semibold text-heading">{displayResume.title}</p>
+          <ScorePill value={displayResume.score} />
         </div>
-        <Skeleton className="mb-2 h-3 w-5/6" />
-        <Skeleton className="mb-2 h-3 w-full" />
-        <Skeleton className="mb-2 h-3 w-4/5" />
-        <Skeleton className="h-20 w-full rounded-lg" />
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <span className="text-muted-foreground">Candidate</span>
+          <span className="text-right font-medium">
+            {displayResume.candidate}
+          </span>
+          <span className="text-muted-foreground">Status</span>
+          <span className="text-right font-medium">{displayResume.status}</span>
+          <span className="text-muted-foreground">Grammar</span>
+          <span className="text-right font-medium">
+            {displayResume.grammarScore === null
+              ? "--"
+              : `${displayResume.grammarScore}%`}
+          </span>
+          <span className="text-muted-foreground">Matches</span>
+          <span className="text-right font-medium">
+            {displayResume.matchesCount}
+          </span>
+        </div>
       </div>
       <DetailBlock
-        title="Skills"
-        items={["React", "TypeScript", "Design systems", "Accessibility"]}
+        title="Preview"
+        items={previewItems.length > 0 ? previewItems : ["No preview data."]}
       />
-      <DetailBlock
-        title="ATS Breakdown"
-        items={["Keywords: 91%", "Formatting: 96%", "Impact language: 82%"]}
-      />
-      <DetailBlock
-        title="Suggestions"
-        items={[
-          "Add measurable outcomes to the latest role.",
-          "Move testing tools into the skills summary.",
-        ]}
-      />
+      {details?.contentPreview.skills &&
+        details.contentPreview.skills.length > 0 && (
+          <DetailBlock title="Skills" items={details.contentPreview.skills} />
+        )}
+      {details && (
+        <DetailBlock
+          title="Suggestions"
+          items={
+            details.suggestions.length > 0
+              ? details.suggestions
+              : ["No suggestions available."]
+          }
+        />
+      )}
+      {details && (
+        <DetailBlock
+          title="Job Matches"
+          items={
+            details.matches.length > 0
+              ? details.matches.map(
+                  (match) =>
+                    `${match.jobTitle} at ${match.company}: ${match.matchPct}%`,
+                )
+              : ["No job matches available."]
+          }
+        />
+      )}
     </div>
   );
 }

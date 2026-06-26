@@ -5,7 +5,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { adminSections } from "../data";
-import type { AdminModalMode, AdminSection, DrawerContent } from "../types";
+import type { AdminModalState, AdminSection, DrawerContent } from "../types";
 import { DetailDrawer } from "./admin-drawers";
 import { AdminModal } from "./admin-modal";
 import { AdminSidebar } from "./admin-sidebar";
@@ -24,7 +24,7 @@ export function AdminDashboardPage() {
   const [activeSection, setActiveSection] = useState<AdminSection>("overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [drawer, setDrawer] = useState<DrawerContent | null>(null);
-  const [adminModal, setAdminModal] = useState<AdminModalMode | null>(null);
+  const [adminModal, setAdminModal] = useState<AdminModalState | null>(null);
   const active = adminSections.find((section) => section.id === activeSection);
 
   const navigateToSection = (section: AdminSection) => {
@@ -86,7 +86,7 @@ export function AdminDashboardPage() {
       </div>
 
       <DetailDrawer drawer={drawer} onClose={() => setDrawer(null)} />
-      <AdminModal mode={adminModal} onClose={() => setAdminModal(null)} />
+      <AdminModal state={adminModal} onClose={() => setAdminModal(null)} />
     </div>
   );
 }

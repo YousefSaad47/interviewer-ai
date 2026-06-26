@@ -1,16 +1,22 @@
 import type {
+  AdminAccount,
   AdminCodingSubmission,
   AdminCodingSubmissionDetailsView,
   AdminInterview,
   AdminInterviewDetailsView,
+  AdminResume,
+  AdminResumeDetailsView,
   AdminUser,
   AdminUserDetailsView,
 } from "../types";
 import type {
+  AdminAccountListItemDto,
   AdminCodingSubmissionDetailsDto,
   AdminCodingSubmissionListItemDto,
   AdminInterviewDetailsDto,
   AdminInterviewListItemDto,
+  AdminResumeDetailsDto,
+  AdminResumeListItemDto,
   AdminUserDetailsDto,
   AdminUserListItemDto,
 } from "../types/admin-api.types";
@@ -220,5 +226,78 @@ const mapCodingStatus = (
       return "Partial";
     case "PENDING":
       return "Pending";
+  }
+};
+
+export const mapAdminResumeListItem = (
+  resume: AdminResumeListItemDto,
+): AdminResume => ({
+  id: resume.id,
+  candidate: resume.candidate.name,
+  candidateEmail: resume.candidate.email,
+  candidateImage: resume.candidate.image,
+  candidateId: resume.candidate.id,
+  title: resume.title,
+  score: formatNullableScore(resume.atsScore),
+  grammarScore: formatNullableScore(resume.grammarScore),
+  suggestionsCount: resume.suggestionsCount,
+  matchesCount: resume.matchesCount,
+  date: formatAdminDate(resume.createdAt),
+  createdAt: resume.createdAt,
+  updatedAt: resume.updatedAt,
+  status: mapResumeStatus(resume.status),
+  rawStatus: resume.status,
+  role: resume.title,
+});
+
+export const mapAdminResumeDetails = (
+  resume: AdminResumeDetailsDto,
+): AdminResumeDetailsView => ({
+  ...mapAdminResumeListItem({
+    ...resume,
+    suggestionsCount: resume.suggestions.length,
+    matchesCount: resume.matches.length,
+  }),
+  suggestions: resume.suggestions,
+  contentPreview: resume.contentPreview,
+  matches: resume.matches,
+});
+
+export const mapAdminAccountListItem = (
+  admin: AdminAccountListItemDto,
+): AdminAccount => ({
+  id: admin.id,
+  name: admin.name,
+  email: admin.email,
+  image: admin.image,
+  emailVerified: admin.emailVerified,
+  role: formatEnumLabel(admin.role),
+  rawRole: admin.role,
+  status: mapAdminAccountStatus(admin.status),
+  rawStatus: admin.status,
+  lastLogin: admin.lastLoginAt
+    ? formatAdminDateTime(admin.lastLoginAt)
+    : "No active session",
+  lastLoginAt: admin.lastLoginAt,
+  createdAt: admin.createdAt,
+});
+
+const mapResumeStatus = (status: AdminResumeListItemDto["status"]) => {
+  switch (status) {
+    case "COMPLETE":
+      return "Complete";
+    case "DRAFT":
+      return "Draft";
+    case "ARCHIVED":
+      return "Archived";
+  }
+};
+
+const mapAdminAccountStatus = (status: AdminAccountListItemDto["status"]) => {
+  switch (status) {
+    case "ACTIVE":
+      return "Active";
+    case "DISABLED":
+      return "Disabled";
   }
 };

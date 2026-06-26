@@ -26,32 +26,36 @@ import {
 } from "@/shared/ui";
 
 import {
-  adminAccounts,
-  adminActivity,
-  adminFeatureUsage,
-  adminInterviews,
-  adminResumes,
-  adminStats,
-  adminUsers,
-} from "../../data";
-import {
+  useAdminAccounts,
+  useAdminAnalytics,
   useAdminCodingSubmissions,
   useAdminInterviews,
+  useAdminResumes,
   useAdminUsers,
   useDebouncedValue,
   useUpdateAdminUserStatus,
 } from "../../hooks";
-import type { AdminModalMode, DrawerContent } from "../../types";
+import type { AdminModalState, DrawerContent } from "../../types";
 import type {
+  AdminAccountRole,
+  AdminAccountStatus,
   AdminCodingSubmissionStatus,
   AdminInterviewStatus,
+  AdminResumeStatus,
   AdminUserRole,
   AdminUserStatus,
 } from "../../types/admin-api.types";
 import {
+  buildAdminStats,
+  buildFeatureUsage,
+  buildReadinessIndex,
+  buildRecentActivity,
+  mapAdminAccountListItem,
   mapAdminCodingSubmissionListItem,
   mapAdminInterviewListItem,
+  mapAdminResumeListItem,
   mapAdminUserListItem,
+  toChartValues,
 } from "../../utils";
 import {
   CodingDrawer,
@@ -73,7 +77,6 @@ import {
   ResponsiveTable,
   ScorePill,
   StatusBadge,
-  TableFilters,
 } from "../admin-primitives";
 
 const ADMIN_LIST_LIMIT = 5;
@@ -108,11 +111,45 @@ const codingStatusOptions = [
   { label: "Pending", value: "PENDING" },
 ];
 
+const resumeStatusOptions = [
+  { label: "All statuses", value: "all" },
+  { label: "Complete", value: "COMPLETE" },
+  { label: "Draft", value: "DRAFT" },
+  { label: "Archived", value: "ARCHIVED" },
+];
+
+const adminStatusOptions = [
+  { label: "All statuses", value: "all" },
+  { label: "Active", value: "ACTIVE" },
+  { label: "Disabled", value: "DISABLED" },
+];
+
+const adminRoleFilterOptions = [
+  { label: "All roles", value: "all" },
+  { label: "Admins", value: "ADMIN" },
+  { label: "Super admins", value: "SUPER_ADMIN" },
+];
+
 export function OverviewSection({
   onDrawerOpen,
 }: {
   onDrawerOpen: (drawer: DrawerContent) => void;
 }) {
+  const analyticsQuery = useAdminAnalytics({ interval: "day", range: "30d" });
+  const latestUsersQuery = useAdminUsers({ limit: 4, page: 1 });
+  const latestInterviewsQuery = useAdminInterviews({ limit: 3, page: 1 });
+  const stats = buildAdminStats(analyticsQuery.data);
+  const readinessIndex = buildReadinessIndex(analyticsQuery.data);
+  const recentActivity = buildRecentActivity(analyticsQuery.data);
+  const latestUsers = useMemo(
+    () => latestUsersQuery.data?.data.map(mapAdminUserListItem) ?? [],
+    [latestUsersQuery.data],
+  );
+  const latestInterviews = useMemo(
+    () => latestInterviewsQuery.data?.data.map(mapAdminInterviewListItem) ?? [],
+    [latestInterviewsQuery.data],
+  );
+
   return (
     <div className="space-y-6">
       <section className="overflow-hidden rounded-lg border border-border bg-card/76 shadow-[0_24px_80px_rgba(15,23,42,0.08)] dark:shadow-[0_30px_90px_rgba(0,0,0,0.32)]">
@@ -133,9 +170,16 @@ export function OverviewSection({
               </p>
             </div>
             <div className="relative mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              {adminStats.map((stat) => (
-                <MetricCard key={stat.label} {...stat} />
-              ))}
+              {analyticsQuery.isLoading
+                ? Array.from({ length: 4 }).map((_, index) => (
+                    <Skeleton
+                      className="h-36 rounded-lg"
+                      key={`overview-stat-${index}`}
+                    />
+                  ))
+                : stats.map((stat) => (
+                    <MetricCard key={stat.label} {...stat} />
+                  ))}
             </div>
           </div>
           <div className="border-border border-t bg-surface-product/70 p-6 xl:border-t-0 xl:border-l dark:bg-surface-secondary/55">
@@ -147,21 +191,23 @@ export function OverviewSection({
                 </p>
               </div>
               <Badge className="bg-primary/10 text-primary" variant="outline">
-                +14.2%
+                30d
               </Badge>
             </div>
-            <RadialScore value={87} />
+            <RadialScore value={readinessIndex} />
             <div className="mt-6 grid grid-cols-3 gap-2">
-              {["Latency 212ms", "Score drift 1.8%", "Uptime 99.98%"].map(
-                (item) => (
-                  <div
-                    className="rounded-lg border border-border bg-card/70 p-3 text-center text-xs"
-                    key={item}
-                  >
-                    {item}
-                  </div>
-                ),
-              )}
+              {[
+                `Interviews ${analyticsQuery.data?.completionRates.interviews ?? 0}%`,
+                `Coding ${analyticsQuery.data?.completionRates.codingAccepted ?? 0}%`,
+                `Resumes ${analyticsQuery.data?.completionRates.resumesComplete ?? 0}%`,
+              ].map((item) => (
+                <div
+                  className="rounded-lg border border-border bg-card/70 p-3 text-center text-xs"
+                  key={item}
+                >
+                  {item}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -171,21 +217,48 @@ export function OverviewSection({
         <div className="space-y-6">
           <ChartCard
             title="Users Growth"
-            caption="Net new accounts across the last 12 weeks"
+            caption="Net new accounts across the selected range"
+            rangeLabel="30 days"
+            values={toChartValues(analyticsQuery.data?.usersGrowth ?? [])}
           />
           <div className="grid gap-6 lg:grid-cols-3">
             <MiniChart
               title="Interview Activity"
-              values={[28, 38, 31, 46, 52]}
+              values={toChartValues(
+                analyticsQuery.data?.interviewsActivity ?? [],
+              )}
             />
-            <MiniChart title="Coding Activity" values={[44, 39, 55, 61, 70]} />
-            <MiniChart title="Resume Activity" values={[18, 24, 22, 29, 37]} />
+            <MiniChart
+              title="Coding Activity"
+              values={toChartValues(analyticsQuery.data?.codingActivity ?? [])}
+            />
+            <MiniChart
+              title="Resume Activity"
+              values={toChartValues(analyticsQuery.data?.resumeUsage ?? [])}
+            />
           </div>
-          <RecentSessions onDrawerOpen={onDrawerOpen} />
+          <RecentSessions
+            interviews={latestInterviews}
+            isError={latestInterviewsQuery.isError}
+            isLoading={latestInterviewsQuery.isLoading}
+            onDrawerOpen={onDrawerOpen}
+            onRetry={() => latestInterviewsQuery.refetch()}
+          />
         </div>
         <div className="space-y-6 xl:sticky xl:top-24 xl:self-start">
-          <ActivityCard />
-          <LatestUsers onDrawerOpen={onDrawerOpen} />
+          <ActivityCard
+            isError={analyticsQuery.isError}
+            isLoading={analyticsQuery.isLoading}
+            items={recentActivity}
+            onRetry={() => analyticsQuery.refetch()}
+          />
+          <LatestUsers
+            isError={latestUsersQuery.isError}
+            isLoading={latestUsersQuery.isLoading}
+            onDrawerOpen={onDrawerOpen}
+            onRetry={() => latestUsersQuery.refetch()}
+            users={latestUsers}
+          />
         </div>
       </div>
     </div>
@@ -680,9 +753,46 @@ export function ResumesSection({
 }: {
   onDrawerOpen: (drawer: DrawerContent) => void;
 }) {
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<string>("all");
+  const [page, setPage] = useState(1);
+  const debouncedSearch = useDebouncedValue(search);
+
+  const query = useMemo(
+    () => ({
+      limit: ADMIN_LIST_LIMIT,
+      page,
+      ...(debouncedSearch.trim() && { search: debouncedSearch.trim() }),
+      ...(status !== "all" && { status: status as AdminResumeStatus }),
+    }),
+    [debouncedSearch, page, status],
+  );
+
+  const resumesQuery = useAdminResumes(query);
+  const resumes = useMemo(
+    () => resumesQuery.data?.data.map(mapAdminResumeListItem) ?? [],
+    [resumesQuery.data],
+  );
+
+  const resetPage = () => setPage(1);
+
   return (
     <DataPanel
-      actions={<TableFilters />}
+      actions={
+        <ControlledTableFilters
+          onSearchChange={(value) => {
+            setSearch(value);
+            resetPage();
+          }}
+          onStatusChange={(value) => {
+            setStatus(value);
+            resetPage();
+          }}
+          search={search}
+          status={status}
+          statusOptions={resumeStatusOptions}
+        />
+      }
       title="Resume analysis"
       description="Inspect ATS scores, resume previews, skill coverage, and suggestions."
     >
@@ -696,71 +806,141 @@ export function ResumesSection({
           "",
         ]}
       >
-        {adminResumes.map((resume) => (
-          <tr className="admin-row" key={`${resume.candidate}-${resume.role}`}>
-            <td className="admin-cell">
-              <div className="flex items-center gap-3">
-                <Avatar name={resume.candidate} />
-                <span className="font-medium text-heading">
-                  {resume.candidate}
-                </span>
-              </div>
-            </td>
-            <td className="admin-cell">
-              <ScorePill value={resume.score} />
-            </td>
-            <td className="admin-cell">{resume.date}</td>
-            <td className="admin-cell">
-              <StatusBadge status={resume.status} />
-            </td>
-            <td className="admin-cell">{resume.role}</td>
-            <td className="admin-cell text-right">
-              <Button
-                className="rounded-lg"
-                onClick={() =>
-                  onDrawerOpen({
-                    eyebrow: resume.role,
-                    title: `${resume.candidate}'s resume`,
-                    body: <ResumeDrawer resume={resume} />,
-                  })
-                }
-                variant="outline"
-              >
-                View resume
-              </Button>
-            </td>
-          </tr>
-        ))}
+        {resumesQuery.isLoading &&
+          Array.from({ length: ADMIN_LIST_LIMIT }).map((_, index) => (
+            <SkeletonRow colSpan={6} key={`resumes-loading-${index}`} />
+          ))}
+
+        {!resumesQuery.isLoading && resumesQuery.isError && (
+          <MessageRow
+            actionLabel="Retry"
+            colSpan={6}
+            message="Unable to load resumes."
+            onAction={() => resumesQuery.refetch()}
+          />
+        )}
+
+        {!resumesQuery.isLoading &&
+          !resumesQuery.isError &&
+          resumes.length === 0 && (
+            <MessageRow
+              colSpan={6}
+              message={
+                search || status !== "all"
+                  ? "No resumes match the current filters."
+                  : "No resumes found."
+              }
+            />
+          )}
+
+        {!resumesQuery.isLoading &&
+          !resumesQuery.isError &&
+          resumes.map((resume) => (
+            <tr className="admin-row" key={resume.id}>
+              <td className="admin-cell">
+                <div className="flex items-center gap-3">
+                  <Avatar name={resume.candidate} />
+                  <div>
+                    <p className="font-medium text-heading">
+                      {resume.candidate}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      {resume.candidateEmail}
+                    </p>
+                  </div>
+                </div>
+              </td>
+              <td className="admin-cell">
+                <ScorePill value={resume.score} />
+              </td>
+              <td className="admin-cell">{resume.date}</td>
+              <td className="admin-cell">
+                <StatusBadge status={resume.status} />
+              </td>
+              <td className="admin-cell">{resume.role}</td>
+              <td className="admin-cell text-right">
+                <Button
+                  className="rounded-lg"
+                  onClick={() =>
+                    onDrawerOpen({
+                      eyebrow: resume.role,
+                      title: `${resume.candidate}'s resume`,
+                      body: (
+                        <ResumeDrawer
+                          fetchDetails
+                          key={resume.id}
+                          resume={resume}
+                        />
+                      ),
+                    })
+                  }
+                  variant="outline"
+                >
+                  View resume
+                </Button>
+              </td>
+            </tr>
+          ))}
       </ResponsiveTable>
-      <Pagination />
+      <Pagination
+        disabled={resumesQuery.isFetching}
+        onNext={() => setPage((currentPage) => currentPage + 1)}
+        onPrevious={() =>
+          setPage((currentPage) => Math.max(1, currentPage - 1))
+        }
+        pagination={resumesQuery.data?.pagination}
+      />
     </DataPanel>
   );
 }
 
 export function AnalyticsSection() {
+  const analyticsQuery = useAdminAnalytics({ interval: "day", range: "30d" });
+  const stats = buildAdminStats(analyticsQuery.data);
+  const featureUsage = buildFeatureUsage(analyticsQuery.data);
+  const activity = buildRecentActivity(analyticsQuery.data);
+
   return (
     <div className="space-y-6">
       <div className="grid gap-4 lg:grid-cols-4">
-        {adminStats.map((stat) => (
-          <MetricCard key={stat.label} {...stat} />
-        ))}
+        {analyticsQuery.isLoading
+          ? Array.from({ length: 4 }).map((_, index) => (
+              <Skeleton
+                className="h-36 rounded-lg"
+                key={`analytics-stat-${index}`}
+              />
+            ))
+          : stats.map((stat) => <MetricCard key={stat.label} {...stat} />)}
       </div>
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_410px]">
         <div className="space-y-6">
           <ChartCard
             caption="Total user growth, conversion, and active cohorts"
             title="Users"
+            values={toChartValues(analyticsQuery.data?.usersGrowth ?? [])}
           />
           <div className="grid gap-6 lg:grid-cols-2">
-            <MiniChart title="Interviews" values={[32, 44, 51, 47, 68, 74]} />
+            <MiniChart
+              title="Interviews"
+              values={toChartValues(
+                analyticsQuery.data?.interviewsActivity ?? [],
+              )}
+            />
             <MiniChart
               title="Coding Sessions"
-              values={[49, 58, 72, 66, 81, 96]}
+              values={toChartValues(analyticsQuery.data?.codingActivity ?? [])}
             />
-            <MiniChart title="Resume Usage" values={[18, 26, 34, 31, 42, 56]} />
             <MiniChart
-              title="Recent Trends"
-              values={[60, 54, 66, 79, 83, 91]}
+              title="Resume Usage"
+              values={toChartValues(analyticsQuery.data?.resumeUsage ?? [])}
+            />
+            <MiniChart
+              title="Completion"
+              values={[
+                analyticsQuery.data?.completionRates.interviews ?? 0,
+                analyticsQuery.data?.completionRates.codingAccepted ?? 0,
+                analyticsQuery.data?.completionRates.resumesComplete ?? 0,
+              ]}
             />
           </div>
         </div>
@@ -769,23 +949,44 @@ export function AnalyticsSection() {
             <CardTitle>Most Used Features</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {adminFeatureUsage.map(([label, value]) => (
-              <div key={label}>
-                <div className="mb-2 flex justify-between text-sm">
-                  <span className="font-medium text-heading">{label}</span>
-                  <span className="text-muted-foreground">{value}%</span>
+            {analyticsQuery.isLoading &&
+              Array.from({ length: 3 }).map((_, index) => (
+                <Skeleton
+                  className="h-10 rounded-lg"
+                  key={`feature-usage-${index}`}
+                />
+              ))}
+            {!analyticsQuery.isLoading && analyticsQuery.isError && (
+              <PanelMessage
+                actionLabel="Retry"
+                message="Unable to load analytics."
+                onAction={() => analyticsQuery.refetch()}
+              />
+            )}
+            {!analyticsQuery.isLoading &&
+              !analyticsQuery.isError &&
+              featureUsage.length === 0 && (
+                <PanelMessage message="No feature usage found." />
+              )}
+            {!analyticsQuery.isLoading &&
+              !analyticsQuery.isError &&
+              featureUsage.map(([label, value]) => (
+                <div key={label}>
+                  <div className="mb-2 flex justify-between text-sm">
+                    <span className="font-medium text-heading">{label}</span>
+                    <span className="text-muted-foreground">{value}%</span>
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="h-full rounded-full bg-primary"
+                      style={{ width: `${value}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div
-                    className="h-full rounded-full bg-primary"
-                    style={{ width: `${value}%` }}
-                  />
-                </div>
-              </div>
-            ))}
+              ))}
             <Separator />
             <div className="grid gap-3">
-              {adminActivity.slice(0, 3).map((item) => (
+              {activity.slice(0, 3).map((item) => (
                 <div
                   className="rounded-lg border border-border bg-surface-secondary/55 p-3 text-sm"
                   key={item}
@@ -804,18 +1005,78 @@ export function AnalyticsSection() {
 export function AdminsSection({
   onModeChange,
 }: {
-  onModeChange: (mode: AdminModalMode) => void;
+  onModeChange: (state: AdminModalState) => void;
 }) {
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<string>("all");
+  const [role, setRole] = useState<string>("all");
+  const [page, setPage] = useState(1);
+  const debouncedSearch = useDebouncedValue(search);
+
+  const query = useMemo(
+    () => ({
+      limit: ADMIN_LIST_LIMIT,
+      page,
+      ...(debouncedSearch.trim() && { search: debouncedSearch.trim() }),
+      ...(status !== "all" && { status: status as AdminAccountStatus }),
+      ...(role !== "all" && { role: role as AdminAccountRole }),
+    }),
+    [debouncedSearch, page, role, status],
+  );
+
+  const adminsQuery = useAdminAccounts(query);
+  const admins = useMemo(
+    () => adminsQuery.data?.data.map(mapAdminAccountListItem) ?? [],
+    [adminsQuery.data],
+  );
+
+  const resetPage = () => setPage(1);
+
   return (
     <DataPanel
       actions={
-        <Button
-          className="gap-2 rounded-lg"
-          onClick={() => onModeChange("add")}
-        >
-          <Plus className="size-4" />
-          Add Admin
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <ControlledTableFilters
+            extraSelect={
+              <Select
+                onValueChange={(value) => {
+                  setRole(value);
+                  resetPage();
+                }}
+                value={role}
+              >
+                <SelectTrigger className="w-full sm:w-36">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {adminRoleFilterOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            }
+            onSearchChange={(value) => {
+              setSearch(value);
+              resetPage();
+            }}
+            onStatusChange={(value) => {
+              setStatus(value);
+              resetPage();
+            }}
+            search={search}
+            status={status}
+            statusOptions={adminStatusOptions}
+          />
+          <Button
+            className="gap-2 rounded-lg"
+            onClick={() => onModeChange({ mode: "add" })}
+          >
+            <Plus className="size-4" />
+            Add Admin
+          </Button>
+        </div>
       }
       title="Admin management"
       description="Manage access, roles, and operational accountability."
@@ -823,60 +1084,109 @@ export function AdminsSection({
       <ResponsiveTable
         columns={["Admin", "Role", "Email", "Status", "Last Login", ""]}
       >
-        {adminAccounts.map((admin) => (
-          <tr className="admin-row" key={admin.email}>
-            <td className="admin-cell">
-              <div className="flex items-center gap-3">
-                <Avatar name={admin.name} />
-                <span className="font-semibold text-heading">{admin.name}</span>
-              </div>
-            </td>
-            <td className="admin-cell">
-              <Badge className="bg-primary/10 text-primary" variant="outline">
-                {admin.role}
-              </Badge>
-            </td>
-            <td className="admin-cell">{admin.email}</td>
-            <td className="admin-cell">
-              <StatusBadge status={admin.status} />
-            </td>
-            <td className="admin-cell">{admin.lastLogin}</td>
-            <td className="admin-cell text-right">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    aria-label="Admin actions"
-                    size="icon"
-                    variant="ghost"
-                  >
-                    <MoreHorizontal className="size-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => onModeChange("edit")}>
-                    Edit admin
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => onModeChange("delete")}
-                    variant="destructive"
-                  >
-                    Delete admin
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </td>
-          </tr>
-        ))}
+        {adminsQuery.isLoading &&
+          Array.from({ length: ADMIN_LIST_LIMIT }).map((_, index) => (
+            <SkeletonRow colSpan={6} key={`admins-loading-${index}`} />
+          ))}
+
+        {!adminsQuery.isLoading && adminsQuery.isError && (
+          <MessageRow
+            actionLabel="Retry"
+            colSpan={6}
+            message="Unable to load admins."
+            onAction={() => adminsQuery.refetch()}
+          />
+        )}
+
+        {!adminsQuery.isLoading &&
+          !adminsQuery.isError &&
+          admins.length === 0 && (
+            <MessageRow
+              colSpan={6}
+              message={
+                search || status !== "all" || role !== "all"
+                  ? "No admins match the current filters."
+                  : "No admins found."
+              }
+            />
+          )}
+
+        {!adminsQuery.isLoading &&
+          !adminsQuery.isError &&
+          admins.map((admin) => (
+            <tr className="admin-row" key={admin.id}>
+              <td className="admin-cell">
+                <div className="flex items-center gap-3">
+                  <Avatar name={admin.name} />
+                  <span className="font-semibold text-heading">
+                    {admin.name}
+                  </span>
+                </div>
+              </td>
+              <td className="admin-cell">
+                <Badge className="bg-primary/10 text-primary" variant="outline">
+                  {admin.role}
+                </Badge>
+              </td>
+              <td className="admin-cell">{admin.email}</td>
+              <td className="admin-cell">
+                <StatusBadge status={admin.status} />
+              </td>
+              <td className="admin-cell">{admin.lastLogin}</td>
+              <td className="admin-cell text-right">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      aria-label="Admin actions"
+                      size="icon"
+                      variant="ghost"
+                    >
+                      <MoreHorizontal className="size-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      onClick={() => onModeChange({ admin, mode: "edit" })}
+                    >
+                      Edit admin
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => onModeChange({ admin, mode: "delete" })}
+                      variant="destructive"
+                    >
+                      Remove access
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </td>
+            </tr>
+          ))}
       </ResponsiveTable>
+      <Pagination
+        disabled={adminsQuery.isFetching}
+        onNext={() => setPage((currentPage) => currentPage + 1)}
+        onPrevious={() =>
+          setPage((currentPage) => Math.max(1, currentPage - 1))
+        }
+        pagination={adminsQuery.data?.pagination}
+      />
     </DataPanel>
   );
 }
 
 function RecentSessions({
+  interviews,
+  isError,
+  isLoading,
   onDrawerOpen,
+  onRetry,
 }: {
+  interviews: ReturnType<typeof mapAdminInterviewListItem>[];
+  isError: boolean;
+  isLoading: boolean;
   onDrawerOpen: (drawer: DrawerContent) => void;
+  onRetry: () => void;
 }) {
   return (
     <Card className="rounded-lg bg-card/78">
@@ -884,59 +1194,118 @@ function RecentSessions({
         <CardTitle>Latest Interview Sessions</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {adminInterviews.slice(0, 3).map((interview) => (
-          <button
-            className="flex w-full items-center justify-between gap-4 rounded-lg border border-border bg-surface-secondary/40 p-4 text-left transition-colors hover:border-primary/25 hover:bg-accent/60"
-            key={`${interview.type}-${interview.candidate}`}
-            onClick={() =>
-              onDrawerOpen({
-                eyebrow: interview.type,
-                title: `${interview.candidate}'s session`,
-                body: <InterviewDrawer interview={interview} />,
-              })
-            }
-            type="button"
-          >
-            <div>
-              <p className="font-semibold text-heading">
-                {interview.candidate}
-              </p>
-              <p className="text-muted-foreground text-sm">
-                {interview.type} - {interview.duration}
-              </p>
-            </div>
-            <ScorePill value={interview.score} />
-          </button>
-        ))}
+        {isLoading &&
+          Array.from({ length: 3 }).map((_, index) => (
+            <Skeleton
+              className="h-20 rounded-lg"
+              key={`latest-interview-${index}`}
+            />
+          ))}
+        {!isLoading && isError && (
+          <PanelMessage
+            actionLabel="Retry"
+            message="Unable to load sessions."
+            onAction={onRetry}
+          />
+        )}
+        {!isLoading && !isError && interviews.length === 0 && (
+          <PanelMessage message="No interview sessions found." />
+        )}
+        {!isLoading &&
+          !isError &&
+          interviews.map((interview) => (
+            <button
+              className="flex w-full items-center justify-between gap-4 rounded-lg border border-border bg-surface-secondary/40 p-4 text-left transition-colors hover:border-primary/25 hover:bg-accent/60"
+              key={interview.id}
+              onClick={() =>
+                onDrawerOpen({
+                  eyebrow: interview.type,
+                  title: `${interview.candidate}'s session`,
+                  body: (
+                    <InterviewDrawer
+                      fetchDetails
+                      interview={interview}
+                      key={interview.id}
+                    />
+                  ),
+                })
+              }
+              type="button"
+            >
+              <div>
+                <p className="font-semibold text-heading">
+                  {interview.candidate}
+                </p>
+                <p className="text-muted-foreground text-sm">
+                  {interview.type} - {interview.duration}
+                </p>
+              </div>
+              <ScorePill value={interview.score} />
+            </button>
+          ))}
       </CardContent>
     </Card>
   );
 }
 
-function ActivityCard() {
+function ActivityCard({
+  isError,
+  isLoading,
+  items,
+  onRetry,
+}: {
+  isError: boolean;
+  isLoading: boolean;
+  items: string[];
+  onRetry: () => void;
+}) {
   return (
     <Card className="rounded-lg bg-card/78">
       <CardHeader>
         <CardTitle>Recent Activities</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {adminActivity.map((item, index) => (
-          <div className="flex gap-3" key={item}>
-            <div className="mt-1 flex size-7 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-primary text-xs">
-              {index + 1}
+        {isLoading &&
+          Array.from({ length: 4 }).map((_, index) => (
+            <Skeleton className="h-12 rounded-lg" key={`activity-${index}`} />
+          ))}
+        {!isLoading && isError && (
+          <PanelMessage
+            actionLabel="Retry"
+            message="Unable to load activity."
+            onAction={onRetry}
+          />
+        )}
+        {!isLoading && !isError && items.length === 0 && (
+          <PanelMessage message="No activity found." />
+        )}
+        {!isLoading &&
+          !isError &&
+          items.map((item, index) => (
+            <div className="flex gap-3" key={item}>
+              <div className="mt-1 flex size-7 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-primary text-xs">
+                {index + 1}
+              </div>
+              <p className="text-sm leading-6">{item}</p>
             </div>
-            <p className="text-sm leading-6">{item}</p>
-          </div>
-        ))}
+          ))}
       </CardContent>
     </Card>
   );
 }
 
 function LatestUsers({
+  isError,
+  isLoading,
   onDrawerOpen,
+  onRetry,
+  users,
 }: {
+  isError: boolean;
+  isLoading: boolean;
   onDrawerOpen: (drawer: DrawerContent) => void;
+  onRetry: () => void;
+  users: ReturnType<typeof mapAdminUserListItem>[];
 }) {
   return (
     <Card className="rounded-lg bg-card/78">
@@ -944,31 +1313,75 @@ function LatestUsers({
         <CardTitle>Latest Registered Users</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {adminUsers.slice(0, 4).map((user) => (
-          <button
-            className="flex w-full items-center gap-3 rounded-lg p-2 text-left transition-colors hover:bg-accent"
-            key={user.email}
-            onClick={() =>
-              onDrawerOpen({
-                eyebrow: user.plan,
-                title: user.name,
-                body: <UserDrawer user={user} />,
-              })
-            }
-            type="button"
-          >
-            <Avatar name={user.name} />
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-semibold text-sm">{user.name}</p>
-              <p className="truncate text-muted-foreground text-xs">
-                {user.email}
-              </p>
-            </div>
-            <StatusBadge status={user.status} />
-          </button>
-        ))}
+        {isLoading &&
+          Array.from({ length: 4 }).map((_, index) => (
+            <Skeleton
+              className="h-14 rounded-lg"
+              key={`latest-user-${index}`}
+            />
+          ))}
+        {!isLoading && isError && (
+          <PanelMessage
+            actionLabel="Retry"
+            message="Unable to load users."
+            onAction={onRetry}
+          />
+        )}
+        {!isLoading && !isError && users.length === 0 && (
+          <PanelMessage message="No registered users found." />
+        )}
+        {!isLoading &&
+          !isError &&
+          users.map((user) => (
+            <button
+              className="flex w-full items-center gap-3 rounded-lg p-2 text-left transition-colors hover:bg-accent"
+              key={user.id}
+              onClick={() =>
+                onDrawerOpen({
+                  eyebrow: user.plan,
+                  title: user.name,
+                  body: <UserDrawer fetchDetails key={user.id} user={user} />,
+                })
+              }
+              type="button"
+            >
+              <Avatar name={user.name} />
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-semibold text-sm">{user.name}</p>
+                <p className="truncate text-muted-foreground text-xs">
+                  {user.email}
+                </p>
+              </div>
+              <StatusBadge status={user.status} />
+            </button>
+          ))}
       </CardContent>
     </Card>
+  );
+}
+
+function PanelMessage({
+  actionLabel,
+  message,
+  onAction,
+}: {
+  actionLabel?: string;
+  message: string;
+  onAction?: () => void;
+}) {
+  return (
+    <div className="rounded-lg border border-border border-dashed bg-surface-secondary/35 p-4 text-center">
+      <p className="font-medium text-heading text-sm">{message}</p>
+      {actionLabel && onAction && (
+        <Button
+          className="mt-3 rounded-lg"
+          onClick={onAction}
+          variant="outline"
+        >
+          {actionLabel}
+        </Button>
+      )}
+    </div>
   );
 }
 
