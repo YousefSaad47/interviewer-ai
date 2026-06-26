@@ -44,7 +44,9 @@ export function FeaturesSection() {
           style={{ marginBottom: "clamp(80px, 15vw, 142px)" }}
         >
           {/* Left side - Content */}
-          <div className="group/text relative order-2 border-emerald-200 border-l-2 px-6 py-2 pl-6 transition-all duration-300 hover:border-[#34D399]/50 md:px-8 md:pl-8 lg:order-1 lg:px-0 dark:border-[rgba(167,243,208,0.06)] dark:hover:border-[#34D399]/40">
+          <div className="group/text relative order-2 py-2 pl-6 transition-all duration-300 md:pl-8 lg:order-1 lg:pl-10">
+            {/* Elegant Left Accent Line */}
+            <div className="absolute top-0 bottom-0 left-0 w-[3px] rounded-full bg-gradient-to-b from-primary/80 to-emerald-400 opacity-30 transition-all duration-300 group-hover/text:scale-y-[1.02] group-hover/text:from-primary group-hover/text:to-emerald-500 group-hover/text:opacity-100" />
             <div className="space-y-4 md:space-y-6 lg:space-y-7.5">
               {/* Eyebrow Tag */}
               <div className="inline-flex w-fit select-none items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50/80 px-2.5 py-0.5 font-mono font-semibold text-[#059669] text-[10px] tracking-wider dark:border-[rgba(167,243,208,0.08)] dark:bg-white/[0.02] dark:text-[#34D399]">
@@ -126,7 +128,7 @@ export function FeaturesSection() {
                   Data Structure
                 </Badge>
                 <Badge className="rounded-full border border-emerald-200 bg-white/70 px-[12px] py-[3px] text-slate-600 text-xs leading-[1.21em] transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
-                  Algorithims
+                  Algorithms
                 </Badge>
                 <Badge className="rounded-full border border-emerald-200 bg-white/70 px-[14px] py-[3px] text-slate-600 text-xs leading-[1.21em] transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
                   Behavioral
@@ -161,7 +163,9 @@ export function FeaturesSection() {
             </div>
           </div>
 
-          <div className="group/text relative border-emerald-200 border-l-2 px-6 py-2 pl-6 transition-all duration-300 hover:border-[#34D399]/50 md:px-8 md:pl-8 lg:px-0 dark:border-[rgba(167,243,208,0.06)] dark:hover:border-[#34D399]/40">
+          <div className="group/text relative py-2 pl-6 transition-all duration-300 md:pl-8 lg:pl-10">
+            {/* Elegant Left Accent Line */}
+            <div className="absolute top-0 bottom-0 left-0 w-[3px] rounded-full bg-gradient-to-b from-primary/80 to-emerald-400 opacity-30 transition-all duration-300 group-hover/text:scale-y-[1.02] group-hover/text:from-primary group-hover/text:to-emerald-500 group-hover/text:opacity-100" />
             <div className="space-y-4 md:space-y-6 lg:space-y-[37.12px]">
               {/* Eyebrow Tag */}
               <div className="inline-flex w-fit select-none items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50/80 px-2.5 py-0.5 font-mono font-semibold text-[#059669] text-[10px] tracking-wider dark:border-[rgba(167,243,208,0.08)] dark:bg-white/[0.02] dark:text-[#34D399]">
@@ -283,7 +287,9 @@ export function FeaturesSection() {
         {/* Resume Builder with AI */}
         <div className="mb-12 grid grid-cols-1 items-center gap-6 md:mb-20 md:gap-10 lg:mb-24 lg:grid-cols-2 lg:gap-20">
           {/* Left side - Content */}
-          <div className="group/text relative order-2 border-emerald-200 border-l-2 px-6 py-2 pl-6 transition-all duration-300 hover:border-[#34D399]/50 md:px-8 md:pl-8 lg:order-1 lg:px-0 dark:border-[rgba(167,243,208,0.06)] dark:hover:border-[#34D399]/40">
+          <div className="group/text relative order-2 py-2 pl-6 transition-all duration-300 md:pl-8 lg:order-1 lg:pl-10">
+            {/* Elegant Left Accent Line */}
+            <div className="absolute top-0 bottom-0 left-0 w-[3px] rounded-full bg-gradient-to-b from-primary/80 to-emerald-400 opacity-30 transition-all duration-300 group-hover/text:scale-y-[1.02] group-hover/text:from-primary group-hover/text:to-emerald-500 group-hover/text:opacity-100" />
             <div className="space-y-4 md:space-y-6 lg:space-y-7.5">
               {/* Eyebrow Tag */}
               <div className="inline-flex w-fit select-none items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50/80 px-2.5 py-0.5 font-mono font-semibold text-[#059669] text-[10px] tracking-wider dark:border-[rgba(167,243,208,0.08)] dark:bg-white/[0.02] dark:text-[#34D399]">
@@ -366,7 +372,7 @@ export function FeaturesSection() {
                   Data Structure
                 </Badge>
                 <Badge className="rounded-full border border-emerald-200 bg-white/70 px-[12px] py-[3px] text-slate-600 text-xs leading-[1.21em] transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
-                  Algorithims
+                  Algorithms
                 </Badge>
                 <Badge className="rounded-full border border-emerald-200 bg-white/70 px-[14px] py-[3px] text-slate-600 text-xs leading-[1.21em] transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
                   Behavioral
