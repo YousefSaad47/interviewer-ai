@@ -1,4 +1,8 @@
-import type { AdminInterviewsQuery, AdminUsersQuery } from "../types";
+import type {
+  AdminCodingSubmissionsQuery,
+  AdminInterviewsQuery,
+  AdminUsersQuery,
+} from "../types";
 
 export const adminUsersKeys = {
   all: ["admin-users"] as const,
@@ -16,4 +20,14 @@ export const adminInterviewsKeys = {
   details: () => [...adminInterviewsKeys.all, "detail"] as const,
   detail: (interviewId: string) =>
     [...adminInterviewsKeys.details(), interviewId] as const,
+};
+
+export const adminCodingKeys = {
+  all: ["admin-coding"] as const,
+  lists: () => [...adminCodingKeys.all, "list"] as const,
+  list: (query: AdminCodingSubmissionsQuery) =>
+    [...adminCodingKeys.lists(), query] as const,
+  details: () => [...adminCodingKeys.all, "detail"] as const,
+  detail: (submissionId: string) =>
+    [...adminCodingKeys.details(), submissionId] as const,
 };

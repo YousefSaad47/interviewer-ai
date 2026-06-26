@@ -70,7 +70,9 @@ export function AdminDashboardPage() {
               {activeSection === "interviews" && (
                 <InterviewsSection onDrawerOpen={setDrawer} />
               )}
-              {activeSection === "coding" && <CodingSection />}
+              {activeSection === "coding" && (
+                <CodingSection onDrawerOpen={setDrawer} />
+              )}
               {activeSection === "resumes" && (
                 <ResumesSection onDrawerOpen={setDrawer} />
               )}

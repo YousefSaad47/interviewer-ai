@@ -170,3 +170,98 @@ export type AdminInterviewDetailsDto = Omit<
   scores: AdminInterviewScoresDto;
   questions: AdminInterviewQuestionDetailsDto[];
 };
+
+// ─── Admin Coding Submissions ─────────────────────────────────────────────────
+
+export type AdminCodingSubmissionStatus =
+  | "PENDING"
+  | "ACCEPTED"
+  | "WRONG_ANSWER"
+  | "RUNTIME_ERROR"
+  | "COMPILE_ERROR"
+  | "TIME_LIMIT_EXCEEDED"
+  | "MEMORY_LIMIT_EXCEEDED"
+  | "PARTIAL";
+
+export type AdminCodingDifficulty = "EASY" | "MEDIUM" | "HARD";
+
+export type AdminCodingSubmissionsQuery = {
+  search?: string;
+  userId?: string;
+  problemId?: string;
+  status?: AdminCodingSubmissionStatus;
+  language?: string;
+  difficulty?: AdminCodingDifficulty;
+  from?: string;
+  to?: string;
+  page?: number;
+  limit?: number;
+};
+
+export type AdminCodingUserDto = {
+  id: string;
+  name: string;
+  email: string;
+  image: string | null;
+};
+
+export type AdminCodingProblemListDto = {
+  id: string;
+  title: string;
+  slug: string;
+  difficulty: AdminCodingDifficulty;
+};
+
+export type AdminCodingProblemDetailsDto = AdminCodingProblemListDto & {
+  description: string;
+  constraints: string | null;
+};
+
+export type AdminCodingSubmissionListItemDto = {
+  id: string;
+  user: AdminCodingUserDto;
+  problem: AdminCodingProblemListDto;
+  language: string;
+  status: AdminCodingSubmissionStatus;
+  score: number | null;
+  executionTimeMs: number | null;
+  memoryUsedKb: number | null;
+  createdAt: string;
+};
+
+export type AdminCodingSubmissionsListResponse = {
+  data: AdminCodingSubmissionListItemDto[];
+  pagination: AdminPagination;
+};
+
+export type AdminCodingScoresDto = {
+  logic: number | null;
+  naming: number | null;
+  efficiency: number | null;
+  bestPractices: number | null;
+};
+
+export type AdminCodingSubmissionResultDto = {
+  id: string;
+  passed: boolean;
+  output: string | null;
+  error: string | null;
+  testCase: {
+    id: string;
+    isHidden: boolean;
+    sortOrder: number;
+    input?: string;
+    output?: string;
+  };
+};
+
+export type AdminCodingSubmissionDetailsDto = Omit<
+  AdminCodingSubmissionListItemDto,
+  "problem"
+> & {
+  problem: AdminCodingProblemDetailsDto;
+  code: string;
+  scores: AdminCodingScoresDto;
+  aiFeedback: string | null;
+  results: AdminCodingSubmissionResultDto[];
+};

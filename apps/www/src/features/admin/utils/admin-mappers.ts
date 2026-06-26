@@ -1,10 +1,14 @@
 import type {
+  AdminCodingSubmission,
+  AdminCodingSubmissionDetailsView,
   AdminInterview,
   AdminInterviewDetailsView,
   AdminUser,
   AdminUserDetailsView,
 } from "../types";
 import type {
+  AdminCodingSubmissionDetailsDto,
+  AdminCodingSubmissionListItemDto,
   AdminInterviewDetailsDto,
   AdminInterviewListItemDto,
   AdminUserDetailsDto,
@@ -143,5 +147,78 @@ const mapInterviewStatus = (status: AdminInterviewListItemDto["status"]) => {
       return "Processing";
     case "ABANDONED":
       return "Flagged";
+  }
+};
+
+export const mapAdminCodingSubmissionListItem = (
+  submission: AdminCodingSubmissionListItemDto,
+): AdminCodingSubmission => ({
+  id: submission.id,
+  candidate: submission.user.name,
+  candidateEmail: submission.user.email,
+  candidateImage: submission.user.image,
+  candidateId: submission.user.id,
+  problem: submission.problem.title,
+  problemId: submission.problem.id,
+  difficulty: formatEnumLabel(submission.problem.difficulty),
+  language: submission.language,
+  status: mapCodingStatus(submission.status),
+  rawStatus: submission.status,
+  score: formatNullableScore(submission.score),
+  executionTimeMs: submission.executionTimeMs,
+  memoryUsedKb: submission.memoryUsedKb,
+  date: formatAdminDate(submission.createdAt),
+  createdAt: submission.createdAt,
+});
+
+export const mapAdminCodingSubmissionDetails = (
+  submission: AdminCodingSubmissionDetailsDto,
+): AdminCodingSubmissionDetailsView => ({
+  ...mapAdminCodingSubmissionListItem(submission),
+  problemDescription: submission.problem.description,
+  problemConstraints: submission.problem.constraints,
+  code: submission.code,
+  scores: {
+    logic: formatNullableScore(submission.scores.logic),
+    naming: formatNullableScore(submission.scores.naming),
+    efficiency: formatNullableScore(submission.scores.efficiency),
+    bestPractices: formatNullableScore(submission.scores.bestPractices),
+  },
+  aiFeedback: submission.aiFeedback,
+  results: submission.results.map((result) => ({
+    id: result.id,
+    passed: result.passed,
+    output: result.output,
+    error: result.error,
+    testCase: {
+      id: result.testCase.id,
+      isHidden: result.testCase.isHidden,
+      sortOrder: result.testCase.sortOrder,
+      input: result.testCase.input,
+      output: result.testCase.output,
+    },
+  })),
+});
+
+const mapCodingStatus = (
+  status: AdminCodingSubmissionListItemDto["status"],
+) => {
+  switch (status) {
+    case "ACCEPTED":
+      return "Accepted";
+    case "WRONG_ANSWER":
+      return "Wrong Answer";
+    case "RUNTIME_ERROR":
+      return "Runtime Error";
+    case "COMPILE_ERROR":
+      return "Compile Error";
+    case "TIME_LIMIT_EXCEEDED":
+      return "Time Limit";
+    case "MEMORY_LIMIT_EXCEEDED":
+      return "Memory Limit";
+    case "PARTIAL":
+      return "Partial";
+    case "PENDING":
+      return "Pending";
   }
 };

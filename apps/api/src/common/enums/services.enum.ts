@@ -6,4 +6,5 @@ export enum Services {
   DASHBOARD,
   ADMIN_USERS,
   ADMIN_INTERVIEWS,
+  ADMIN_CODING,
 }

@@ -3,6 +3,7 @@ const warningStatuses = [
   "Trial",
   "Processing",
   "Partial",
+  "Pending",
   "Invited",
   "Needs edits",
 ];

@@ -123,6 +123,51 @@ export type AdminCodingSession = {
   score: number;
 };
 
+export type AdminCodingSubmission = {
+  id: string;
+  candidate: string;
+  candidateEmail: string;
+  candidateImage: string | null;
+  candidateId: string;
+  problem: string;
+  problemId: string;
+  difficulty: string;
+  language: string;
+  status: string;
+  rawStatus: string;
+  score: number | null;
+  executionTimeMs: number | null;
+  memoryUsedKb: number | null;
+  date: string;
+  createdAt: string;
+};
+
+export type AdminCodingSubmissionDetailsView = AdminCodingSubmission & {
+  problemDescription: string;
+  problemConstraints: string | null;
+  code: string;
+  scores: {
+    logic: number | null;
+    naming: number | null;
+    efficiency: number | null;
+    bestPractices: number | null;
+  };
+  aiFeedback: string | null;
+  results: Array<{
+    id: string;
+    passed: boolean;
+    output: string | null;
+    error: string | null;
+    testCase: {
+      id: string;
+      isHidden: boolean;
+      sortOrder: number;
+      input: string | undefined;
+      output: string | undefined;
+    };
+  }>;
+};
+
 export type AdminResume = {
   candidate: string;
   score: number;

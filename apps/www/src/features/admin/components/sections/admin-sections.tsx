@@ -28,7 +28,6 @@ import {
 import {
   adminAccounts,
   adminActivity,
-  adminCodingSessions,
   adminFeatureUsage,
   adminInterviews,
   adminResumes,
@@ -36,6 +35,7 @@ import {
   adminUsers,
 } from "../../data";
 import {
+  useAdminCodingSubmissions,
   useAdminInterviews,
   useAdminUsers,
   useDebouncedValue,
@@ -43,12 +43,22 @@ import {
 } from "../../hooks";
 import type { AdminModalMode, DrawerContent } from "../../types";
 import type {
+  AdminCodingSubmissionStatus,
   AdminInterviewStatus,
   AdminUserRole,
   AdminUserStatus,
 } from "../../types/admin-api.types";
-import { mapAdminInterviewListItem, mapAdminUserListItem } from "../../utils";
-import { InterviewDrawer, ResumeDrawer, UserDrawer } from "../admin-drawers";
+import {
+  mapAdminCodingSubmissionListItem,
+  mapAdminInterviewListItem,
+  mapAdminUserListItem,
+} from "../../utils";
+import {
+  CodingDrawer,
+  InterviewDrawer,
+  ResumeDrawer,
+  UserDrawer,
+} from "../admin-drawers";
 import {
   ActionMenu,
   Avatar,
@@ -86,6 +96,16 @@ const interviewStatusOptions = [
   { label: "Reviewed", value: "COMPLETED" },
   { label: "Processing", value: "IN_PROGRESS" },
   { label: "Flagged", value: "ABANDONED" },
+];
+
+const codingStatusOptions = [
+  { label: "All statuses", value: "all" },
+  { label: "Accepted", value: "ACCEPTED" },
+  { label: "Wrong Answer", value: "WRONG_ANSWER" },
+  { label: "Runtime Error", value: "RUNTIME_ERROR" },
+  { label: "Compile Error", value: "COMPILE_ERROR" },
+  { label: "Partial", value: "PARTIAL" },
+  { label: "Pending", value: "PENDING" },
 ];
 
 export function OverviewSection({
@@ -493,52 +513,164 @@ export function InterviewsSection({
   );
 }
 
-export function CodingSection() {
+export function CodingSection({
+  onDrawerOpen,
+}: {
+  onDrawerOpen: (drawer: DrawerContent) => void;
+}) {
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<string>("all");
+  const [page, setPage] = useState(1);
+  const debouncedSearch = useDebouncedValue(search);
+
+  const query = useMemo(
+    () => ({
+      limit: ADMIN_LIST_LIMIT,
+      page,
+      ...(debouncedSearch.trim() && { search: debouncedSearch.trim() }),
+      ...(status !== "all" && {
+        status: status as AdminCodingSubmissionStatus,
+      }),
+    }),
+    [debouncedSearch, page, status],
+  );
+
+  const submissionsQuery = useAdminCodingSubmissions(query);
+  const submissions = useMemo(
+    () =>
+      submissionsQuery.data?.data.map(mapAdminCodingSubmissionListItem) ?? [],
+    [submissionsQuery.data],
+  );
+
+  const resetPage = () => setPage(1);
+
   return (
     <DataPanel
-      actions={<TableFilters />}
+      actions={
+        <ControlledTableFilters
+          onSearchChange={(value) => {
+            setSearch(value);
+            resetPage();
+          }}
+          onStatusChange={(value) => {
+            setStatus(value);
+            resetPage();
+          }}
+          search={search}
+          status={status}
+          statusOptions={codingStatusOptions}
+        />
+      }
       title="Coding practice"
       description="Monitor submissions, languages, score quality, and execution state."
     >
       <ResponsiveTable
         columns={[
+          "Candidate",
           "Problem",
           "Difficulty",
           "Language",
-          "Execution Status",
-          "Submission",
+          "Status",
           "Score",
+          "Runtime",
+          "Submitted",
           "",
         ]}
       >
-        {adminCodingSessions.map((session) => (
-          <tr
-            className="admin-row"
-            key={`${session.problem}-${session.language}`}
-          >
-            <td className="admin-cell font-medium text-heading">
-              {session.problem}
-            </td>
-            <td className="admin-cell">
-              <DifficultyBadge difficulty={session.difficulty} />
-            </td>
-            <td className="admin-cell">{session.language}</td>
-            <td className="admin-cell">
-              <StatusBadge status={session.status} />
-            </td>
-            <td className="admin-cell">{session.submitted}</td>
-            <td className="admin-cell">
-              <ScorePill value={session.score} />
-            </td>
-            <td className="admin-cell text-right">
-              <Button className="rounded-lg" variant="outline">
-                View result
-              </Button>
-            </td>
-          </tr>
-        ))}
+        {submissionsQuery.isLoading &&
+          Array.from({ length: ADMIN_LIST_LIMIT }).map((_, index) => (
+            <SkeletonRow colSpan={9} key={`coding-loading-${index}`} />
+          ))}
+
+        {!submissionsQuery.isLoading && submissionsQuery.isError && (
+          <MessageRow
+            actionLabel="Retry"
+            colSpan={9}
+            message="Unable to load submissions."
+            onAction={() => submissionsQuery.refetch()}
+          />
+        )}
+
+        {!submissionsQuery.isLoading &&
+          !submissionsQuery.isError &&
+          submissions.length === 0 && (
+            <MessageRow
+              colSpan={9}
+              message={
+                search || status !== "all"
+                  ? "No submissions match the current filters."
+                  : "No submissions found."
+              }
+            />
+          )}
+
+        {!submissionsQuery.isLoading &&
+          !submissionsQuery.isError &&
+          submissions.map((submission) => (
+            <tr className="admin-row" key={submission.id}>
+              <td className="admin-cell">
+                <div className="flex items-center gap-3">
+                  <Avatar name={submission.candidate} />
+                  <div>
+                    <p className="font-semibold text-heading text-sm">
+                      {submission.candidate}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      {submission.candidateEmail}
+                    </p>
+                  </div>
+                </div>
+              </td>
+              <td className="admin-cell font-medium text-heading">
+                {submission.problem}
+              </td>
+              <td className="admin-cell">
+                <DifficultyBadge difficulty={submission.difficulty} />
+              </td>
+              <td className="admin-cell">{submission.language}</td>
+              <td className="admin-cell">
+                <StatusBadge status={submission.status} />
+              </td>
+              <td className="admin-cell">
+                <ScorePill value={submission.score} />
+              </td>
+              <td className="admin-cell">
+                {submission.executionTimeMs !== null
+                  ? `${submission.executionTimeMs} ms`
+                  : "--"}
+              </td>
+              <td className="admin-cell">{submission.date}</td>
+              <td className="admin-cell text-right">
+                <Button
+                  className="rounded-lg"
+                  onClick={() =>
+                    onDrawerOpen({
+                      eyebrow: submission.difficulty,
+                      title: submission.problem,
+                      body: (
+                        <CodingDrawer
+                          key={submission.id}
+                          submission={submission}
+                        />
+                      ),
+                    })
+                  }
+                  variant="outline"
+                >
+                  View result
+                </Button>
+              </td>
+            </tr>
+          ))}
       </ResponsiveTable>
-      <Pagination />
+      <Pagination
+        disabled={submissionsQuery.isFetching}
+        onNext={() => setPage((currentPage) => currentPage + 1)}
+        onPrevious={() =>
+          setPage((currentPage) => Math.max(1, currentPage - 1))
+        }
+        pagination={submissionsQuery.data?.pagination}
+      />
     </DataPanel>
   );
 }

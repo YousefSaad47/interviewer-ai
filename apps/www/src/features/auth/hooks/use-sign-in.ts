@@ -26,7 +26,7 @@ export function useSignIn() {
       toast.success("Welcome back", {
         description: "You have signed in successfully.",
       });
-      
+
       router.push("/dashboard");
       router.refresh();
       return { success: true };
