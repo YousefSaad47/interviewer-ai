@@ -62,6 +62,7 @@ export function CodingPracticePage({ slug }: CodingPracticePageProps) {
 
   const problemData = {
     id: problem.id,
+    slug: problem.slug,
     title: problem.title,
     description: problem.description,
     difficulty: problem.difficulty,
