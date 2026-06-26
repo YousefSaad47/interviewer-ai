@@ -1,9 +1,11 @@
 import { apiClient } from "@/services";
 
 import type {
+  AdminCodingProblemCreatedDto,
   AdminCodingSubmissionDetailsDto,
   AdminCodingSubmissionsListResponse,
   AdminCodingSubmissionsQuery,
+  CreateAdminCodingProblemBody,
 } from "../types";
 
 const buildSearchParams = (query: AdminCodingSubmissionsQuery) => {
@@ -38,4 +40,13 @@ export const fetchAdminCodingSubmissionDetails = (submissionId: string) => {
   return apiClient<AdminCodingSubmissionDetailsDto>(
     `/api/admin/coding/submissions/${submissionId}`,
   );
+};
+
+export const createAdminCodingProblem = (
+  body: CreateAdminCodingProblemBody,
+) => {
+  return apiClient<AdminCodingProblemCreatedDto>("/api/admin/coding/problems", {
+    method: "POST",
+    json: body,
+  });
 };

@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { MoreHorizontal, Plus, Sparkles } from "lucide-react";
 
 import {
@@ -591,6 +593,7 @@ export function CodingSection({
 }: {
   onDrawerOpen: (drawer: DrawerContent) => void;
 }) {
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<string>("all");
   const [page, setPage] = useState(1);
@@ -620,19 +623,28 @@ export function CodingSection({
   return (
     <DataPanel
       actions={
-        <ControlledTableFilters
-          onSearchChange={(value) => {
-            setSearch(value);
-            resetPage();
-          }}
-          onStatusChange={(value) => {
-            setStatus(value);
-            resetPage();
-          }}
-          search={search}
-          status={status}
-          statusOptions={codingStatusOptions}
-        />
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <Button
+            className="gap-2 rounded-lg"
+            onClick={() => router.push("/admin/coding-practice/problems/new")}
+          >
+            <Plus className="size-4" />
+            Add Problem
+          </Button>
+          <ControlledTableFilters
+            onSearchChange={(value) => {
+              setSearch(value);
+              resetPage();
+            }}
+            onStatusChange={(value) => {
+              setStatus(value);
+              resetPage();
+            }}
+            search={search}
+            status={status}
+            statusOptions={codingStatusOptions}
+          />
+        </div>
       }
       title="Coding practice"
       description="Monitor submissions, languages, score quality, and execution state."

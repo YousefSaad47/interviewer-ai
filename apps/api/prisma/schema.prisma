@@ -381,6 +381,10 @@ model CodingProblem {
   constraints   String?
   examples      Json
   starterCode   Json?             @map("starter_code")
+  topics        String[]          @default([])
+  companies     String[]          @default([])
+  hint          String?
+  isPremium     Boolean           @default(false) @map("is_premium")
   timeLimitMs   Int               @default(2000) @map("time_limit_ms")
   memoryLimitKb Int               @default(256000) @map("memory_limit_kb")
 

@@ -266,6 +266,45 @@ export type AdminCodingSubmissionDetailsDto = Omit<
   results: AdminCodingSubmissionResultDto[];
 };
 
+export type AdminCodingProblemExample = {
+  input: string;
+  output: string;
+  explanation?: string;
+};
+
+export type AdminCodingProblemTestCase = {
+  input: string;
+  output: string;
+  isHidden: boolean;
+  sortOrder?: number;
+};
+
+export type CreateAdminCodingProblemBody = {
+  title: string;
+  slug?: string;
+  difficulty: AdminCodingDifficulty;
+  description: string;
+  constraints?: string;
+  examples: AdminCodingProblemExample[];
+  starterCode?: Record<string, string>;
+  testCases: AdminCodingProblemTestCase[];
+  topics?: string[];
+  companies?: string[];
+  hint?: string;
+  isPremium?: boolean;
+};
+
+export type AdminCodingProblemCreatedDto = AdminCodingProblemDetailsDto & {
+  examples: AdminCodingProblemExample[];
+  starterCode: Record<string, string> | null;
+  topics: string[];
+  companies: string[];
+  hint: string | null;
+  isPremium: boolean;
+  testCases: Array<Required<AdminCodingProblemTestCase> & { id: string }>;
+  createdAt: string;
+};
+
 export type AdminResumeStatus = "DRAFT" | "COMPLETE" | "ARCHIVED";
 
 export type AdminResumesQuery = {
