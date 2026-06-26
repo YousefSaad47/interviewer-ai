@@ -1,42 +1,16 @@
 [project]
 name = "form-builder"
-version = "1.0.0"
-description = "Resume Builder & ATS System with FastAPI"
+version = "0.1.0"
+description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11"
-dependencies = [
-    "fastapi>=0.115.0",
-    "uvicorn>=0.30.0",
-    "pydantic>=2.5.0",
-    "pydantic-settings>=2.0.0",
-    "email-validator>=2.0.0",           # ← أضيفيها
-    "python-jose[cryptography]>=3.4.0",
-    "passlib[bcrypt]>=1.7.4",
-    "bcrypt>=4.0.0",
-    "cryptography>=41.0.0",
-    "python-multipart>=0.0.9",
-    "pdfplumber>=0.10.0",
-    "markdown>=3.5.0",
-    "weasyprint>=60.0",
-    "pytest>=7.4.0",
-    "pytest-cov>=4.1.0",
-    "requests>=2.34.2",
-    "google-generativeai>=0.8.6",
-    "httpx2>=2.4.0",
-]
+requires-python = ">=3.14"
+dependencies = []
 
 [tool.uv]
 package = true
 
 [project.scripts]
-form-builder = "src.main:app"
+form-builder = "main:main"
 
 [dependency-groups]
-dev = [
-    "ruff>=0.15.16",
-    "ty>=0.0.47",
-]
-
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta" 
+dev = ["ruff>=0.15.16", "ty>=0.0.47"]
