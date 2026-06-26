@@ -1,34 +1,13 @@
-# Python cache
+# Python-generated files
 __pycache__/
-
-# Virtual Environment
-.venv/
-
-# Environment
-.env
-
-# Temporary files
-tmp/
-uploads/
-secure_storage/
-
-# Files
-*.pdf
-*.enc
-*.db
-*.json
-
-# Cache
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
 .pytest_cache/
+.mypy_cache/
 .ruff_cache/
 
-# UV
-uv.lock
-
-# Test scripts
-test_script.py
-test_secure.txt
-
-# Python package metadata
-*.egg-info/
-*.egg
+# Virtual environments
+.venv
