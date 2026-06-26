@@ -378,12 +378,16 @@ export function MetricCard({ caption, change, label, value }: AdminStat) {
 
 export function ChartCard({
   caption,
+  rangeLabel = "30 days",
   title,
+  values = adminChartSeries,
 }: {
   caption: string;
+  rangeLabel?: string;
   title: string;
+  values?: number[];
 }) {
-  const max = Math.max(...adminChartSeries);
+  const max = Math.max(...values, 1);
 
   return (
     <Card className="rounded-lg bg-card/78">
@@ -393,12 +397,12 @@ export function ChartCard({
           <p className="mt-2 text-muted-foreground text-sm">{caption}</p>
         </div>
         <Badge className="bg-primary/10 text-primary" variant="outline">
-          12 weeks
+          {rangeLabel}
         </Badge>
       </CardHeader>
       <CardContent>
         <div className="flex h-72 items-end gap-2 rounded-lg border border-border bg-surface-secondary/40 p-4">
-          {adminChartSeries.map((value, index) => (
+          {values.map((value, index) => (
             <div
               className="flex min-w-0 flex-1 flex-col items-center gap-2"
               key={`${value}-${index}`}
@@ -427,7 +431,7 @@ export function MiniChart({
   title: string;
   values: number[];
 }) {
-  const max = Math.max(...values);
+  const max = Math.max(...values, 1);
 
   return (
     <Card className="rounded-lg bg-card/78 py-0">

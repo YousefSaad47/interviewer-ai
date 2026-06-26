@@ -1,6 +1,9 @@
 import type {
+  AdminAccountsQuery,
+  AdminAnalyticsQuery,
   AdminCodingSubmissionsQuery,
   AdminInterviewsQuery,
+  AdminResumesQuery,
   AdminUsersQuery,
 } from "../types";
 
@@ -30,4 +33,27 @@ export const adminCodingKeys = {
   details: () => [...adminCodingKeys.all, "detail"] as const,
   detail: (submissionId: string) =>
     [...adminCodingKeys.details(), submissionId] as const,
+};
+
+export const adminResumesKeys = {
+  all: ["admin-resumes"] as const,
+  lists: () => [...adminResumesKeys.all, "list"] as const,
+  list: (query: AdminResumesQuery) =>
+    [...adminResumesKeys.lists(), query] as const,
+  details: () => [...adminResumesKeys.all, "detail"] as const,
+  detail: (resumeId: string) =>
+    [...adminResumesKeys.details(), resumeId] as const,
+};
+
+export const adminAnalyticsKeys = {
+  all: ["admin-analytics"] as const,
+  detail: (query: AdminAnalyticsQuery) =>
+    [...adminAnalyticsKeys.all, query] as const,
+};
+
+export const adminManagementKeys = {
+  all: ["admin-management"] as const,
+  lists: () => [...adminManagementKeys.all, "list"] as const,
+  list: (query: AdminAccountsQuery) =>
+    [...adminManagementKeys.lists(), query] as const,
 };
