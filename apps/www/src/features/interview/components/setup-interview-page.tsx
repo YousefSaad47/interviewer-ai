@@ -1,13 +1,12 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   BriefcaseBusiness,
   Layers3,
   MessageSquareText,
   Play,
 } from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 
 import { Footer, Header } from "@/features/landing";
 import { cn } from "@/lib";
@@ -22,26 +21,34 @@ import {
   Textarea,
 } from "@/shared/ui";
 
-import { useStartInterview } from "../hooks";
-import { type InterviewSetupFormData, interviewSetupSchema } from "../schemas";
+import { useInterviewSetupForm } from "../hooks";
+import {
+  experienceLevelOptions,
+  interviewFocusOptions,
+  targetRoleOptions,
+} from "../utils";
+
+const sessionAnatomyItems = [
+  {
+    icon: BriefcaseBusiness,
+    title: "Role signal",
+    text: "Anchors the interview track.",
+  },
+  {
+    icon: Layers3,
+    title: "Difficulty curve",
+    text: "Sets seniority and pace.",
+  },
+  {
+    icon: MessageSquareText,
+    title: "Context",
+    text: "Adds the details that matter.",
+  },
+] as const;
 
 export function SetupInterviewPage() {
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<InterviewSetupFormData>({
-    resolver: zodResolver(interviewSetupSchema),
-    defaultValues: {
-      targetRole: "",
-      experienceLevel: "",
-      interviewFocus: "",
-      additionalContext: "",
-    },
-  });
-
-  const { isSubmitting, submitInterviewSetup } = useStartInterview();
+  const { control, errors, isSubmitting, onSubmit, register } =
+    useInterviewSetupForm();
   const fieldShell =
     "rounded-lg border border-border bg-white/60 p-4 transition-colors focus-within:border-primary/35 focus-within:bg-white/85 dark:bg-surface-secondary/45 dark:focus-within:bg-surface-secondary/75";
   const labelClass = "font-semibold text-foreground text-sm";
@@ -91,23 +98,7 @@ export function SetupInterviewPage() {
               </p>
 
               <div className="mt-8 space-y-3">
-                {[
-                  {
-                    icon: BriefcaseBusiness,
-                    title: "Role signal",
-                    text: "Anchors the interview track.",
-                  },
-                  {
-                    icon: Layers3,
-                    title: "Difficulty curve",
-                    text: "Sets seniority and pace.",
-                  },
-                  {
-                    icon: MessageSquareText,
-                    title: "Context",
-                    text: "Adds the details that matter.",
-                  },
-                ].map((item) => (
+                {sessionAnatomyItems.map((item) => (
                   <div
                     key={item.title}
                     className="rounded-lg border border-border bg-card/65 p-4"
@@ -131,7 +122,7 @@ export function SetupInterviewPage() {
             </div>
           </aside>
 
-          <form onSubmit={handleSubmit(submitInterviewSetup)}>
+          <form onSubmit={onSubmit}>
             <div className="p-5 sm:p-6 lg:p-8">
               <div className="grid gap-4 md:grid-cols-3">
                 <div className={fieldShell}>
@@ -156,23 +147,11 @@ export function SetupInterviewPage() {
                           <SelectValue placeholder="Select Role" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="frontend">
-                            Frontend Developer
-                          </SelectItem>
-                          <SelectItem value="backend">
-                            Backend Developer
-                          </SelectItem>
-                          <SelectItem value="fullstack">
-                            Full Stack Developer
-                          </SelectItem>
-                          <SelectItem value="mobile">
-                            Mobile Developer
-                          </SelectItem>
-                          <SelectItem value="devops">
-                            DevOps Engineer
-                          </SelectItem>
-                          <SelectItem value="data">Data Scientist</SelectItem>
-                          <SelectItem value="ml">ML Engineer</SelectItem>
+                          {targetRoleOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     )}
@@ -206,17 +185,11 @@ export function SetupInterviewPage() {
                           <SelectValue placeholder="Select Level" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="entry">
-                            Entry Level (0-2 years)
-                          </SelectItem>
-                          <SelectItem value="mid">
-                            Mid Level (2-5 years)
-                          </SelectItem>
-                          <SelectItem value="senior">
-                            Senior (5-8 years)
-                          </SelectItem>
-                          <SelectItem value="lead">Lead (8+ years)</SelectItem>
-                          <SelectItem value="staff">Staff/Principal</SelectItem>
+                          {experienceLevelOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     )}
@@ -250,24 +223,11 @@ export function SetupInterviewPage() {
                           <SelectValue placeholder="Select Focus" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="algorithms">
-                            Algorithms & Data Structures
-                          </SelectItem>
-                          <SelectItem value="system-design">
-                            System Design
-                          </SelectItem>
-                          <SelectItem value="behavioral">
-                            Behavioral Questions
-                          </SelectItem>
-                          <SelectItem value="coding">
-                            Coding Challenges
-                          </SelectItem>
-                          <SelectItem value="architecture">
-                            Architecture & Patterns
-                          </SelectItem>
-                          <SelectItem value="debugging">
-                            Debugging & Problem Solving
-                          </SelectItem>
+                          {interviewFocusOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     )}
