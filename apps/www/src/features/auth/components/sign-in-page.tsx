@@ -13,7 +13,9 @@ import { AuthInput } from "./auth-input";
 
 export function SignInPage() {
   const { signIn, signInSocial } = useSignIn();
-  const [socialLoading, setSocialLoading] = useState<"google" | "github" | null>(null);
+  const [socialLoading, setSocialLoading] = useState<
+    "google" | "github" | null
+  >(null);
 
   const {
     register,
@@ -44,31 +46,34 @@ export function SignInPage() {
   return (
     <AuthLayout>
       {/* Title Section */}
-      <div className="flex w-full flex-col items-center gap-1 text-center mb-1">
-        <h1 className="font-bold text-2xl sm:text-3xl text-foreground tracking-tight bg-gradient-to-br from-foreground to-foreground/80 bg-clip-text">
+      <div className="mb-1 flex w-full flex-col items-center gap-1 text-center">
+        <h1 className="bg-gradient-to-br from-foreground to-foreground/80 bg-clip-text font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
           Welcome Back!
         </h1>
-        <p className="text-xs sm:text-sm text-muted-foreground/80 font-medium">
+        <p className="font-medium text-muted-foreground/80 text-xs sm:text-sm">
           Sign in to your Interviewer.Ai account
         </p>
       </div>
 
       {/* Tab Switcher Segmented Control */}
       <div className="flex w-full flex-col items-center gap-5">
-        <div className="grid grid-cols-2 p-1 bg-muted/40 dark:bg-black/30 border border-border/30 dark:border-white/[0.04] rounded-lg w-full max-w-[240px]">
-          <div className="flex items-center justify-center py-1.5 text-xs font-semibold text-primary-foreground bg-primary rounded-md shadow-[0_1px_2px_rgba(0,0,0,0.08)] select-none">
+        <div className="grid w-full max-w-[240px] grid-cols-2 rounded-lg border border-border/30 bg-muted/40 p-1 dark:border-white/[0.04] dark:bg-black/30">
+          <div className="flex select-none items-center justify-center rounded-md bg-primary py-1.5 font-semibold text-primary-foreground text-xs shadow-[0_1px_2px_rgba(0,0,0,0.08)]">
             Sign in
           </div>
           <Link
             href="/auth/signup"
-            className="flex items-center justify-center py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground rounded-md transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45"
+            className="flex items-center justify-center rounded-md py-1.5 font-medium text-muted-foreground text-xs transition-all hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45"
           >
             Sign Up
           </Link>
         </div>
 
         {/* Credentials Form */}
-        <form onSubmit={handleSubmit(signIn)} className="w-full flex flex-col gap-4">
+        <form
+          onSubmit={handleSubmit(signIn)}
+          className="flex w-full flex-col gap-4"
+        >
           {/* Email */}
           <AuthInput
             {...register("email")}
@@ -94,10 +99,10 @@ export function SignInPage() {
           />
 
           {/* Options Row (Remember Me & Forgot Password) */}
-          <div className="flex items-center justify-between w-full mt-1 px-0.5">
+          <div className="mt-1 flex w-full items-center justify-between px-0.5">
             <label
               htmlFor="remember-me"
-              className="flex cursor-pointer items-center gap-2 select-none"
+              className="flex cursor-pointer select-none items-center gap-2"
             >
               <Checkbox
                 id="remember-me"
@@ -108,14 +113,14 @@ export function SignInPage() {
                 disabled={isSubmitting || socialLoading !== null}
                 className="h-4 w-4 rounded border-border/40 data-[state=checked]:border-primary data-[state=checked]:bg-primary"
               />
-              <span className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors duration-150">
+              <span className="font-medium text-muted-foreground text-xs transition-colors duration-150 hover:text-foreground">
                 Remember me
               </span>
             </label>
 
             <Link
               href="/auth/forgot-password"
-              className="text-xs font-semibold text-primary hover:text-primary/80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45 rounded transition-colors"
+              className="rounded font-semibold text-primary text-xs transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45"
             >
               Forgot password?
             </Link>
@@ -125,7 +130,7 @@ export function SignInPage() {
           <Button
             type="submit"
             disabled={isSubmitting || socialLoading !== null}
-            className="w-full mt-2 gap-2 rounded-lg py-2.5 font-semibold text-sm transition-all active:scale-[0.98] disabled:opacity-50 shadow-[0_1px_2px_rgba(16,185,129,0.1),0_0_0_1px_rgba(255,255,255,0.08)_inset] cursor-pointer"
+            className="mt-2 w-full cursor-pointer gap-2 rounded-lg py-2.5 font-semibold text-sm shadow-[0_1px_2px_rgba(16,185,129,0.1),0_0_0_1px_rgba(255,255,255,0.08)_inset] transition-all active:scale-[0.98] disabled:opacity-50"
             size="lg"
           >
             {isSubmitting ? (
@@ -143,12 +148,12 @@ export function SignInPage() {
       {/* Social Logins */}
       <div className="flex w-full flex-col items-center gap-5">
         <div className="flex w-full flex-col items-center gap-3">
-          <div className="relative flex py-2 items-center w-full">
-            <div className="flex-grow border-t border-border/20 dark:border-white/[0.04]"></div>
-            <span className="flex-shrink mx-4 text-xs text-muted-foreground/60 font-medium select-none">
+          <div className="relative flex w-full items-center py-2">
+            <div className="flex-grow border-border/20 border-t dark:border-white/[0.04]"></div>
+            <span className="mx-4 flex-shrink select-none font-medium text-muted-foreground/60 text-xs">
               or continue with
             </span>
-            <div className="flex-grow border-t border-border/20 dark:border-white/[0.04]"></div>
+            <div className="flex-grow border-border/20 border-t dark:border-white/[0.04]"></div>
           </div>
 
           <div className="flex w-full items-center gap-3">
@@ -157,7 +162,7 @@ export function SignInPage() {
               type="button"
               disabled={isSubmitting || socialLoading !== null}
               onClick={() => handleSocialSignIn("google")}
-              className="flex h-10 flex-1 items-center justify-center gap-2 rounded-lg border border-border/40 dark:border-white/[0.05] bg-white dark:bg-white/[0.02] px-4 py-2 text-sm font-medium text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all hover:bg-neutral-50 dark:hover:bg-white/[0.06] hover:border-border-interactive focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+              className="flex h-10 flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-border/40 bg-white px-4 py-2 font-medium text-foreground text-sm shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all hover:border-border-interactive hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45 disabled:pointer-events-none disabled:opacity-50 dark:border-white/[0.05] dark:bg-white/[0.02] dark:hover:bg-white/[0.06]"
             >
               {socialLoading === "google" ? (
                 <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
@@ -189,12 +194,12 @@ export function SignInPage() {
               type="button"
               disabled={isSubmitting || socialLoading !== null}
               onClick={() => handleSocialSignIn("github")}
-              className="flex h-10 flex-1 items-center justify-center gap-2 rounded-lg border border-border/40 dark:border-white/[0.05] bg-white dark:bg-white/[0.02] px-4 py-2 text-sm font-medium text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all hover:bg-neutral-50 dark:hover:bg-white/[0.06] hover:border-border-interactive focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+              className="flex h-10 flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-border/40 bg-white px-4 py-2 font-medium text-foreground text-sm shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all hover:border-border-interactive hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45 disabled:pointer-events-none disabled:opacity-50 dark:border-white/[0.05] dark:bg-white/[0.02] dark:hover:bg-white/[0.06]"
             >
               {socialLoading === "github" ? (
                 <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
               ) : (
-                <Github className="h-4 w-4 text-foreground shrink-0" />
+                <Github className="h-4 w-4 shrink-0 text-foreground" />
               )}
               <span>GitHub</span>
             </button>
@@ -202,11 +207,11 @@ export function SignInPage() {
         </div>
 
         {/* Footer Link */}
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
+        <div className="mt-1 flex items-center gap-1.5 text-muted-foreground text-xs">
           <span>Don&apos;t have an account?</span>
           <Link
             href="/auth/signup"
-            className="font-semibold text-primary hover:text-primary/80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45 rounded transition-colors"
+            className="rounded font-semibold text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45"
           >
             Sign Up
           </Link>

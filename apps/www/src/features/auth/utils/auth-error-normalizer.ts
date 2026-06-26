@@ -25,20 +25,20 @@ export function normalizeAuthError(error: unknown): NormalizedError {
     message = error;
   } else if (typeof error === "object") {
     const errObj = error as Record<string, unknown>;
-    
+
     // Better Auth errors typically have .message or .status
-    if (typeof errObj["message"] === "string") {
-      message = errObj["message"];
+    if (typeof errObj.message === "string") {
+      message = errObj.message;
     }
-    if (typeof errObj["status"] === "number") {
-      status = errObj["status"];
-    } else if (typeof errObj["status"] === "string") {
-      status = Number.parseInt(errObj["status"], 10) || undefined;
+    if (typeof errObj.status === "number") {
+      status = errObj.status;
+    } else if (typeof errObj.status === "string") {
+      status = Number.parseInt(errObj.status, 10) || undefined;
     }
-    
+
     // If it has code property
-    if (typeof errObj["code"] === "string" && !message) {
-      message = errObj["code"];
+    if (typeof errObj.code === "string" && !message) {
+      message = errObj.code;
     }
   }
 
@@ -68,7 +68,8 @@ export function normalizeAuthError(error: unknown): NormalizedError {
   ) {
     return {
       title: "Too many attempts",
-      description: "You've tried too many times. Please wait a moment before trying again.",
+      description:
+        "You've tried too many times. Please wait a moment before trying again.",
       type: "warning",
     };
   }
@@ -95,7 +96,8 @@ export function normalizeAuthError(error: unknown): NormalizedError {
   ) {
     return {
       title: "Email already registered",
-      description: "An account with this email already exists. Try signing in instead.",
+      description:
+        "An account with this email already exists. Try signing in instead.",
       type: "warning",
     };
   }
@@ -108,7 +110,8 @@ export function normalizeAuthError(error: unknown): NormalizedError {
   ) {
     return {
       title: "Account disabled",
-      description: "This account is currently disabled. Please contact support.",
+      description:
+        "This account is currently disabled. Please contact support.",
       type: "error",
     };
   }
@@ -140,10 +143,14 @@ export function normalizeAuthError(error: unknown): NormalizedError {
     };
   }
 
-  if (lowerMsg.includes("popup_blocked") || lowerMsg.includes("popup blocked")) {
+  if (
+    lowerMsg.includes("popup_blocked") ||
+    lowerMsg.includes("popup blocked")
+  ) {
     return {
       title: "Popup blocked",
-      description: "Your browser blocked the login popup. Please allow popups for this site.",
+      description:
+        "Your browser blocked the login popup. Please allow popups for this site.",
       type: "warning",
     };
   }
@@ -152,7 +159,8 @@ export function normalizeAuthError(error: unknown): NormalizedError {
   if (status === 401) {
     return {
       title: "Unauthorized",
-      description: "Invalid credentials or session expired. Please sign in again.",
+      description:
+        "Invalid credentials or session expired. Please sign in again.",
       type: "error",
     };
   }
@@ -168,13 +176,19 @@ export function normalizeAuthError(error: unknown): NormalizedError {
   if (status && status >= 500) {
     return {
       title: "Server unavailable",
-      description: "We're having trouble reaching our servers. Please try again later.",
+      description:
+        "We're having trouble reaching our servers. Please try again later.",
       type: "error",
     };
   }
 
   // Use the original message if it's readable and not a technical stack trace
-  if (message && message.length < 100 && !message.includes("Error:") && !message.includes("at ")) {
+  if (
+    message &&
+    message.length < 100 &&
+    !message.includes("Error:") &&
+    !message.includes("at ")
+  ) {
     return {
       title: "Authentication Error",
       description: message,

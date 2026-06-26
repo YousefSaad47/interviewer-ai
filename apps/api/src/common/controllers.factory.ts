@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: <> */
 /** biome-ignore-all lint/complexity/noThisInStatic: <> */
 
+import { AdminCodingController } from "@/modules/admin-coding";
 import { AdminInterviewsController } from "@/modules/admin-interviews";
 import { AdminUsersController } from "@/modules/admin-users";
 import { CodingController } from "@/modules/coding";
@@ -69,6 +70,14 @@ export class ControllersFactory {
             ),
           );
           break;
+        case Controllers.ADMIN_CODING:
+          this._controllers.set(
+            controller,
+            new AdminCodingController(
+              ServicesFactory.create(Services.ADMIN_CODING),
+            ),
+          );
+          break;
         default:
           throw new InternalException(
             `Unknown controller: ${controller satisfies never}`,
@@ -89,6 +98,7 @@ export class ControllersFactory {
     this.create(Controllers.DASHBOARD);
     this.create(Controllers.ADMIN_USERS);
     this.create(Controllers.ADMIN_INTERVIEWS);
+    this.create(Controllers.ADMIN_CODING);
 
     return Array.from(this._controllers.values());
   }

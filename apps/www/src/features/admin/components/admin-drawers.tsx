@@ -5,14 +5,23 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { Button, Skeleton } from "@/shared/ui";
 
-import { useAdminInterviewDetails, useAdminUserDetails } from "../hooks";
+import {
+  useAdminCodingSubmissionDetails,
+  useAdminInterviewDetails,
+  useAdminUserDetails,
+} from "../hooks";
 import type {
+  AdminCodingSubmission,
   AdminInterview,
   AdminResume,
   AdminUser,
   DrawerContent,
 } from "../types";
-import { mapAdminInterviewDetails, mapAdminUserDetails } from "../utils";
+import {
+  mapAdminCodingSubmissionDetails,
+  mapAdminInterviewDetails,
+  mapAdminUserDetails,
+} from "../utils";
 import { Avatar, DetailBlock, DrawerStat, ScorePill } from "./admin-primitives";
 
 export function DetailDrawer({
@@ -290,6 +299,170 @@ export function ResumeDrawer({ resume }: { resume: AdminResume }) {
           "Move testing tools into the skills summary.",
         ]}
       />
+    </div>
+  );
+}
+
+export function CodingDrawer({
+  submission,
+}: {
+  submission: AdminCodingSubmission;
+}) {
+  const detailsQuery = useAdminCodingSubmissionDetails(submission.id);
+  const details = detailsQuery.data
+    ? mapAdminCodingSubmissionDetails(detailsQuery.data)
+    : null;
+  const display = details ?? submission;
+
+  if (detailsQuery.isLoading) {
+    return <DrawerSkeleton />;
+  }
+
+  if (detailsQuery.isError) {
+    return (
+      <DrawerError
+        message="Unable to load submission details."
+        onRetry={() => detailsQuery.refetch()}
+      />
+    );
+  }
+
+  const scoreLabel = (value: number | null) =>
+    value === null ? "--" : `${value}%`;
+
+  return (
+    <div className="space-y-5">
+      {/* ── Candidate + Problem ─────────────────────────── */}
+      <div className="rounded-lg border border-border bg-card p-4">
+        <div className="mb-3 flex items-center justify-between">
+          <p className="font-semibold text-heading">{display.problem}</p>
+          <ScorePill value={display.score} />
+        </div>
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <span className="text-muted-foreground">Candidate</span>
+          <span className="text-right font-medium">{display.candidate}</span>
+          <span className="text-muted-foreground">Language</span>
+          <span className="text-right font-medium">{display.language}</span>
+          <span className="text-muted-foreground">Difficulty</span>
+          <span className="text-right font-medium">{display.difficulty}</span>
+          <span className="text-muted-foreground">Submitted</span>
+          <span className="text-right font-medium">{display.date}</span>
+          {display.executionTimeMs !== null && (
+            <>
+              <span className="text-muted-foreground">Runtime</span>
+              <span className="text-right font-medium">
+                {display.executionTimeMs} ms
+              </span>
+            </>
+          )}
+          {display.memoryUsedKb !== null && (
+            <>
+              <span className="text-muted-foreground">Memory</span>
+              <span className="text-right font-medium">
+                {display.memoryUsedKb} KB
+              </span>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* ── AI Dimension Scores ──────────────────────────── */}
+      {details && (
+        <div className="grid grid-cols-2 gap-3">
+          <DrawerStat label="Logic" value={scoreLabel(details.scores.logic)} />
+          <DrawerStat
+            label="Naming"
+            value={scoreLabel(details.scores.naming)}
+          />
+          <DrawerStat
+            label="Efficiency"
+            value={scoreLabel(details.scores.efficiency)}
+          />
+          <DrawerStat
+            label="Best Practices"
+            value={scoreLabel(details.scores.bestPractices)}
+          />
+        </div>
+      )}
+
+      {/* ── Problem Description ──────────────────────────── */}
+      {details?.problemDescription && (
+        <DetailBlock title="Problem" items={[details.problemDescription]} />
+      )}
+
+      {/* ── Source Code ─────────────────────────────────── */}
+      {details?.code && (
+        <div className="rounded-lg border border-border bg-card p-4">
+          <p className="mb-3 font-semibold text-heading text-sm">Source Code</p>
+          <pre className="max-h-64 overflow-y-auto whitespace-pre-wrap break-all rounded-md bg-muted p-3 font-mono text-xs leading-relaxed">
+            {details.code}
+          </pre>
+        </div>
+      )}
+
+      {/* ── AI Feedback ─────────────────────────────────── */}
+      {details && (
+        <DetailBlock
+          title="AI Feedback"
+          items={
+            details.aiFeedback
+              ? [details.aiFeedback]
+              : ["No AI feedback available."]
+          }
+        />
+      )}
+
+      {/* ── Test Results ─────────────────────────────────── */}
+      {details && details.results.length > 0 && (
+        <div className="rounded-lg border border-border bg-card p-4">
+          <p className="mb-3 font-semibold text-heading text-sm">
+            Test Results
+          </p>
+          <div className="space-y-2">
+            {details.results.map((result) => (
+              <div
+                className="flex items-start justify-between gap-3 rounded-md border border-border bg-surface-secondary/40 p-3 text-sm"
+                key={result.id}
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-heading">
+                    Test {result.testCase.sortOrder + 1}
+                    {result.testCase.isHidden && (
+                      <span className="ml-2 text-muted-foreground text-xs">
+                        (hidden)
+                      </span>
+                    )}
+                  </p>
+                  {!result.testCase.isHidden && result.testCase.input && (
+                    <p className="mt-1 font-mono text-muted-foreground text-xs">
+                      Input: {result.testCase.input}
+                    </p>
+                  )}
+                  {result.error && (
+                    <p className="mt-1 font-mono text-destructive text-xs">
+                      {result.error}
+                    </p>
+                  )}
+                  {!result.error && result.output && (
+                    <p className="mt-1 font-mono text-muted-foreground text-xs">
+                      Output: {result.output}
+                    </p>
+                  )}
+                </div>
+                <span
+                  className={
+                    result.passed
+                      ? "shrink-0 font-semibold text-green-600 text-xs dark:text-green-400"
+                      : "shrink-0 font-semibold text-destructive text-xs"
+                  }
+                >
+                  {result.passed ? "Passed" : "Failed"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

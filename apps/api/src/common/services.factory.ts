@@ -2,6 +2,7 @@
 /** biome-ignore-all lint/complexity/noThisInStatic: <> */
 
 import { prisma } from "@/lib/prisma";
+import { AdminCodingService } from "@/modules/admin-coding";
 import { AdminInterviewsService } from "@/modules/admin-interviews";
 import { AdminUsersService } from "@/modules/admin-users";
 import { CodingService, codingCacheService } from "@/modules/coding";
@@ -46,6 +47,9 @@ export class ServicesFactory {
           break;
         case Services.ADMIN_INTERVIEWS:
           this._services.set(service, new AdminInterviewsService(prisma));
+          break;
+        case Services.ADMIN_CODING:
+          this._services.set(service, new AdminCodingService(prisma));
           break;
         default:
           throw new InternalException(
