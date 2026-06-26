@@ -1,15 +1,19 @@
 "use client";
 
 import { useState } from "react";
+
 import Link from "next/link";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Github, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
+
 import { Button, Checkbox } from "@/shared/ui";
+
 import { useSignIn } from "../hooks";
 import { type SignInSubmitFormData, signInSchema } from "../schemas";
-import { AuthLayout } from "./auth-layout";
 import { AuthInput } from "./auth-input";
+import { AuthLayout } from "./auth-layout";
 
 export function SignInPage() {
   const { signIn, signInSocial } = useSignIn();

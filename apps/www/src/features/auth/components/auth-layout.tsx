@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
+
 import Link from "next/link";
+
 import { ArrowLeft, Brain } from "lucide-react";
 
 interface AuthLayoutProps {
