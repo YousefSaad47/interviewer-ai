@@ -1,16 +1,41 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: mapper namespace follows the module's OOP style */
 
 import type {
+  AdminCodingProblemCreateRecord,
   AdminCodingSubmissionDetailsRecord,
   AdminCodingSubmissionListRecord,
 } from "./admin-coding.repository";
 import type {
+  AdminCodingCreateProblemResponse,
   AdminCodingSubmissionDetails,
   AdminCodingSubmissionListItem,
 } from "./admin-coding.schema";
 import { calculateCodingScore } from "./admin-coding.scoring";
 
 export class AdminCodingMapper {
+  public static toCreatedProblem(
+    problem: AdminCodingProblemCreateRecord,
+  ): AdminCodingCreateProblemResponse {
+    return {
+      id: problem.id,
+      title: problem.title,
+      slug: problem.slug,
+      difficulty: problem.difficulty,
+      description: problem.description,
+      constraints: problem.constraints,
+      examples:
+        problem.examples as AdminCodingCreateProblemResponse["examples"],
+      starterCode:
+        problem.starterCode as AdminCodingCreateProblemResponse["starterCode"],
+      topics: problem.topics,
+      companies: problem.companies,
+      hint: problem.hint,
+      isPremium: problem.isPremium,
+      testCases: problem.testCases,
+      createdAt: problem.createdAt.toISOString(),
+    };
+  }
+
   public static toListItem(
     submission: AdminCodingSubmissionListRecord,
   ): AdminCodingSubmissionListItem {

@@ -1,6 +1,9 @@
 import type { Prisma, PrismaClient } from "@/generated/client";
 
-import type { AdminCodingSubmissionsQuery } from "./admin-coding.schema";
+import type {
+  AdminCodingCreateProblemBody,
+  AdminCodingSubmissionsQuery,
+} from "./admin-coding.schema";
 
 const codingScoreFieldsSelect = {
   logicScore: true,
@@ -78,6 +81,32 @@ const adminCodingSubmissionDetailsSelect = {
   },
 } satisfies Prisma.CodingSubmissionSelect;
 
+const adminCodingProblemCreateSelect = {
+  id: true,
+  title: true,
+  slug: true,
+  difficulty: true,
+  description: true,
+  constraints: true,
+  examples: true,
+  starterCode: true,
+  topics: true,
+  companies: true,
+  hint: true,
+  isPremium: true,
+  createdAt: true,
+  testCases: {
+    orderBy: [{ sortOrder: "asc" }, { id: "asc" }],
+    select: {
+      id: true,
+      input: true,
+      output: true,
+      isHidden: true,
+      sortOrder: true,
+    },
+  },
+} satisfies Prisma.CodingProblemSelect;
+
 export type AdminCodingSubmissionListRecord =
   Prisma.CodingSubmissionGetPayload<{
     select: typeof adminCodingSubmissionListSelect;
@@ -88,8 +117,56 @@ export type AdminCodingSubmissionDetailsRecord =
     select: typeof adminCodingSubmissionDetailsSelect;
   }>;
 
+export type AdminCodingProblemCreateRecord = Prisma.CodingProblemGetPayload<{
+  select: typeof adminCodingProblemCreateSelect;
+}>;
+
 export class AdminCodingRepository {
   public constructor(private readonly prisma: PrismaClient) {}
+
+  public findCodingProblemBySlug(slug: string) {
+    return this.prisma.codingProblem.findUnique({
+      where: { slug },
+      select: { id: true },
+    });
+  }
+
+  public createCodingProblem(
+    input: AdminCodingCreateProblemBody & {
+      slug: string;
+    },
+  ): Promise<AdminCodingProblemCreateRecord> {
+    const data: Prisma.CodingProblemCreateInput = {
+      title: input.title,
+      slug: input.slug,
+      difficulty: input.difficulty,
+      description: input.description,
+      constraints: input.constraints || null,
+      examples: input.examples as Prisma.InputJsonValue,
+      ...(input.starterCode && {
+        starterCode: input.starterCode as Prisma.InputJsonValue,
+      }),
+      topics: input.topics ?? [],
+      companies: input.companies ?? [],
+      hint: input.hint || null,
+      isPremium: input.isPremium ?? false,
+      testCases: {
+        create: input.testCases.map((testCase, index) => ({
+          input: testCase.input,
+          output: testCase.output,
+          isHidden: testCase.isHidden,
+          sortOrder: testCase.sortOrder ?? index,
+        })),
+      },
+    };
+
+    return this.prisma.$transaction((tx) =>
+      tx.codingProblem.create({
+        data,
+        select: adminCodingProblemCreateSelect,
+      }),
+    );
+  }
 
   public findAdminCodingSubmissions(query: AdminCodingSubmissionsQuery) {
     return this.prisma.codingSubmission.findMany({

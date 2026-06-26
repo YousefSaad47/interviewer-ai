@@ -1,10 +1,17 @@
 import { AbstractService } from "@/common/contracts";
-import { NotFoundException } from "@/common/exceptions";
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from "@/common/exceptions";
 import type { PrismaClient } from "@/generated/client";
 
 import { AdminCodingMapper } from "./admin-coding.mapper";
 import { AdminCodingRepository } from "./admin-coding.repository";
-import type { AdminCodingSubmissionsQuery } from "./admin-coding.schema";
+import type {
+  AdminCodingCreateProblemBody,
+  AdminCodingSubmissionsQuery,
+} from "./admin-coding.schema";
 
 export class AdminCodingService extends AbstractService {
   private readonly repository: AdminCodingRepository;
@@ -12,6 +19,31 @@ export class AdminCodingService extends AbstractService {
   public constructor(prisma: PrismaClient) {
     super(prisma);
     this.repository = new AdminCodingRepository(prisma);
+  }
+
+  public async createProblem(
+    input: AdminCodingCreateProblemBody,
+    _adminUserId: string,
+  ) {
+    const slug = this._normalizeSlug(input.slug ?? input.title);
+    if (slug.length < 3) {
+      throw new BadRequestException("Coding problem slug is invalid");
+    }
+
+    const existingProblem = await this.repository.findCodingProblemBySlug(slug);
+
+    if (existingProblem) {
+      throw new ConflictException("Coding problem slug already exists", {
+        slug,
+      });
+    }
+
+    const problem = await this.repository.createCodingProblem({
+      ...input,
+      slug,
+    });
+
+    return AdminCodingMapper.toCreatedProblem(problem);
   }
 
   public async listSubmissions(
@@ -50,5 +82,14 @@ export class AdminCodingService extends AbstractService {
     }
 
     return AdminCodingMapper.toDetails(submission);
+  }
+
+  private _normalizeSlug(value: string) {
+    return value
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .replace(/-{2,}/g, "-");
   }
 }
