@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 
 import { Header } from "@/features/landing";
+import { authClient } from "@/services";
 import { Button } from "@/shared/ui";
 
 import {
@@ -10,8 +13,112 @@ import {
   StatsCards,
   WeeklyGoals,
 } from "../components";
+import {
+  useDashboardGoals,
+  useDashboardRecent,
+  useDashboardSkills,
+  useDashboardStats,
+} from "../hooks";
 
 export function DashboardPage() {
+  const { data: session } = authClient.useSession();
+  const { data: stats } = useDashboardStats();
+  const { data: recent } = useDashboardRecent();
+  const { data: skills } = useDashboardSkills();
+  const { data: goals } = useDashboardGoals();
+
+  const firstName = session?.user?.name?.split(" ")[0] ?? "Developer";
+
+  // Calculate Streak
+  const streak = (() => {
+    if (!recent) return 0;
+    const dates = new Set<string>();
+    recent.interviews?.forEach((i) => {
+      if (i.startedAt) {
+        dates.add(new Date(i.startedAt).toDateString());
+      }
+    });
+    recent.submissions?.forEach((s) => {
+      if (s.createdAt) {
+        dates.add(new Date(s.createdAt).toDateString());
+      }
+    });
+
+    let count = 0;
+    const checkDate = new Date();
+
+    // If there is no activity today, check if there was activity yesterday to continue the streak
+    if (!dates.has(checkDate.toDateString())) {
+      checkDate.setDate(checkDate.getDate() - 1);
+    }
+
+    while (dates.has(checkDate.toDateString())) {
+      count++;
+      checkDate.setDate(checkDate.getDate() - 1);
+    }
+    return count;
+  })();
+
+  const streakText =
+    streak > 0 ? `${streak} day${streak === 1 ? "" : "s"}` : "Ready";
+
+  // Calculate Focus Skill Area
+  const focusArea = (() => {
+    if (skills?.categories && skills.categories.length > 0) {
+      return skills.categories[0]?.name?.replace("_", " ") ?? "System design";
+    }
+    return "System design";
+  })();
+
+  // Calculate Target Sessions
+  const interviewGoal = goals?.interviewGoal ?? 3;
+  const targetText = `${interviewGoal} session${interviewGoal === 1 ? "" : "s"}`;
+
+  // Calculate Readiness Pulse
+  const avgScore = stats?.averageScore ?? 0;
+  const interviewsDone = goals?.interviewsDone ?? 0;
+  const problemsDone = goals?.problemsDone ?? 0;
+  const problemGoal = goals?.problemGoal ?? 5;
+
+  const interviewProgress =
+    interviewGoal > 0 ? Math.min(interviewsDone / interviewGoal, 1) : 0;
+  const problemProgress =
+    problemGoal > 0 ? Math.min(problemsDone / problemGoal, 1) : 0;
+
+  const readinessScore = Math.round(
+    avgScore * 0.4 + interviewProgress * 30 + problemProgress * 30,
+  );
+
+  const angle = Math.round((readinessScore / 100) * 360);
+
+  // Formatted Practice Time text
+  const practiceTimeText = (() => {
+    const mins = stats?.practiceTimeMinutes ?? 0;
+    if (mins === 0) return "0h";
+    if (mins < 60) return `${mins}m`;
+    return `${Math.round(mins / 60)}h`;
+  })();
+
+  // Determine Next Best Move dynamically
+  const nextBestMove = (() => {
+    if (!stats || stats.interviewsCompleted === 0) {
+      return "Start a 20 minute mock session.";
+    }
+    if (avgScore < 60) {
+      return "Review weak signals from your last interview.";
+    }
+    if (stats.problemsSolved === 0) {
+      return "Sharpen your skills with a coding challenge.";
+    }
+    if (interviewsDone >= interviewGoal && problemsDone >= problemGoal) {
+      return "Outstanding! You've crushed your goals for this week.";
+    }
+    if (problemsDone < problemGoal) {
+      return "Solve another coding problem to reach your weekly goal.";
+    }
+    return "Continue your practice with a mock interview.";
+  })();
+
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-background">
       <Header />
@@ -64,7 +171,7 @@ export function DashboardPage() {
                   Today
                 </div>
                 <h1 className="max-w-2xl font-bold text-3xl text-foreground tracking-tight sm:text-4xl lg:text-5xl">
-                  Welcome back, Karim
+                  Welcome back, {firstName}
                 </h1>
                 <p className="mt-3 max-w-xl text-base text-muted-foreground sm:text-lg">
                   Keep your interview practice, coding reps, and resume work in
@@ -89,9 +196,9 @@ export function DashboardPage() {
 
               <div className="relative mt-8 grid gap-3 sm:grid-cols-3">
                 {[
-                  ["Focus", "System design"],
-                  ["Target", "3 sessions"],
-                  ["Streak", "Ready"],
+                  ["Focus", focusArea],
+                  ["Target", targetText],
+                  ["Streak", streakText],
                 ].map(([label, value]) => (
                   <div
                     key={label}
@@ -130,13 +237,12 @@ export function DashboardPage() {
                   <div
                     className="relative mx-auto flex h-40 w-40 items-center justify-center rounded-full border border-primary/20 bg-card/65"
                     style={{
-                      backgroundImage:
-                        "conic-gradient(from 180deg, rgb(16 185 129 / 0.22) 0deg, rgb(16 185 129 / 0.22) 24deg, transparent 24deg)",
+                      backgroundImage: `conic-gradient(from 180deg, rgb(16 185 129 / 0.22) 0deg, rgb(16 185 129 / 0.22) ${angle}deg, transparent ${angle}deg)`,
                     }}
                   >
                     <div className="flex h-28 w-28 flex-col items-center justify-center rounded-full border border-border bg-background/90 text-center shadow-inner">
                       <span className="font-bold text-3xl text-foreground">
-                        0%
+                        {readinessScore}%
                       </span>
                       <span className="text-muted-foreground text-xs">
                         ready
@@ -146,9 +252,9 @@ export function DashboardPage() {
 
                   <div className="grid grid-cols-3 gap-2 text-sm">
                     {[
-                      ["Score", "0%"],
-                      ["Practice", "0h"],
-                      ["Solved", "0"],
+                      ["Score", `${Math.round(avgScore)}%`],
+                      ["Practice", practiceTimeText],
+                      ["Solved", String(stats?.problemsSolved ?? 0)],
                     ].map(([label, value]) => (
                       <div
                         key={label}
@@ -170,7 +276,7 @@ export function DashboardPage() {
                           Next best move
                         </p>
                         <p className="text-muted-foreground text-xs">
-                          Start a 20 minute mock session.
+                          {nextBestMove}
                         </p>
                       </div>
                     </div>
