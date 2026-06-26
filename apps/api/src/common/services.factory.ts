@@ -2,6 +2,12 @@
 /** biome-ignore-all lint/complexity/noThisInStatic: <> */
 
 import { prisma } from "@/lib/prisma";
+import { AdminAnalyticsService } from "@/modules/admin-analytics";
+import { AdminCodingService } from "@/modules/admin-coding";
+import { AdminInterviewsService } from "@/modules/admin-interviews";
+import { AdminManagementService } from "@/modules/admin-management";
+import { AdminResumesService } from "@/modules/admin-resumes";
+import { AdminUsersService } from "@/modules/admin-users";
 import { CodingService, codingCacheService } from "@/modules/coding";
 import { DashboardService } from "@/modules/dashboard";
 import { InterviewService } from "@/modules/interview";
@@ -38,6 +44,24 @@ export class ServicesFactory {
           break;
         case Services.DASHBOARD:
           this._services.set(service, new DashboardService(prisma));
+          break;
+        case Services.ADMIN_USERS:
+          this._services.set(service, new AdminUsersService(prisma));
+          break;
+        case Services.ADMIN_INTERVIEWS:
+          this._services.set(service, new AdminInterviewsService(prisma));
+          break;
+        case Services.ADMIN_CODING:
+          this._services.set(service, new AdminCodingService(prisma));
+          break;
+        case Services.ADMIN_RESUMES:
+          this._services.set(service, new AdminResumesService(prisma));
+          break;
+        case Services.ADMIN_ANALYTICS:
+          this._services.set(service, new AdminAnalyticsService(prisma));
+          break;
+        case Services.ADMIN_MANAGEMENT:
+          this._services.set(service, new AdminManagementService(prisma));
           break;
         default:
           throw new InternalException(

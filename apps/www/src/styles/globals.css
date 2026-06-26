@@ -69,7 +69,7 @@
   --popover: #ffffff;
   --popover-foreground: #17211d;
   --primary: #10b981;
-  --primary-foreground: #06110d;
+  --primary-foreground: #ffffff;
   --secondary: #eaf8f2;
   --secondary-foreground: #12251f;
   --muted: #edf6f2;
@@ -88,7 +88,7 @@
   --sidebar: #f6f9ff;
   --sidebar-foreground: #17211d;
   --sidebar-primary: #10b981;
-  --sidebar-primary-foreground: #06110d;
+  --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #eaf8f2;
   --sidebar-accent-foreground: #12251f;
   --sidebar-border: rgb(16 185 129 / 0.18);
@@ -115,7 +115,7 @@
   --popover: #0B1014;
   --popover-foreground: #F4F7F6;
   --primary: #34D399; /* Primary Emerald Accent */
-  --primary-foreground: #080B0F;
+  --primary-foreground: #ffffff;
   --secondary: #142027; /* Secondary surface */
   --secondary-foreground: #C0CBC7;
   --muted: #0D151A; /* Muted surface */
@@ -146,7 +146,7 @@
   --sidebar: #080B0F;
   --sidebar-foreground: #A5B4AF;
   --sidebar-primary: #34D399;
-  --sidebar-primary-foreground: #080B0F;
+  --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #142027;
   --sidebar-accent-foreground: #C0CBC7;
   --sidebar-border: rgba(167, 243, 208, 0.12);
@@ -168,6 +168,14 @@
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+}
+
+.admin-row {
+  @apply border-border border-b transition-colors hover:bg-accent/45;
+}
+
+.admin-cell {
+  @apply whitespace-nowrap px-6 py-4 text-muted-foreground;
 }
 
 /* Figma Landing Page Exact Colors */
@@ -247,3 +255,22 @@
   background-clip: text;
   color: transparent;
 }
+
+/* Autofill browser default style override to keep it transparent */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--foreground) !important;
+  transition: background-color 50000s ease-in-out 0s;
+  caret-color: var(--foreground);
+}
+
+/* Force high contrast and readability on Sonner Toast descriptions */
+.toaster.group [data-toast] [data-description],
+[data-sonner-toast] [data-description] {
+  color: var(--paragraph) !important;
+  opacity: 1 !important;
+}
+
+

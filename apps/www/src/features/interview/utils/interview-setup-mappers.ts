@@ -1,5 +1,6 @@
 import type { InterviewSetupFormData } from "../schemas";
 import type { InterviewCategory, InterviewDifficulty } from "../types";
+import { INTERVIEW_QUESTION_COUNT } from "./interview-setup-options";
 
 const FOCUS_TO_CATEGORY: Record<string, InterviewCategory> = {
   algorithms: "ALGORITHMS",
@@ -21,7 +22,7 @@ const LEVEL_TO_DIFFICULTY: Record<string, InterviewDifficulty> = {
 export const mapInterviewSetupToRequest = (data: InterviewSetupFormData) => ({
   category: FOCUS_TO_CATEGORY[data.interviewFocus] ?? "BEHAVIORAL",
   difficulty: LEVEL_TO_DIFFICULTY[data.experienceLevel] ?? "EASY",
-  questionCount: 5,
+  questionCount: INTERVIEW_QUESTION_COUNT,
   targetRole: data.targetRole,
   experienceLevel: data.experienceLevel,
   interviewFocus: data.interviewFocus,
