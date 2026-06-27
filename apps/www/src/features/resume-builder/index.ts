@@ -4,6 +4,7 @@ export * from "./schemas";
 export type {
   Education,
   PersonalInfo,
+  Project,
   ResumeData,
   WorkExperience,
 } from "./types";

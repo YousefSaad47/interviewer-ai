@@ -1,11 +1,19 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
+import { getMyResume, saveMyResume } from "../api";
 import type {
   Education,
   PersonalInfo,
+  Project,
   ResumeData,
   WorkExperience,
 } from "../types";
@@ -16,12 +24,20 @@ interface ResumeContextType {
   addWorkExperience: () => void;
   updateWorkExperience: (id: string, updates: Partial<WorkExperience>) => void;
   removeWorkExperience: (id: string) => void;
+  addProject: () => void;
+  updateProject: (id: string, updates: Partial<Project>) => void;
+  removeProject: (id: string) => void;
   addEducation: () => void;
   updateEducation: (id: string, updates: Partial<Education>) => void;
   removeEducation: (id: string) => void;
   addSkill: (skill: string) => void;
   updateSkill: (index: number, skill: string) => void;
   removeSkill: (index: number) => void;
+  isLoading: boolean;
+  isSaving: boolean;
+  saveError: string | null;
+  savedAt: string | null;
+  saveResume: () => Promise<void>;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -30,10 +46,10 @@ const initialData: ResumeData = {
   personalInfo: {
     fullName: "Alex Johnson",
     email: "alex.johnson@email.com",
-    phone: "+1 (555) 123-4567",
-    location: "San Francisco, CA",
+    phone: "+201016493339",
+    location: "Egypt",
     summary:
-      "Experienced software engineer with 5+ years building scalable web applications.",
+      "Senior Full Stack Engineer with 5+ years of experience building scalable web applications and distributed architectures. Proficient in React, TypeScript, Node.js, and cloud platforms, with a focus on performance optimization and responsive user interfaces.",
   },
   workExperience: [
     {
@@ -41,7 +57,34 @@ const initialData: ResumeData = {
       company: "Tech Corp",
       position: "Senior Software Engineer",
       duration: "2022 - Present",
-      description: "Description of responsibilities and achievements",
+      description:
+        "Led the frontend migration to Next.js, resulting in a 40% improvement in page load speeds. Spearheaded the design of reusable UI component libraries used across multiple product teams. Mentored junior developers and established CI/CD pipelines using GitHub Actions.",
+    },
+    {
+      id: "2",
+      company: "DevSolutions Ltd",
+      position: "Software Engineer",
+      duration: "2020 - 2022",
+      description:
+        "Developed and maintained responsive e-commerce web applications using React, Redux, and Node.js. Optimized PostgreSQL database queries to reduce API latency by 30%. Implemented secure payment gateway integrations.",
+    },
+  ],
+  projects: [
+    {
+      id: "1",
+      name: "AI-Powered Interview Prep Platform",
+      role: "Full Stack Developer",
+      duration: "2024",
+      description:
+        "Built an interactive mock interview web application utilizing Gemini AI for speech-to-text and performance evaluation. Designed responsive dashboard analytics using Next.js and Prisma, providing users with actionable feedback.",
+    },
+    {
+      id: "2",
+      name: "Real-time Collaboration Canvas",
+      role: "Creator",
+      duration: "2023",
+      description:
+        "Created a collaborative whiteboarding tool using React, HTML5 Canvas, and WebSockets. Achieved sub-50ms sync latency for concurrent users and integrated local persistence using IndexedDB.",
     },
   ],
   education: [
@@ -52,11 +95,57 @@ const initialData: ResumeData = {
       year: "2018",
     },
   ],
-  skills: ["React", "TypeScript", "Node.js", "Python"],
+  skills: [
+    "React",
+    "TypeScript",
+    "Node.js",
+    "Python",
+    "Next.js",
+    "PostgreSQL",
+    "Tailwind CSS",
+    "Docker",
+    "Git",
+  ],
 };
 
 export const ResumeProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<ResumeData>(initialData);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [savedAt, setSavedAt] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+
+    const loadResume = async () => {
+      try {
+        const resume = await getMyResume();
+        if (!active) {
+          return;
+        }
+
+        if (resume) {
+          setData(resume.content);
+          setSavedAt(resume.updatedAt);
+        }
+      } catch {
+        if (active) {
+          setSaveError("Unable to load your saved resume.");
+        }
+      } finally {
+        if (active) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadResume();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const updatePersonalInfo = (info: Partial<PersonalInfo>) => {
     setData((prev) => ({
@@ -95,6 +184,36 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
     setData((prev) => ({
       ...prev,
       workExperience: prev.workExperience.filter((exp) => exp.id !== id),
+    }));
+  };
+
+  const addProject = () => {
+    const newProject: Project = {
+      id: Date.now().toString(),
+      name: "",
+      role: "",
+      duration: "",
+      description: "",
+    };
+    setData((prev) => ({
+      ...prev,
+      projects: [...prev.projects, newProject],
+    }));
+  };
+
+  const updateProject = (id: string, updates: Partial<Project>) => {
+    setData((prev) => ({
+      ...prev,
+      projects: prev.projects.map((proj) =>
+        proj.id === id ? { ...proj, ...updates } : proj,
+      ),
+    }));
+  };
+
+  const removeProject = (id: string) => {
+    setData((prev) => ({
+      ...prev,
+      projects: prev.projects.filter((proj) => proj.id !== id),
     }));
   };
 
@@ -150,6 +269,23 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  const saveResume = useCallback(async () => {
+    setIsSaving(true);
+    setSaveError(null);
+
+    try {
+      const savedResume = await saveMyResume({
+        content: data,
+      });
+      setData(savedResume.content);
+      setSavedAt(savedResume.updatedAt);
+    } catch {
+      setSaveError("Unable to save your resume.");
+    } finally {
+      setIsSaving(false);
+    }
+  }, [data]);
+
   return (
     <ResumeContext.Provider
       value={{
@@ -158,12 +294,20 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
         addWorkExperience,
         updateWorkExperience,
         removeWorkExperience,
+        addProject,
+        updateProject,
+        removeProject,
         addEducation,
         updateEducation,
         removeEducation,
         addSkill,
         updateSkill,
         removeSkill,
+        isLoading,
+        isSaving,
+        saveError,
+        savedAt,
+        saveResume,
       }}
     >
       {children}

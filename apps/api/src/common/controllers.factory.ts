@@ -11,6 +11,7 @@ import { CodingController } from "@/modules/coding";
 import { DashboardController } from "@/modules/dashboard";
 import { InterviewController } from "@/modules/interview";
 import { ProblemController } from "@/modules/problem";
+import { ResumesController } from "@/modules/resumes";
 import { SampleController } from "@/modules/sample";
 
 import { AbstractController, AbstractService } from "./contracts";
@@ -55,6 +56,12 @@ export class ControllersFactory {
           this._controllers.set(
             controller,
             new DashboardController(ServicesFactory.create(Services.DASHBOARD)),
+          );
+          break;
+        case Controllers.RESUMES:
+          this._controllers.set(
+            controller,
+            new ResumesController(ServicesFactory.create(Services.RESUMES)),
           );
           break;
         case Controllers.ADMIN_USERS:
@@ -123,6 +130,7 @@ export class ControllersFactory {
     this.create(Controllers.PROBLEM);
     this.create(Controllers.INTERVIEW);
     this.create(Controllers.DASHBOARD);
+    this.create(Controllers.RESUMES);
     this.create(Controllers.ADMIN_USERS);
     this.create(Controllers.ADMIN_INTERVIEWS);
     this.create(Controllers.ADMIN_CODING);

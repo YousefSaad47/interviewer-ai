@@ -6,7 +6,7 @@ import { useResume } from "../contexts/resume-context";
 
 export function ResumePreview() {
   const { data } = useResume();
-  const { personalInfo, workExperience, education, skills } = data;
+  const { personalInfo, workExperience, projects, education, skills } = data;
   const contactItems = [
     personalInfo.email,
     personalInfo.phone,
@@ -56,6 +56,35 @@ export function ResumePreview() {
               </PreviewSection>
             )}
 
+            {education.length > 0 && (
+              <PreviewSection title="Education">
+                <div className="space-y-3">
+                  {education.map((edu) => (
+                    <article
+                      key={edu.id}
+                      className="flex items-start justify-between gap-4"
+                    >
+                      <div>
+                        {edu.degree && (
+                          <h4 className="font-bold text-sm">{edu.degree}</h4>
+                        )}
+                        {edu.school && (
+                          <p className="mt-0.5 text-[#4a5d57] text-xs">
+                            {edu.school}
+                          </p>
+                        )}
+                      </div>
+                      {edu.year && (
+                        <p className="shrink-0 text-[#61736d] text-[11px]">
+                          {edu.year}
+                        </p>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              </PreviewSection>
+            )}
+
             {workExperience.length > 0 && (
               <PreviewSection title="Experience">
                 <div className="space-y-4">
@@ -91,27 +120,33 @@ export function ResumePreview() {
               </PreviewSection>
             )}
 
-            {education.length > 0 && (
-              <PreviewSection title="Education">
-                <div className="space-y-3">
-                  {education.map((edu) => (
-                    <article
-                      key={edu.id}
-                      className="flex items-start justify-between gap-4"
-                    >
-                      <div>
-                        {edu.degree && (
-                          <h4 className="font-bold text-sm">{edu.degree}</h4>
-                        )}
-                        {edu.school && (
-                          <p className="mt-0.5 text-[#4a5d57] text-xs">
-                            {edu.school}
+            {projects && projects.length > 0 && (
+              <PreviewSection title="Projects">
+                <div className="space-y-4">
+                  {projects.map((proj) => (
+                    <article key={proj.id}>
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          {proj.name && (
+                            <h4 className="font-bold text-sm">
+                              {proj.name}
+                            </h4>
+                          )}
+                          {proj.role && (
+                            <p className="mt-0.5 text-[#4a5d57] text-xs">
+                              {proj.role}
+                            </p>
+                          )}
+                        </div>
+                        {proj.duration && (
+                          <p className="shrink-0 text-[#61736d] text-[11px]">
+                            {proj.duration}
                           </p>
                         )}
                       </div>
-                      {edu.year && (
-                        <p className="shrink-0 text-[#61736d] text-[11px]">
-                          {edu.year}
+                      {proj.description && (
+                        <p className="mt-2 text-[#34443f] text-xs leading-5">
+                          {proj.description}
                         </p>
                       )}
                     </article>
