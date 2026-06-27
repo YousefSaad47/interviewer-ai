@@ -7,4 +7,5 @@ export type {
   Project,
   ResumeData,
   WorkExperience,
+  SkillCategory,
 } from "./types";

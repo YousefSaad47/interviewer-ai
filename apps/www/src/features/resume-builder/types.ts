@@ -4,6 +4,8 @@ export type PersonalInfo = {
   phone: string;
   location: string;
   summary: string;
+  linkedin?: string;
+  github?: string;
 };
 
 export type WorkExperience = {
@@ -27,6 +29,13 @@ export type Project = {
   role: string;
   duration: string;
   description: string;
+  url?: string;
+};
+
+export type SkillCategory = {
+  id: string;
+  category: string;
+  items: string[];
 };
 
 export type ResumeData = {
@@ -34,5 +43,5 @@ export type ResumeData = {
   workExperience: WorkExperience[];
   projects: Project[];
   education: Education[];
-  skills: string[];
+  skills: string[] | SkillCategory[];
 };

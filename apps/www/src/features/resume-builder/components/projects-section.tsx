@@ -93,19 +93,35 @@ export function ProjectsSection() {
               </div>
             </div>
 
-            <div className="space-y-1.5">
-              <Label className="font-semibold text-foreground text-xs">
-                Duration
-              </Label>
-              <Input
-                type="text"
-                value={proj.duration}
-                onChange={(e) =>
-                  updateProject(proj.id, { duration: e.target.value })
-                }
-                placeholder="e.g., Jan 2023 - Mar 2023"
-                className="h-10 w-full rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border-interactive dark:bg-surface-elevated"
-              />
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="flex-1 space-y-1.5">
+                <Label className="font-semibold text-foreground text-xs">
+                  Duration
+                </Label>
+                <Input
+                  type="text"
+                  value={proj.duration}
+                  onChange={(e) =>
+                    updateProject(proj.id, { duration: e.target.value })
+                  }
+                  placeholder="e.g., Jan 2023 - Mar 2023"
+                  className="h-10 w-full rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border-interactive dark:bg-surface-elevated"
+                />
+              </div>
+              <div className="flex-1 space-y-1.5">
+                <Label className="font-semibold text-foreground text-xs">
+                  Project Link URL
+                </Label>
+                <Input
+                  type="text"
+                  value={proj.url || ""}
+                  onChange={(e) =>
+                    updateProject(proj.id, { url: e.target.value })
+                  }
+                  placeholder="e.g., https://github.com/username/project"
+                  className="h-10 w-full rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border-interactive dark:bg-surface-elevated"
+                />
+              </div>
             </div>
 
             <div className="space-y-1.5">
