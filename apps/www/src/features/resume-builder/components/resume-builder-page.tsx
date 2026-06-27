@@ -120,7 +120,10 @@ const ResumeBuilderContent = () => {
                     <Save className="h-4 w-4" />
                     {isSaving ? "Saving" : "Save"}
                   </Button>
-                  <Button className="h-10 gap-2 rounded-lg bg-primary px-4 text-primary-foreground text-sm shadow-[0_14px_35px_rgba(16,185,129,0.2)] hover:bg-primary/90">
+                  <Button
+                    onClick={() => window.print()}
+                    className="h-10 gap-2 rounded-lg bg-primary px-4 text-primary-foreground text-sm shadow-[0_14px_35px_rgba(16,185,129,0.2)] hover:bg-primary/90"
+                  >
                     <Download className="h-4 w-4" />
                     <span className="hidden sm:inline">Export PDF</span>
                     <span className="sm:hidden">PDF</span>

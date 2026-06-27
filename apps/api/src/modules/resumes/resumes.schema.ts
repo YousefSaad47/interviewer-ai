@@ -6,6 +6,8 @@ const personalInfoSchema = z.object({
   phone: z.string(),
   location: z.string(),
   summary: z.string(),
+  linkedin: z.string().optional(),
+  github: z.string().optional(),
 });
 
 const workExperienceSchema = z.object({
@@ -22,6 +24,7 @@ const projectSchema = z.object({
   role: z.string(),
   duration: z.string(),
   description: z.string(),
+  url: z.string().optional(),
 });
 
 const educationSchema = z.object({
@@ -31,12 +34,18 @@ const educationSchema = z.object({
   year: z.string(),
 });
 
+const skillCategorySchema = z.object({
+  id: z.string(),
+  category: z.string(),
+  items: z.array(z.string()),
+});
+
 export const resumeContentSchema = z.object({
   personalInfo: personalInfoSchema,
   workExperience: z.array(workExperienceSchema),
   projects: z.array(projectSchema),
   education: z.array(educationSchema),
-  skills: z.array(z.string()),
+  skills: z.array(z.string()).or(z.array(skillCategorySchema)),
 });
 
 export const resumeSaveSchema = z.object({

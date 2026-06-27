@@ -66,7 +66,7 @@ export function FeaturesSection() {
                       fontFamily: "Geist",
                     }}
                   >
-                    Ai mock{" "}
+                    AI Mock{" "}
                     <span className="font-bold text-gradient-primary">
                       Interviews
                     </span>
@@ -82,42 +82,53 @@ export function FeaturesSection() {
                     }}
                   >
                     <span className="text-slate-700 text-xs md:text-[13px] dark:text-[#EEF4F1]">
-                      Ai Powered
+                      AI Powered
                     </span>
                   </div>
                 </div>
                 <p className="font-semibold text-slate-700 text-sm md:text-base lg:text-[18px] dark:text-white/90">
-                  Practice with our advanced AI interviewer
+                  AI-Powered Voice Interviews
                 </p>
               </div>
 
               {/* Description */}
               <Paragraph className="font-medium text-[15px] text-slate-600 leading-relaxed dark:text-[#ACBAB5]">
-                Experience realistic interview scenarios with our AI that adapts
-                to your responses, provides real-time feedback, and helps you
-                improve your confidence and technical skills.
+                Practice with an AI interviewer through realistic voice
+                conversations designed to simulate real technical interviews.
+                Answer questions naturally, receive adaptive follow-up
+                questions, and review detailed feedback after every session.
               </Paragraph>
 
               {/* Sub-features Grid */}
-              <div className="grid grid-cols-2 gap-4 border-slate-200 border-t pt-4 dark:border-white/[0.04]">
+              <div className="grid grid-cols-1 gap-4 border-slate-200 border-t pt-4 sm:grid-cols-3 dark:border-white/[0.04]">
                 <div className="space-y-1 text-left">
                   <h4 className="flex items-center gap-1.5 font-bold text-slate-800 text-xs dark:text-[#EEF4F1]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#34D399]" />
-                    Adaptive AI
+                    Adaptive Questions
                   </h4>
                   <p className="text-[11px] text-slate-500 leading-normal dark:text-[#73827D]">
-                    Questions dynamically branch and adapt based on your
-                    answers.
+                    AI adapts follow-up questions dynamically based on your
+                    answers for a natural flow.
                   </p>
                 </div>
                 <div className="space-y-1 text-left">
                   <h4 className="flex items-center gap-1.5 font-bold text-slate-800 text-xs dark:text-[#EEF4F1]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#2DD4BF]" />
-                    Real-time Insight
+                    Voice-Based Experience
                   </h4>
                   <p className="text-[11px] text-slate-500 leading-normal dark:text-[#73827D]">
-                    Get instant correction on delivery pace, key terms, and
-                    tone.
+                    Speak naturally in a realistic simulation without typing or
+                    scripted paths.
+                  </p>
+                </div>
+                <div className="space-y-1 text-left">
+                  <h4 className="flex items-center gap-1.5 font-bold text-slate-800 text-xs dark:text-[#EEF4F1]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
+                    Detailed Feedback
+                  </h4>
+                  <p className="text-[11px] text-slate-500 leading-normal dark:text-[#73827D]">
+                    Get a comprehensive report with scores, strengths, and
+                    recommendations.
                   </p>
                 </div>
               </div>
@@ -125,7 +136,7 @@ export function FeaturesSection() {
               {/* Tags */}
               <div className="flex flex-wrap gap-2 pt-2">
                 <Badge className="rounded-full border border-emerald-200 bg-white/70 px-[14px] py-[3px] text-slate-600 text-xs leading-[1.21em] transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
-                  Data Structure
+                  Data Structures
                 </Badge>
                 <Badge className="rounded-full border border-emerald-200 bg-white/70 px-[12px] py-[3px] text-slate-600 text-xs leading-[1.21em] transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
                   Algorithms
@@ -137,7 +148,7 @@ export function FeaturesSection() {
                   System Design
                 </Badge>
                 <Badge className="rounded-full border border-emerald-200 bg-white/70 px-[15px] py-[3px] text-slate-600 text-xs leading-[1.21em] transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
-                  Java Script
+                  JavaScript
                 </Badge>
               </div>
             </div>
@@ -206,15 +217,15 @@ export function FeaturesSection() {
                   </div>
                 </div>
                 <p className="font-semibold text-slate-700 text-sm md:text-base lg:text-[18px] dark:text-white/90">
-                  Solve problems with AI interviewer mode
+                  Interactive Coding Challenges
                 </p>
               </div>
 
               {/* Description */}
               <Paragraph className="font-medium text-[15px] text-slate-600 leading-relaxed dark:text-[#ACBAB5]">
-                Practice coding problems with real-time execution and optional
-                AI interviewer mode for guided feedback, hints, and automated
-                code quality assessment.
+                Sharpen your problem-solving skills with coding challenges
+                inspired by real technical interviews. Write, run, and submit
+                solutions while receiving AI-powered feedback.
               </Paragraph>
 
               {/* Sub-features Grid */}
@@ -222,21 +233,21 @@ export function FeaturesSection() {
                 <div className="space-y-1 text-left">
                   <h4 className="flex items-center gap-1.5 font-bold text-slate-800 text-xs dark:text-[#EEF4F1]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#34D399]" />
-                    Live Compiler
+                    Secure Code Execution
                   </h4>
                   <p className="text-[11px] text-slate-500 leading-normal dark:text-[#73827D]">
-                    Write, compile, and run code instantly in our secure
-                    sandbox.
+                    Write, compile, and run your code safely in an isolated
+                    environment with instant results.
                   </p>
                 </div>
                 <div className="space-y-1 text-left">
                   <h4 className="flex items-center gap-1.5 font-bold text-slate-800 text-xs dark:text-[#EEF4F1]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#2DD4BF]" />
-                    AI Code Reviews
+                    AI Feedback
                   </h4>
                   <p className="text-[11px] text-slate-500 leading-normal dark:text-[#73827D]">
-                    Receive direct insights on space, time complexity, and clean
-                    code.
+                    Receive helpful feedback on your solution, approach, and
+                    improvements after each submission.
                   </p>
                 </div>
               </div>
@@ -312,8 +323,7 @@ export function FeaturesSection() {
                     Resume{" "}
                     <span className="font-bold text-gradient-primary">
                       Builder
-                    </span>{" "}
-                    with AI
+                    </span>
                   </h3>
                   {/* Badge */}
                   <div
@@ -326,20 +336,20 @@ export function FeaturesSection() {
                     }}
                   >
                     <span className="text-slate-700 text-xs md:text-[13px] dark:text-[#EEF4F1]">
-                      Ai Powered
+                      AI Powered
                     </span>
                   </div>
                 </div>
                 <p className="font-semibold text-slate-700 text-sm md:text-base lg:text-[18px] dark:text-white/90">
-                  Create job-ready resumes with AI assistance
+                  AI-Assisted Resume Builder
                 </p>
               </div>
 
               {/* Description */}
               <Paragraph className="font-medium text-[15px] text-slate-600 leading-relaxed dark:text-[#ACBAB5]">
-                Create job-ready resumes with our AI that adapts to your
-                experience, provides real-time suggestions, and helps you
-                highlight your strengths and achievements.
+                Create a professional resume by entering your information once.
+                The AI helps improve your content, organize your experience, and
+                generate a clean resume ready for download.
               </Paragraph>
 
               {/* Sub-features Grid */}
@@ -347,21 +357,22 @@ export function FeaturesSection() {
                 <div className="space-y-1 text-left">
                   <h4 className="flex items-center gap-1.5 font-bold text-slate-800 text-xs dark:text-[#EEF4F1]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#34D399]" />
-                    ATS Filters
+                    ATS Optimization
                   </h4>
                   <p className="text-[11px] text-slate-500 leading-normal dark:text-[#73827D]">
-                    Ensure keyword matches and structure compatibility with ATS
-                    screening systems.
+                    Improve your resume with better keyword matching and
+                    formatting to increase compatibility with Applicant Tracking
+                    Systems (ATS).
                   </p>
                 </div>
                 <div className="space-y-1 text-left">
                   <h4 className="flex items-center gap-1.5 font-bold text-slate-800 text-xs dark:text-[#EEF4F1]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#2DD4BF]" />
-                    Smart Suggestions
+                    AI Content Enhancement
                   </h4>
                   <p className="text-[11px] text-slate-500 leading-normal dark:text-[#73827D]">
-                    Receive context-aware adjustments to improve impact and
-                    phrasing.
+                    Receive AI-powered suggestions to strengthen your summary,
+                    experience, and project descriptions.
                   </p>
                 </div>
               </div>
@@ -369,16 +380,19 @@ export function FeaturesSection() {
               {/* Tags */}
               <div className="flex flex-wrap gap-2 pt-2">
                 <Badge className="rounded-full border border-emerald-200 bg-white/70 px-[14px] py-[3px] text-slate-600 text-xs leading-[1.21em] transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
-                  Data Structure
+                  Personal Information
                 </Badge>
                 <Badge className="rounded-full border border-emerald-200 bg-white/70 px-[12px] py-[3px] text-slate-600 text-xs leading-[1.21em] transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
-                  Algorithms
+                  Work Experience
                 </Badge>
                 <Badge className="rounded-full border border-emerald-200 bg-white/70 px-[14px] py-[3px] text-slate-600 text-xs leading-[1.21em] transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
-                  Behavioral
+                  Projects
                 </Badge>
                 <Badge className="rounded-full border border-emerald-200 bg-white/70 px-5 py-[3px] text-slate-600 text-xs leading-none transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
-                  LinkedIn Profile
+                  Technical Skills
+                </Badge>
+                <Badge className="rounded-full border border-emerald-200 bg-white/70 px-5 py-[3px] text-slate-600 text-xs leading-none transition-all duration-300 hover:border-primary/30 hover:bg-emerald-50 hover:text-slate-950 md:text-sm dark:border-[rgba(167,243,208,0.12)] dark:bg-[#142027]/30 dark:text-[#ACBAB5] dark:hover:bg-[#34D399]/[0.04] dark:hover:text-white">
+                  Education
                 </Badge>
               </div>
             </div>
