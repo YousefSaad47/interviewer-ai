@@ -23,6 +23,8 @@ export const personalInfoSchema = z.object({
     .max(500, "Summary must not exceed 500 characters")
     .optional()
     .or(z.literal("")),
+  linkedin: z.string().optional().or(z.literal("")),
+  github: z.string().optional().or(z.literal("")),
 });
 
 export const workExperienceSchema = z.object({

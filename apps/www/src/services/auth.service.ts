@@ -4,4 +4,11 @@ import { env } from "@/config";
 
 export const authClient = createAuthClient({
   baseURL: env.NEXT_PUBLIC_API_URL,
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+      },
+    },
+  },
 });

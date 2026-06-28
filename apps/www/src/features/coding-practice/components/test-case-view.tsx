@@ -6,6 +6,7 @@ interface TestResult {
   passed: boolean;
   output: string | null;
   error: string | null;
+  expected: string | null;
 }
 
 interface SubmissionDisplay {
@@ -143,16 +144,28 @@ export function TestCaseView({
                       Test Case {index + 1}
                     </span>
                   </div>
-                  {result.output && (
-                    <div className="space-y-1">
-                      <span className="block text-muted-foreground text-xs">
-                        Output:
-                      </span>
-                      <pre className="overflow-x-auto rounded bg-muted/70 p-2 font-mono text-xs dark:bg-surface-elevated">
-                        {result.output}
-                      </pre>
-                    </div>
-                  )}
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                    {result.expected !== undefined && result.expected !== null && (
+                      <div className="space-y-1">
+                        <span className="block text-muted-foreground text-xs font-medium">
+                          Expected:
+                        </span>
+                        <pre className="overflow-x-auto rounded bg-muted/70 p-2 font-mono text-xs dark:bg-surface-elevated">
+                          {result.expected}
+                        </pre>
+                      </div>
+                    )}
+                    {result.output && (
+                      <div className="space-y-1">
+                        <span className="block text-muted-foreground text-xs font-medium">
+                          Output:
+                        </span>
+                        <pre className="overflow-x-auto rounded bg-muted/70 p-2 font-mono text-xs dark:bg-surface-elevated text-heading">
+                          {result.output}
+                        </pre>
+                      </div>
+                    )}
+                  </div>
                   {result.error && (
                     <div className="mt-2 space-y-1">
                       <span className="block text-red-500 text-xs">Error:</span>

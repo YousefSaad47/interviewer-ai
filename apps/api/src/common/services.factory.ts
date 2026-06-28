@@ -12,6 +12,7 @@ import { CodingService, codingCacheService } from "@/modules/coding";
 import { DashboardService } from "@/modules/dashboard";
 import { InterviewService } from "@/modules/interview";
 import { ProblemService } from "@/modules/problem";
+import { ResumesService } from "@/modules/resumes";
 import { SampleService } from "@/modules/sample";
 import { hume } from "@/services/hume";
 import { judge0 } from "@/services/judge0/judge0";
@@ -44,6 +45,9 @@ export class ServicesFactory {
           break;
         case Services.DASHBOARD:
           this._services.set(service, new DashboardService(prisma));
+          break;
+        case Services.RESUMES:
+          this._services.set(service, new ResumesService(prisma));
           break;
         case Services.ADMIN_USERS:
           this._services.set(service, new AdminUsersService(prisma));
