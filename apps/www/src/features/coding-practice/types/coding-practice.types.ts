@@ -24,6 +24,7 @@ export interface SubmissionResult {
   passed: boolean;
   output: string | null;
   error: string | null;
+  expected: string | null;
 }
 
 export interface LastSubmission {

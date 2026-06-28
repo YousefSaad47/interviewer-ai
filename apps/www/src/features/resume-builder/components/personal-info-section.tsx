@@ -146,8 +146,7 @@ export const PersonalInfoSection = () => {
             </Label>
             <Input
               {...register("github", {
-                onChange: (e) =>
-                  updatePersonalInfo({ github: e.target.value }),
+                onChange: (e) => updatePersonalInfo({ github: e.target.value }),
               })}
               type="text"
               placeholder="github.com/username"

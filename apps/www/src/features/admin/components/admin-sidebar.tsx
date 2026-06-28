@@ -6,11 +6,13 @@ import { Brain, ChevronRight, LogOut, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@/lib";
+import { authClient } from "@/services";
 import { ThemeToggle } from "@/shared/components";
 import { Button } from "@/shared/ui";
 
 import { adminSections } from "../data";
 import type { AdminSection } from "../types";
+import { formatEnumLabel } from "../utils";
 import { Avatar } from "./admin-primitives";
 
 export function AdminSidebar({
@@ -24,6 +26,11 @@ export function AdminSidebar({
   onOpenChange: (open: boolean) => void;
   open: boolean;
 }) {
+  const { data: session } = authClient.useSession();
+  const user = session?.user as (NonNullable<typeof session>["user"] & { role?: string }) | undefined;
+  const userName = user?.name ?? "Admin User";
+  const userRole = user?.role ? formatEnumLabel(user.role) : "Admin";
+
   const content = (
     <aside className="flex h-full w-[280px] flex-col border-border/70 border-r bg-sidebar/88 px-4 py-5 backdrop-blur-xl">
       <Link className="mb-7 flex items-center gap-2 px-2" href="/">
@@ -70,16 +77,17 @@ export function AdminSidebar({
           <ThemeToggle className="h-9 w-9 rounded-lg" />
         </div>
         <div className="flex items-center gap-3 rounded-lg border border-border bg-card/70 p-3">
-          <Avatar name="Karim Amin" />
+          <Avatar name={userName} />
           <div className="min-w-0 flex-1">
-            <p className="truncate font-semibold text-sm">Karim Amin</p>
+            <p className="truncate font-semibold text-sm">{userName}</p>
             <p className="truncate text-muted-foreground text-xs">
-              Super Admin
+              {userRole}
             </p>
           </div>
         </div>
         <Button
           className="w-full justify-start gap-2 rounded-lg"
+          onClick={() => authClient.signOut()}
           variant="ghost"
         >
           <LogOut className="size-4" />

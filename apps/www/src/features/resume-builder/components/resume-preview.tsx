@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, Phone, Mail, Linkedin, Github } from "lucide-react";
+import { Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui";
 
@@ -19,7 +19,7 @@ export function ResumePreview() {
       .filter(Boolean);
 
     return (
-      <ul className="list-disc pl-4 mt-0.5 text-[11px] leading-relaxed text-gray-800 space-y-0.5">
+      <ul className="mt-0.5 list-disc space-y-0.5 pl-4 text-[11px] text-gray-800 leading-relaxed">
         {lines.map((line, idx) => (
           <li key={idx}>{line}</li>
         ))}
@@ -58,7 +58,7 @@ export function ResumePreview() {
         }
       `}</style>
 
-      <Card className="overflow-hidden rounded-lg border-border bg-card/80 lg:sticky lg:top-25 dark:bg-card/90 no-print">
+      <Card className="no-print overflow-hidden rounded-lg border-border bg-card/80 lg:sticky lg:top-25 dark:bg-card/90">
         <CardHeader className="border-border border-b pb-4">
           <CardTitle className="font-bold text-foreground text-xl">
             Resume Preview
@@ -70,32 +70,38 @@ export function ResumePreview() {
 
         <CardContent className="bg-surface-product/60 p-4 dark:bg-surface-secondary/45">
           {/* Printable container */}
-          <div className="print-page-container mx-auto min-h-[840px] rounded-sm bg-white p-8 text-black shadow-[0_18px_50px_rgba(15,23,42,0.12)] border border-gray-200">
+          <div className="print-page-container mx-auto min-h-[840px] rounded-sm border border-gray-200 bg-white p-8 text-black shadow-[0_18px_50px_rgba(15,23,42,0.12)]">
             {/* Header / Personal Details */}
             <header className="text-center">
-              <h1 className="font-bold text-3xl tracking-tight text-black" style={{ fontFamily: "Georgia, serif" }}>
+              <h1
+                className="font-bold text-3xl text-black tracking-tight"
+                style={{ fontFamily: "Georgia, serif" }}
+              >
                 {personalInfo.fullName || "Your Name"}
               </h1>
 
-              <div className="mt-3.5 grid grid-cols-2 text-[11px] sm:text-xs text-gray-700 pb-3 border-b border-gray-100">
+              <div className="mt-3.5 grid grid-cols-2 border-gray-100 border-b pb-3 text-[11px] text-gray-700 sm:text-xs">
                 {/* Left column details */}
-                <div className="space-y-0.5 text-left pl-2">
+                <div className="space-y-0.5 pl-2 text-left">
                   {personalInfo.location && (
                     <div className="flex items-center gap-1">
-                      <MapPin className="h-3.5 w-3.5 text-gray-900 shrink-0" />
+                      <MapPin className="h-3.5 w-3.5 shrink-0 text-gray-900" />
                       <span>{personalInfo.location}</span>
                     </div>
                   )}
                   {personalInfo.phone && (
                     <div className="flex items-center gap-1">
-                      <Phone className="h-3.5 w-3.5 text-gray-900 shrink-0" />
+                      <Phone className="h-3.5 w-3.5 shrink-0 text-gray-900" />
                       <span>{personalInfo.phone}</span>
                     </div>
                   )}
                   {personalInfo.email && (
                     <div className="flex items-center gap-1">
-                      <Mail className="h-3.5 w-3.5 text-gray-900 shrink-0" />
-                      <a href={`mailto:${personalInfo.email}`} className="text-[#0969da] hover:underline print-link">
+                      <Mail className="h-3.5 w-3.5 shrink-0 text-gray-900" />
+                      <a
+                        href={`mailto:${personalInfo.email}`}
+                        className="print-link text-[#0969da] hover:underline"
+                      >
                         {personalInfo.email}
                       </a>
                     </div>
@@ -103,15 +109,19 @@ export function ResumePreview() {
                 </div>
 
                 {/* Right column details */}
-                <div className="space-y-0.5 text-left pl-6 sm:pl-12">
+                <div className="space-y-0.5 pl-6 text-left sm:pl-12">
                   {personalInfo.linkedin && (
                     <div className="flex items-center gap-1">
-                      <Linkedin className="h-3.5 w-3.5 text-[#0077b5] shrink-0" />
+                      <Linkedin className="h-3.5 w-3.5 shrink-0 text-[#0077b5]" />
                       <a
-                        href={personalInfo.linkedin.startsWith("http") ? personalInfo.linkedin : `https://${personalInfo.linkedin}`}
+                        href={
+                          personalInfo.linkedin.startsWith("http")
+                            ? personalInfo.linkedin
+                            : `https://${personalInfo.linkedin}`
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#0969da] hover:underline print-link break-all"
+                        className="print-link break-all text-[#0969da] hover:underline"
                       >
                         {personalInfo.linkedin}
                       </a>
@@ -119,12 +129,16 @@ export function ResumePreview() {
                   )}
                   {personalInfo.github && (
                     <div className="flex items-center gap-1">
-                      <Github className="h-3.5 w-3.5 text-gray-900 shrink-0" />
+                      <Github className="h-3.5 w-3.5 shrink-0 text-gray-900" />
                       <a
-                        href={personalInfo.github.startsWith("http") ? personalInfo.github : `https://${personalInfo.github}`}
+                        href={
+                          personalInfo.github.startsWith("http")
+                            ? personalInfo.github
+                            : `https://${personalInfo.github}`
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#0969da] hover:underline print-link break-all"
+                        className="print-link break-all text-[#0969da] hover:underline"
                       >
                         {personalInfo.github}
                       </a>
@@ -139,11 +153,11 @@ export function ResumePreview() {
               {/* Professional Summary */}
               {personalInfo.summary && (
                 <section>
-                  <h2 className="text-xs font-bold text-black uppercase tracking-wider">
+                  <h2 className="font-bold text-black text-xs uppercase tracking-wider">
                     Professional Summary
                   </h2>
-                  <hr className="border-t border-gray-400 mt-0.5 mb-1.5" />
-                  <p className="text-[11.5px] leading-relaxed text-gray-800 text-justify">
+                  <hr className="mt-0.5 mb-1.5 border-gray-400 border-t" />
+                  <p className="text-justify text-[11.5px] text-gray-800 leading-relaxed">
                     {personalInfo.summary}
                   </p>
                 </section>
@@ -152,18 +166,27 @@ export function ResumePreview() {
               {/* Education */}
               {education && education.length > 0 && (
                 <section>
-                  <h2 className="text-xs font-bold text-black uppercase tracking-wider">
+                  <h2 className="font-bold text-black text-xs uppercase tracking-wider">
                     Education
                   </h2>
-                  <hr className="border-t border-gray-400 mt-0.5 mb-1.5" />
+                  <hr className="mt-0.5 mb-1.5 border-gray-400 border-t" />
                   <div className="space-y-1">
                     {education.map((edu) => (
-                      <div key={edu.id} className="flex justify-between items-baseline gap-4 text-[11.5px]">
+                      <div
+                        key={edu.id}
+                        className="flex items-baseline justify-between gap-4 text-[11.5px]"
+                      >
                         <div>
-                          <span className="font-bold text-black">{edu.school}</span>
-                          {edu.degree && <span className="text-gray-800">, {edu.degree}</span>}
+                          <span className="font-bold text-black">
+                            {edu.school}
+                          </span>
+                          {edu.degree && (
+                            <span className="text-gray-800">
+                              , {edu.degree}
+                            </span>
+                          )}
                         </div>
-                        <div className="shrink-0 text-gray-900 font-medium">
+                        <div className="shrink-0 font-medium text-gray-900">
                           {edu.year}
                         </div>
                       </div>
@@ -175,19 +198,26 @@ export function ResumePreview() {
               {/* Experience */}
               {workExperience && workExperience.length > 0 && (
                 <section>
-                  <h2 className="text-xs font-bold text-black uppercase tracking-wider">
+                  <h2 className="font-bold text-black text-xs uppercase tracking-wider">
                     Experience
                   </h2>
-                  <hr className="border-t border-gray-400 mt-0.5 mb-1.5" />
+                  <hr className="mt-0.5 mb-1.5 border-gray-400 border-t" />
                   <div className="space-y-2">
                     {workExperience.map((exp) => (
                       <article key={exp.id} className="space-y-0.5">
-                        <div className="flex justify-between items-baseline gap-4 text-[11.5px]">
+                        <div className="flex items-baseline justify-between gap-4 text-[11.5px]">
                           <div>
-                            <span className="font-bold text-black">{exp.position}</span>
-                            {exp.company && <span className="text-gray-800"> at {exp.company}</span>}
+                            <span className="font-bold text-black">
+                              {exp.position}
+                            </span>
+                            {exp.company && (
+                              <span className="text-gray-800">
+                                {" "}
+                                at {exp.company}
+                              </span>
+                            )}
                           </div>
-                          <div className="shrink-0 text-gray-900 font-medium">
+                          <div className="shrink-0 font-medium text-gray-900">
                             {exp.duration}
                           </div>
                         </div>
@@ -201,29 +231,34 @@ export function ResumePreview() {
               {/* Projects */}
               {projects && projects.length > 0 && (
                 <section>
-                  <h2 className="text-xs font-bold text-black uppercase tracking-wider">
+                  <h2 className="font-bold text-black text-xs uppercase tracking-wider">
                     Projects
                   </h2>
-                  <hr className="border-t border-gray-400 mt-0.5 mb-1.5" />
+                  <hr className="mt-0.5 mb-1.5 border-gray-400 border-t" />
                   <div className="space-y-2">
                     {projects.map((proj) => (
                       <article key={proj.id} className="space-y-0.5">
-                        <div className="flex justify-between items-baseline gap-4 text-[11.5px]">
-                          <div className="font-bold text-black">{proj.name}</div>
+                        <div className="flex items-baseline justify-between gap-4 text-[11.5px]">
+                          <div className="font-bold text-black">
+                            {proj.name}
+                          </div>
                           {proj.url && (
                             <div className="shrink-0">
                               <a
                                 href={proj.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[#0969da] hover:underline print-link font-medium"
+                                className="print-link font-medium text-[#0969da] hover:underline"
                               >
-                                {proj.url.includes("github.com") ? "GitHub" : "Live Demo"}
+                                {proj.url.includes("github.com")
+                                  ? "GitHub"
+                                  : "Live Demo"}
                               </a>
                             </div>
                           )}
                         </div>
-                        {proj.description && renderBulletPoints(proj.description)}
+                        {proj.description &&
+                          renderBulletPoints(proj.description)}
                       </article>
                     ))}
                   </div>
@@ -233,24 +268,30 @@ export function ResumePreview() {
               {/* Technical Skills */}
               {skills && skills.length > 0 && (
                 <section>
-                  <h2 className="text-xs font-bold text-black uppercase tracking-wider">
+                  <h2 className="font-bold text-black text-xs uppercase tracking-wider">
                     Technical Skills
                   </h2>
-                  <hr className="border-t border-gray-400 mt-0.5 mb-1.5" />
+                  <hr className="mt-0.5 mb-1.5 border-gray-400 border-t" />
                   <div className="space-y-0.5 text-[11px] leading-relaxed">
                     {Array.isArray(skills) && typeof skills[0] === "string" ? (
                       // Handle fallback to flat array representation
                       <div>
                         <span className="font-bold text-black">Skills: </span>
-                        <span className="text-gray-800">{(skills as string[]).join(", ")}</span>
+                        <span className="text-gray-800">
+                          {(skills as string[]).join(", ")}
+                        </span>
                       </div>
                     ) : (
                       // Handle categorized format representation
                       (skills as SkillCategory[]).map((cat) => (
                         <div key={cat.id}>
-                          <span className="font-bold text-black">{cat.category}: </span>
+                          <span className="font-bold text-black">
+                            {cat.category}:{" "}
+                          </span>
                           <span className="text-gray-800">
-                            {Array.isArray(cat.items) ? cat.items.join(", ") : ""}
+                            {Array.isArray(cat.items)
+                              ? cat.items.join(", ")
+                              : ""}
                           </span>
                         </div>
                       ))

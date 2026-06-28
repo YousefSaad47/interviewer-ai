@@ -1,8 +1,6 @@
-import { Bell, Menu, Search } from "lucide-react";
+import { Menu } from "lucide-react";
 
 import { Button } from "@/shared/ui";
-
-import { Avatar } from "./admin-primitives";
 
 export function AdminTopbar({
   title,
@@ -31,23 +29,6 @@ export function AdminTopbar({
             {title}
           </h1>
         </div>
-        <div className="hidden w-full max-w-sm items-center gap-2 rounded-lg border border-input bg-card/70 px-3 py-2 shadow-xs md:flex">
-          <Search className="size-4 text-muted-foreground" />
-          <input
-            className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-            placeholder="Search users, sessions, admins"
-            type="search"
-          />
-        </div>
-        <Button
-          aria-label="Notifications"
-          className="h-10 w-10 rounded-lg"
-          size="icon"
-          variant="outline"
-        >
-          <Bell className="size-4" />
-        </Button>
-        <Avatar name="Karim Amin" />
       </div>
     </header>
   );

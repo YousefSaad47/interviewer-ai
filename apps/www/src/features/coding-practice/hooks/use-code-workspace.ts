@@ -12,7 +12,6 @@ import type {
   Language,
   LastSubmission,
   RunResult,
-  SubmissionResult,
 } from "../types";
 import { LANGUAGE_STARTER_CODE } from "../utils/language-starter-code";
 
@@ -27,19 +26,15 @@ const isLanguage = (value: string): value is Language => {
   return value in LANGUAGE_STARTER_CODE;
 };
 
-const mapSubmission = (data: {
-  status?: string;
-  executionTimeMs?: number | null;
-  memoryUsedKb?: number | null;
-  results?: SubmissionResult[];
-}): LastSubmission => ({
+const mapSubmission = (data: any): LastSubmission => ({
   status: data.status ?? "ERROR",
   executionTimeMs: data.executionTimeMs ?? null,
   memoryUsedKb: data.memoryUsedKb ?? null,
-  results: (data.results ?? []).map((result) => ({
+  results: (data.results ?? []).map((result: any) => ({
     passed: result.passed,
     output: result.output,
     error: result.error,
+    expected: result.testCase?.output ?? null,
   })),
 });
 
@@ -129,10 +124,16 @@ export function useCodeWorkspace(problemId: string) {
         data: { problemId, code, language },
       },
       {
-        onSuccess: (initialData: CodingSubmitResponse) => {
+        onSuccess: async (initialData: CodingSubmitResponse) => {
           if (initialData?.status !== "PENDING") {
-            setIsPolling(false);
-            setLastSubmission(mapSubmission(initialData));
+            try {
+              const fullData = await getCodingSubmission(initialData.id);
+              setIsPolling(false);
+              setLastSubmission(mapSubmission(fullData));
+            } catch {
+              setIsPolling(false);
+              setLastSubmission(ERROR_SUBMISSION);
+            }
             return;
           }
 

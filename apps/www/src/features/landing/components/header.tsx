@@ -20,9 +20,9 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/ui";
 
-export function Header() {
+export function Header({ scrolled: externalScrolled }: { scrolled?: boolean } = {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolledState, setScrolledState] = useState(false);
   const { scrollYProgress } = useScroll();
   const [selectedTab, setSelectedTab] = useState<number | null>(null);
   const pathname = usePathname();
@@ -39,11 +39,14 @@ export function Header() {
   );
 
   useEffect(() => {
+    if (externalScrolled !== undefined) return;
     const unsubscribe = scrollYProgress.on("change", (latest) => {
-      setScrolled(latest > 0.03);
+      setScrolledState(latest > 0.03);
     });
     return () => unsubscribe();
-  }, [scrollYProgress]);
+  }, [scrollYProgress, externalScrolled]);
+
+  const scrolled = externalScrolled !== undefined ? externalScrolled : scrolledState;
 
   return (
     <header>
