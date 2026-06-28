@@ -165,7 +165,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="relative z-10 flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-slate-500 text-xs dark:text-[#ACBAB5]/50">
-            © 2025 Interview.Ai. All rights Reserved.
+            © 2026 Interview.Ai. All rights Reserved.
           </p>
           <div className="flex items-center gap-8">
             <Link

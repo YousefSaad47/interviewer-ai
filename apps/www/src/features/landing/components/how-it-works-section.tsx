@@ -6,7 +6,7 @@ export function HowItWorksSection() {
       number: "01",
       title: "Sign Up & Set Goals",
       description:
-        "Create your account and tell us about your target role, company, and timeline. Our AI will customize your preparation path.",
+        "Sign up, set your target role, company, and timeline. Our AI engine quickly designs a custom interview preparation roadmap for you now.",
       icon: (
         <svg
           className="h-8 w-8"
@@ -27,7 +27,7 @@ export function HowItWorksSection() {
       number: "02",
       title: "Practice with AI",
       description:
-        "Choose from technical coding challenges, behavioral questions, or system design interviews. Get instant feedback and guidance.",
+        "Choose from coding challenges, behavioral questions, or system design topics. Practice interactive mock interviews and receive instant, detailed AI feedback now.",
       icon: (
         <svg
           className="h-8 w-8"
@@ -48,7 +48,7 @@ export function HowItWorksSection() {
       number: "03",
       title: "Get Detailed Feedback",
       description:
-        "Receive comprehensive analysis of your performance including strengths, areas for improvement, and personalized recommendations.",
+        "Receive a detailed breakdown of your performance and communication skills. Identify key strengths and focus areas to gain improvements.",
       icon: (
         <svg
           className="h-8 w-8"
@@ -69,7 +69,7 @@ export function HowItWorksSection() {
       number: "04",
       title: "Track & Improve",
       description:
-        "Monitor your progress with analytics dashboards. Build confidence through consistent practice and measurable improvement.",
+        "Track daily progress and score trends using clean dashboards. Build confidence through structured practice and measurable growth today.",
       icon: (
         <svg
           className="h-8 w-8"

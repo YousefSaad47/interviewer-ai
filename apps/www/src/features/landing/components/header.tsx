@@ -5,24 +5,23 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Brain, LogOut, Settings, User } from "lucide-react";
+import { Brain, LogOut } from "lucide-react";
 import { AnimatePresence, motion, useScroll } from "motion/react";
 
 import { cn } from "@/lib";
 import { authClient } from "@/services";
-import { Menu, SettingsIcon, ThemeToggle } from "@/shared/components";
+import { Menu, ThemeToggle } from "@/shared/components";
 import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/ui";
 
-export function Header() {
+export function Header({ scrolled: externalScrolled }: { scrolled?: boolean } = {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolledState, setScrolledState] = useState(false);
   const { scrollYProgress } = useScroll();
   const [selectedTab, setSelectedTab] = useState<number | null>(null);
   const pathname = usePathname();
@@ -39,11 +38,14 @@ export function Header() {
   );
 
   useEffect(() => {
+    if (externalScrolled !== undefined) return;
     const unsubscribe = scrollYProgress.on("change", (latest) => {
-      setScrolled(latest > 0.03);
+      setScrolledState(latest > 0.03);
     });
     return () => unsubscribe();
-  }, [scrollYProgress]);
+  }, [scrollYProgress, externalScrolled]);
+
+  const scrolled = externalScrolled !== undefined ? externalScrolled : scrolledState;
 
   return (
     <header>
@@ -121,13 +123,6 @@ export function Header() {
 
               {isPending ? null : session ? (
                 <>
-                  <Link
-                    href="/settings"
-                    className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-accent"
-                    aria-label="Settings"
-                  >
-                    <SettingsIcon size={20} />
-                  </Link>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button
@@ -152,19 +147,6 @@ export function Header() {
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-48">
-                      <DropdownMenuItem asChild>
-                        <Link href="/profile" className="cursor-pointer">
-                          <User className="mr-2 size-4" />
-                          Profile
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/settings" className="cursor-pointer">
-                          <Settings className="mr-2 size-4" />
-                          Settings
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
                       <DropdownMenuItem
                         variant="destructive"
                         onClick={() => authClient.signOut()}
@@ -256,27 +238,6 @@ export function Header() {
                         </button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-48">
-                        <DropdownMenuItem asChild>
-                          <Link
-                            href="/profile"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="cursor-pointer"
-                          >
-                            <User className="mr-2 size-4" />
-                            Profile
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link
-                            href="/settings"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="cursor-pointer"
-                          >
-                            <Settings className="mr-2 size-4" />
-                            Settings
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                           variant="destructive"
                           onClick={() => {

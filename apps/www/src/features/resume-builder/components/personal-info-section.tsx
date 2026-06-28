@@ -126,6 +126,33 @@ export const PersonalInfoSection = () => {
               </p>
             )}
           </div>
+          <div className="flex-1 space-y-2">
+            <Label className="font-semibold text-foreground text-xs">
+              LinkedIn URL
+            </Label>
+            <Input
+              {...register("linkedin", {
+                onChange: (e) =>
+                  updatePersonalInfo({ linkedin: e.target.value }),
+              })}
+              type="text"
+              placeholder="linkedin.com/in/username"
+              className="h-10 rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border dark:bg-surface-secondary/70"
+            />
+          </div>
+          <div className="flex-1 space-y-2">
+            <Label className="font-semibold text-foreground text-xs">
+              GitHub URL
+            </Label>
+            <Input
+              {...register("github", {
+                onChange: (e) => updatePersonalInfo({ github: e.target.value }),
+              })}
+              type="text"
+              placeholder="github.com/username"
+              className="h-10 rounded-lg border-border bg-white/70 shadow-none focus-visible:ring-primary/20 dark:border-border dark:bg-surface-secondary/70"
+            />
+          </div>
         </div>
 
         <div className="space-y-2">
