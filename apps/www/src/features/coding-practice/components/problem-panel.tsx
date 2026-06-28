@@ -12,7 +12,7 @@ import {
   Tag,
 } from "lucide-react";
 
-import { Badge, ScrollArea } from "@/shared/ui";
+import { Badge } from "@/shared/ui";
 
 import { ExampleCase } from "./example-case";
 import { getProblemMetadata } from "./problem-metadata";
@@ -85,9 +85,8 @@ export function ProblemPanel({ problem }: ProblemPanelProps) {
   }
 
   return (
-    <div className="flex h-full flex-col bg-background/30 px-4 pt-6 sm:px-6 sm:pt-8 md:px-8 md:pt-10 lg:px-10 lg:pt-10">
-      <ScrollArea className="flex-1 pr-1.5">
-        <div className="mx-auto w-full max-w-3xl space-y-8 pb-16">
+    <div className="bg-background/30 px-4 pt-6 sm:px-6 sm:pt-8 md:px-8 md:pt-10 lg:px-10 lg:pt-10">
+      <div className="mx-auto w-full max-w-3xl space-y-8 pb-16">
           {/* Header */}
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-2.5">
@@ -277,7 +276,6 @@ export function ProblemPanel({ problem }: ProblemPanelProps) {
             </section>
           )}
         </div>
-      </ScrollArea>
     </div>
   );
 }

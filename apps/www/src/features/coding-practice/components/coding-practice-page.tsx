@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Header } from "@/features/landing";
 import { useProblemDetail } from "@/features/problems";
@@ -22,10 +22,14 @@ export function CodingPracticePage({ slug }: CodingPracticePageProps) {
   const [showProblem, setShowProblem] = useState(true);
   const { data: problem, isLoading } = useProblemDetail(slug ?? undefined);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   if (!slug) {
     return (
       <div className="relative h-screen w-full bg-background">
-        <Header />
+        <Header scrolled={false} />
         <div className="flex h-[calc(100%-4rem)] items-center justify-center pt-16">
           <p className="text-lg text-muted-foreground">
             Select a problem from the{" "}
@@ -41,7 +45,7 @@ export function CodingPracticePage({ slug }: CodingPracticePageProps) {
   if (isLoading) {
     return (
       <div className="relative h-screen w-full bg-background">
-        <Header />
+        <Header scrolled={false} />
         <div className="flex h-[calc(100%-4rem)] items-center justify-center pt-16">
           <Skeleton className="h-96 w-full max-w-4xl rounded-lg" />
         </div>
@@ -52,7 +56,7 @@ export function CodingPracticePage({ slug }: CodingPracticePageProps) {
   if (!problem) {
     return (
       <div className="relative h-screen w-full bg-background">
-        <Header />
+        <Header scrolled={false} />
         <div className="flex h-[calc(100%-4rem)] items-center justify-center pt-16">
           <p className="text-lg text-muted-foreground">Problem not found</p>
         </div>
@@ -77,7 +81,7 @@ export function CodingPracticePage({ slug }: CodingPracticePageProps) {
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-background">
-      <Header />
+      <Header scrolled={false} />
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.39] dark:opacity-[0.2]"
         style={{

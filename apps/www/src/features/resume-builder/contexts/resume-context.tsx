@@ -15,8 +15,8 @@ import type {
   PersonalInfo,
   Project,
   ResumeData,
-  WorkExperience,
   SkillCategory,
+  WorkExperience,
 } from "../types";
 
 interface ResumeContextType {
@@ -49,136 +49,105 @@ const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
 
 const initialData: ResumeData = {
   personalInfo: {
-    fullName: "Mohamed Abdel Kareem",
-    email: "mohamedabdelkreem770@gmail.com",
-    phone: "+201016493339",
-    location: "Cairo, Egypt",
+    fullName: "Daniel Covington",
+    email: "daniel.covington@example.com",
+    phone: "+14155552671",
+    location: "San Francisco, CA",
     summary:
-      "Backend-focused Software Engineer specializing in secure, scalable RESTful APIs and production-grade authentication systems using Node.js, TypeScript, and PostgreSQL. Experienced in relational database modeling, cloud integrations, and API security hardening. Delivers complete solutions with React on the frontend. Proven problem solver — 2× ECPC Finalist and competitive programming coach to 150+ students.",
-    linkedin: "linkedin.com/in/mohamed-abdel-kareem-08a550216",
-    github: "github.com/Mohamd-Abdelkreem",
+      "Senior Frontend Engineer with 6+ years of experience specializing in React, Next.js, and TypeScript. Passionate about building high-performance web applications with exceptional user experience, fluid animations, and robust state management. Strong collaborator with designers and product managers to translate complex requirements into clean, maintainable code.",
+    linkedin: "linkedin.com/in/daniel-covington",
+    github: "github.com/daniel-covington",
   },
-  workExperience: [],
+  workExperience: [
+    {
+      id: "w-1",
+      company: "PixelCraft Studios",
+      position: "Senior Frontend Engineer",
+      duration: "2022-03 - Present",
+      description:
+        "Led the development of a collaborative real-time UI editor using React, TypeScript, and WebSockets. Optimized bundle sizes by 35% through dynamic imports and tree-shaking. Mentored junior developers and established frontend coding standards.",
+    },
+    {
+      id: "w-2",
+      company: "TechFlow Inc",
+      position: "Frontend Developer",
+      duration: "2020-01 - 2022-02",
+      description:
+        "Built and maintained responsive SaaS dashboards using React and Redux. Integrated complex RESTful APIs and optimized client-side performance. Collaborated closely with UI/UX designers to implement pixel-perfect user interfaces.",
+    },
+  ],
   projects: [
     {
       id: "p-1",
-      name: "Event Ticket Booking System",
-      role: "",
-      duration: "",
+      name: "Design System Builder",
+      role: "Lead Developer",
+      duration: "Jun 2023 - Dec 2023",
       description:
-        "Backend ticketing platform (Node.js, Express, TypeScript, Prisma, PostgreSQL) where organizers manage events and users book, pay via Stripe, and receive QR-coded tickets. Features atomic booking transactions, auto-refunds on cancellation, gate validation, JWT rotation, TOTP 2FA, Google/GitHub OAuth, AWS S3 uploads, rate limiting, and audit logging.",
-      url: "https://github.com/Mohamd-Abdelkreem",
+        "Open-source design system builder built with React, TypeScript, and Tailwind CSS. Enables design teams to visually construct, theme, and export production-ready Tailwind/CSS variables and React components. Features live preview, accessibility (WCAG 2.1 AA) validation, and Figma token syncing.",
+      url: "https://github.com/sarahj-codes/design-system-builder",
     },
     {
       id: "p-2",
-      name: "Social Media REST API",
-      role: "",
-      duration: "",
+      name: "E-Commerce Checkout Funnel",
+      role: "Frontend Engineer",
+      duration: "Jan 2024 - Present",
       description:
-        "Backend platform (Node.js, Express, TypeScript, Prisma, PostgreSQL) where users create posts, follow/block others, send friend requests, and browse a personalized feed. Secured with JWT refresh rotation, TOTP 2FA, Google OAuth, AWS S3, rate limiting, and parameterized queries.",
-      url: "https://github.com/Mohamd-Abdelkreem",
+        "Redesigned and rebuilt the multi-step checkout funnel for a high-traffic e-commerce platform using Next.js and Stripe. Conducted A/B testing and reduced cart abandonment rates by 18%.",
+      url: "https://github.com/sarahj-codes/checkout-ux",
     },
     {
       id: "p-3",
-      name: "Anonymous Messaging Backend (Saraha)",
-      role: "",
-      duration: "",
+      name: "Interactive Analytics Dashboard",
+      role: "Frontend Developer",
+      duration: "Feb 2023 - May 2023",
       description:
-        "Anonymous messaging platform (Node.js, Express, MongoDB) where users share a profile link to receive messages without revealing sender identity. Features JWT auth, OTP email verification, Google OAuth 2.0, Cloudinary uploads, and modular MVC architecture.",
-      url: "https://github.com/Mohamd-Abdelkreem",
-    },
-    {
-      id: "p-4",
-      name: "News & Blog Platform",
-      role: "",
-      duration: "",
-      description:
-        "React SPA where users browse real-time news, check live weather, and publish personal blog posts with full CRUD. Integrated multiple third-party REST APIs with responsive UI and efficient state management.",
-      url: "https://github.com/Mohamd-Abdelkreem",
-    },
-    {
-      id: "p-5",
-      name: "Cryptocurrency Price Tracker",
-      role: "",
-      duration: "",
-      description:
-        "React dashboard where users track real-time crypto prices, visualize historical trends via interactive charts, and convert between currencies using CoinGecko API with client-side data caching.",
-      url: "https://github.com/Mohamd-Abdelkreem",
-    },
-    {
-      id: "p-6",
-      name: "Movie Search & Discovery",
-      role: "",
-      duration: "",
-      description:
-        "React app where users search, filter, and discover trending movies powered by TMDb REST API, built with Tailwind CSS for responsive mobile-first design with real-time search and pagination.",
-      url: "https://github.com/Mohamd-Abdelkreem",
+        "Real-time SaaS metrics dashboard built with Vue.js, D3.js, and Pinia. Implemented complex interactive charts, custom filters, and light/dark mode switching.",
+      url: "https://github.com/sarahj-codes/dashboard-viz",
     },
   ],
   education: [
     {
       id: "e-1",
-      school: "Higher Technological Institute",
-      degree: "BS in Computer Science – 10th of Ramadan City, Egypt",
-      year: "2022 – 2026 (Expected)",
-    },
-    {
-      id: "e-2",
-      school: "Route Academy",
-      degree: "Node.js Development Course",
-      year: "2025 (Completed)",
+      school: "University of California, Berkeley",
+      degree: "B.S. in Cognitive Science (Human-Computer Interaction)",
+      year: "2016 – 2020",
     },
   ],
   skills: [
     {
       id: "s-1",
-      category: "Backend",
+      category: "Frontend Development",
       items: [
-        "Node.js",
-        "Express.js",
+        "React",
+        "Next.js",
         "TypeScript",
-        "RESTful API Design",
-        "JWT & OAuth Authentication",
-        "PostgreSQL",
-        "MongoDB",
-        "Prisma ORM",
-        "Security (Helmet, CORS, rate-limiting, input validation)",
+        "JavaScript (ES6+)",
+        "HTML5 / CSS3",
+        "Tailwind CSS",
+        "Framer Motion",
+        "State Management (Redux, Zustand)",
       ],
     },
     {
       id: "s-2",
-      category: "Frontend",
+      category: "Testing & Tools",
       items: [
-        "React",
-        "JavaScript (ES6+)",
-        "HTML5",
-        "CSS3",
-        "Tailwind CSS",
-        "Responsive Design",
+        "Jest",
+        "Cypress",
+        "React Testing Library",
+        "Webpack / Vite",
+        "Storybook",
       ],
     },
     {
       id: "s-3",
-      category: "Core CS",
+      category: "Workflow & Cloud",
       items: [
-        "Data Structures",
-        "Algorithms",
-        "OOP",
-        "Database Design",
-        "C++ (Advanced/ICPC-level)",
-      ],
-    },
-    {
-      id: "s-4",
-      category: "DevOps & Tools",
-      items: [
-        "Git/GitHub",
-        "VS Code",
-        "Postman",
-        "AWS S3",
-        "Docker",
-        "Command Line",
-        "npm",
+        "Git / GitHub",
+        "CI / CD (GitHub Actions)",
+        "Figma / Figma API",
+        "Vercel / AWS S3",
+        "npm / bun",
       ],
     },
   ],
@@ -478,7 +447,9 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
       }
       return {
         ...prev,
-        skills: (currentSkills as SkillCategory[]).filter((cat) => cat.id !== id),
+        skills: (currentSkills as SkillCategory[]).filter(
+          (cat) => cat.id !== id,
+        ),
       };
     });
   };
