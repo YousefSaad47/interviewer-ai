@@ -40,6 +40,81 @@ function parseEmotionScores(emotionFeatures: string | undefined) {
   }
 }
 
+const POSITIVE_EMOTIONS = [
+  "Calmness",
+  "Concentration",
+  "Determination",
+  "Satisfaction",
+  "Contentment",
+  "Joy",
+  "Excitement",
+  "Interest",
+  "Pride",
+  "Triumph",
+  "Amusement",
+  "Admiration",
+  "Relief",
+  "Love",
+  "Awe",
+  "Surprise (positive)",
+];
+
+const NEGATIVE_EMOTIONS = [
+  "Anger",
+  "Anxiety",
+  "Confusion",
+  "Sadness",
+  "Fear",
+  "Distress",
+  "Disappointment",
+  "Embarrassment",
+  "Boredom",
+  "Doubt",
+  "Awkwardness",
+  "Shame",
+  "Guilt",
+  "Tiredness",
+  "Contempt",
+  "Pain",
+  "Horror",
+  "Disgust",
+];
+
+function computeConfidence(scores: Record<string, number>): number | null {
+  const determination = scores["Determination"] ?? 0;
+  const calmness = scores["Calmness"] ?? 0;
+  const concentration = scores["Concentration"] ?? 0;
+  const anxiety = scores["Anxiety"] ?? 0;
+  const doubt = scores["Doubt"] ?? 0;
+  const embarrassment = scores["Embarrassment"] ?? 0;
+  const interest = scores["Interest"] ?? 0;
+
+  const confident = determination + calmness + concentration + interest;
+  const anxious = anxiety + doubt + embarrassment;
+
+  const raw = (confident - anxious + 4) / 8;
+  return Math.round(Math.max(0, Math.min(100, raw * 100)));
+}
+
+function computeFluency(scores: Record<string, number>): number | null {
+  const confusion = scores["Confusion"] ?? 0;
+  const awkwardness = scores["Awkwardness"] ?? 0;
+  const tiredness = scores["Tiredness"] ?? 0;
+  const boredom = scores["Boredom"] ?? 0;
+
+  const disfluent = confusion + awkwardness + tiredness + boredom;
+  const raw = (1 - disfluent + 3) / 4;
+  return Math.round(Math.max(0, Math.min(100, raw * 100)));
+}
+
+function computeSentiment(scores: Record<string, number>): number | null {
+  const sumPos = POSITIVE_EMOTIONS.reduce((s, e) => s + (scores[e] ?? 0), 0);
+  const sumNeg = NEGATIVE_EMOTIONS.reduce((s, e) => s + (scores[e] ?? 0), 0);
+  const total = sumPos + sumNeg;
+  if (total === 0) return null;
+  return Math.round((sumPos / total) * 100);
+}
+
 export class InterviewService extends AbstractService {
   constructor(
     prisma: PrismaClient,
@@ -86,9 +161,11 @@ export class InterviewService extends AbstractService {
           difficulty: input.difficulty,
         },
         take: input.questionCount,
-        orderBy: { createdAt: "desc" },
+        orderBy: { createdAt: "asc" },
       });
     }
+
+    questions.sort((a, b) => a.text.localeCompare(b.text));
 
     await this.prisma.interviewQuestion.createMany({
       data: questions.map((q, i) => ({
@@ -150,9 +227,9 @@ export class InterviewService extends AbstractService {
 
       const scores = parseEmotionScores(msg.emotionFeatures);
 
-      const fluencyScore = scores["fluency"] ?? null;
-      const confidenceScore = scores["confidence"] ?? null;
-      const sentimentScore = scores["sentiment"] ?? null;
+      const fluencyScore = computeFluency(scores);
+      const confidenceScore = computeConfidence(scores);
+      const sentimentScore = computeSentiment(scores);
 
       const answer = await this.prisma.answer.create({
         data: {
@@ -271,6 +348,88 @@ export class InterviewService extends AbstractService {
       where: { id: interview.id },
       data: { currentQuestion: questionNumber },
     });
+  }
+
+  async getInterview(interviewId: string, userId: string) {
+    const interview = await this.prisma.interview.findFirst({
+      where: { id: interviewId, userId },
+      include: {
+        questions: {
+          orderBy: { sortOrder: "asc" },
+          include: {
+            question: true,
+            answers: {
+              orderBy: { createdAt: "asc" },
+              include: { feedback: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!interview) {
+      throw new NotFoundException("Interview not found");
+    }
+
+    const allScores = interview.questions
+      .flatMap((q) =>
+        q.answers.flatMap((a) => a.feedback.map((f) => f.overallScore)),
+      )
+      .filter((s): s is number => s != null);
+
+    const overallScore =
+      allScores.length > 0
+        ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length)
+        : null;
+
+    const durationSeconds =
+      interview.startedAt && interview.completedAt
+        ? Math.round(
+            (interview.completedAt.getTime() - interview.startedAt.getTime()) /
+              1000,
+          )
+        : null;
+
+    return {
+      id: interview.id,
+      category: interview.category,
+      difficulty: interview.difficulty,
+      status: interview.status,
+      questionCount: interview.questionCount,
+      currentQuestion: interview.currentQuestion,
+      startedAt: interview.startedAt.toISOString(),
+      completedAt: interview.completedAt?.toISOString() ?? null,
+      durationSeconds,
+      overallScore,
+      questions: interview.questions.map((iq) => ({
+        id: iq.id,
+        sortOrder: iq.sortOrder,
+        text: iq.question.text,
+        category: iq.question.category,
+        difficulty: iq.question.difficulty,
+        answers: iq.answers.map((a) => ({
+          id: a.id,
+          transcript: a.transcript,
+          durationMs: a.durationMs,
+          createdAt: a.createdAt.toISOString(),
+          feedback: a.feedback.map((f) => ({
+            id: f.id,
+            overallScore: f.overallScore,
+            fluencyScore: f.fluencyScore,
+            clarityScore: f.clarityScore,
+            confidenceScore: f.confidenceScore,
+            fillerWordCount: f.fillerWordCount,
+            sentimentScore: f.sentimentScore,
+            relevanceScore: f.relevanceScore,
+            technicalAccuracy: f.technicalAccuracy,
+            detailLevel: f.detailLevel,
+            strengths: f.strengths,
+            improvements: f.improvements,
+            idealAnswer: f.idealAnswer,
+          })),
+        })),
+      })),
+    };
   }
 
   async getProgress(interviewId: string, userId: string) {
