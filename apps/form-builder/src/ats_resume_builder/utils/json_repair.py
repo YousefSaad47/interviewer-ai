@@ -7,7 +7,9 @@ def repair_json(raw: str) -> dict[str, Any]:
     """Lightly repair common LLM JSON wrapper mistakes."""
 
     text = raw.strip()
-    fenced = re.fullmatch(r"```(?:json)?\s*(.*?)\s*```", text, flags=re.DOTALL | re.IGNORECASE)
+    fenced = re.fullmatch(
+        r"```(?:json)?\s*(.*?)\s*```", text, flags=re.DOTALL | re.IGNORECASE
+    )
     if fenced:
         text = fenced.group(1).strip()
 

@@ -1,8 +1,12 @@
 from functools import lru_cache
+from hmac import compare_digest
+
+from fastapi import Header
 
 from ats_resume_builder.ats.rules import ATSRulesRepository
 from ats_resume_builder.compiler.pdf_compiler import PDFCompiler
 from ats_resume_builder.config.settings import Settings, get_settings
+from ats_resume_builder.exceptions import InternalServiceAuthError
 from ats_resume_builder.graph.workflow import ResumeOptimizationWorkflow
 from ats_resume_builder.prompts.manager import PromptManager
 from ats_resume_builder.providers.factory import create_ai_provider
@@ -25,3 +29,20 @@ def get_resume_builder_service() -> ResumeBuilderService:
         renderer=LatexResumeRenderer(),
         compiler=PDFCompiler(settings),
     )
+
+
+async def require_internal_service_key(
+    x_internal_service_key: str | None = Header(default=None),
+) -> None:
+    settings = get_settings()
+    expected = settings.internal_service_key
+    if expected is None:
+        raise InternalServiceAuthError(
+            "Internal service authentication is not configured"
+        )
+
+    expected_value = expected.get_secret_value()
+    if not x_internal_service_key or not compare_digest(
+        x_internal_service_key, expected_value
+    ):
+        raise InternalServiceAuthError("Invalid internal service key")

@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import shutil
 import subprocess
 from typing import cast
@@ -10,6 +11,7 @@ from ats_resume_builder.exceptions import CompilationError, PDFCompilationTimeou
 class PDFCompiler:
     def __init__(self, settings: Settings) -> None:
         self._settings = settings
+        self._logger = logging.getLogger(__name__)
 
     async def compile(self, latex: str, *, request_id: str) -> bytes:
         request_dir = self._settings.temporary_directory / request_id
@@ -38,7 +40,9 @@ class PDFCompiler:
                 )
             except subprocess.TimeoutExpired as exc:
                 msg = "PDF compilation timed out"
-                raise PDFCompilationTimeoutError(msg, details={"request_id": request_id}) from exc
+                raise PDFCompilationTimeoutError(
+                    msg, details={"request_id": request_id}
+                ) from exc
             except FileNotFoundError as exc:
                 msg = "PDF compiler executable was not found"
                 raise CompilationError(
@@ -52,8 +56,16 @@ class PDFCompiler:
             if process.returncode != 0 or not pdf_path.exists():
                 output = (process.stdout or b"") + (process.stderr or b"")
                 log = output.decode("utf-8", errors="replace")[-4000:]
+                self._logger.warning(
+                    "pdf_compilation_failed",
+                    extra={
+                        "request_id": request_id,
+                        "returncode": process.returncode,
+                        "compiler_log_tail": log,
+                    },
+                )
                 msg = "PDF compilation failed"
-                raise CompilationError(msg, details={"compiler_log": log})
+                raise CompilationError(msg, details={"request_id": request_id})
             return pdf_path.read_bytes()
         finally:
             shutil.rmtree(request_dir, ignore_errors=True)

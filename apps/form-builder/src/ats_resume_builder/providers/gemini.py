@@ -12,18 +12,20 @@ class GeminiProvider(AIProvider):
     name = "gemini"
     _retryable_status_codes = frozenset({429, 500, 502, 503, 504})
 
-    def __init__(self, settings: Settings, client: httpx.AsyncClient | None = None) -> None:
+    def __init__(
+        self, settings: Settings, client: httpx.AsyncClient | None = None
+    ) -> None:
         self._settings = settings
         self._client = client
 
     async def generate_json(self, prompt: str, *, request_id: str) -> str:
         if self._settings.gemini_api_key is None:
             msg = "Gemini API key is not configured"
-            raise AIProviderError(msg, details={"provider": self.name, "request_id": request_id})
+            raise AIProviderError(
+                msg, details={"provider": self.name, "request_id": request_id}
+            )
 
-        endpoint = (
-            f"{self._settings.gemini_base_url}/models/{self._settings.gemini_model}:generateContent"
-        )
+        endpoint = f"{self._settings.gemini_base_url}/models/{self._settings.gemini_model}:generateContent"
         headers = {"x-goog-api-key": self._settings.gemini_api_key.get_secret_value()}
         payload = {
             "contents": [{"role": "user", "parts": [{"text": prompt}]}],
@@ -57,12 +59,22 @@ class GeminiProvider(AIProvider):
             msg = "AI provider request failed"
             raise AIProviderError(msg, details={"provider": self.name}) from last_error
 
-        data = response.json()
         try:
-            return data["candidates"][0]["content"]["parts"][0]["text"]
+            data = response.json()
+        except ValueError as exc:
+            msg = "AI provider response was not valid JSON"
+            raise AIProviderError(msg, details={"provider": self.name}) from exc
+
+        try:
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
         except (KeyError, IndexError, TypeError) as exc:
             msg = "AI provider response did not include JSON text"
             raise AIProviderError(msg, details={"provider": self.name}) from exc
+
+        if not isinstance(text, str) or not text.strip():
+            msg = "AI provider response did not include JSON text"
+            raise AIProviderError(msg, details={"provider": self.name})
+        return text
 
     async def _post_with_retries(
         self,
@@ -98,7 +110,8 @@ class GeminiProvider(AIProvider):
 
     def _should_retry_status(self, status_code: int, attempt: int) -> bool:
         return (
-            status_code in self._retryable_status_codes and attempt < self._settings.ai_retry_limit
+            status_code in self._retryable_status_codes
+            and attempt < self._settings.ai_retry_limit
         )
 
     async def _sleep_before_retry(self, attempt: int) -> None:

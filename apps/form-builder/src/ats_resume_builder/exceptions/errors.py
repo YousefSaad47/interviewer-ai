@@ -7,7 +7,9 @@ class AppError(Exception):
     status_code: int = HTTPStatus.INTERNAL_SERVER_ERROR
     code: str = "internal_error"
 
-    def __init__(self, message: str, *, details: dict[str, object] | None = None) -> None:
+    def __init__(
+        self, message: str, *, details: dict[str, object] | None = None
+    ) -> None:
         super().__init__(message)
         self.message = message
         self.details = details or {}
@@ -26,6 +28,11 @@ class AIProviderError(AppError):
 class InvalidAIResponseError(AppError):
     status_code = HTTPStatus.BAD_GATEWAY
     code = "invalid_ai_response"
+
+
+class InternalServiceAuthError(AppError):
+    status_code = HTTPStatus.UNAUTHORIZED
+    code = "invalid_internal_service_key"
 
 
 class CompilationError(AppError):
