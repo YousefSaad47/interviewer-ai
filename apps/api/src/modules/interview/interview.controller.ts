@@ -12,6 +12,7 @@ import { registerPath } from "@/services/openapi/registry";
 import {
   type InterviewFinalizeInput,
   type InterviewStartInput,
+  interviewDetailSchema,
   interviewFinalizeParamsSchema,
   interviewFinalizeSchema,
   interviewLinkChatSchema,
@@ -55,6 +56,12 @@ export class InterviewController extends AbstractController<InterviewService> {
       validationMiddleware({ params: interviewFinalizeParamsSchema }),
       this._getProgress,
     );
+
+    this._router.get(
+      "/:id",
+      validationMiddleware({ params: interviewFinalizeParamsSchema }),
+      this._getInterview,
+    );
   }
 
   private _registerOpenAPI() {
@@ -77,6 +84,17 @@ export class InterviewController extends AbstractController<InterviewService> {
       bodySchema: interviewFinalizeSchema,
       statusCode: HttpStatus.OK,
       responseDescription: "Interview finalized with feedback",
+    });
+
+    registerPath({
+      tags: ["Interview"],
+      method: "get",
+      path: "/api/interview/{id}",
+      summary: "Get interview details with questions, answers, and feedback",
+      paramsSchema: interviewFinalizeParamsSchema,
+      responseSchema: interviewDetailSchema,
+      statusCode: HttpStatus.OK,
+      responseDescription: "Interview details",
     });
   }
 
@@ -119,6 +137,14 @@ export class InterviewController extends AbstractController<InterviewService> {
 
   private _getProgress: RequestHandler<{ id: string }> = async (req, res) => {
     const interview = await this._service.getProgress(
+      req.params.id,
+      getAuthenticatedUserId(req),
+    );
+    res.ok(interview);
+  };
+
+  private _getInterview: RequestHandler<{ id: string }> = async (req, res) => {
+    const interview = await this._service.getInterview(
       req.params.id,
       getAuthenticatedUserId(req),
     );

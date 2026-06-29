@@ -78,7 +78,7 @@ export function useTechnicalInterviewSession() {
       });
     }
 
-    router.push("/dashboard");
+    router.push(`/interview/${interviewId}/results`);
   }, [disconnect, chatMetadata, interviewId, router, finalizeInterview]);
 
   useEffect(() => {

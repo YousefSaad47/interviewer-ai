@@ -5,6 +5,8 @@ export const dashboardStatsSchema = z.object({
   averageScore: z.number(),
   practiceTimeMinutes: z.number().int(),
   problemsSolved: z.number().int(),
+  readinessScore: z.number().int(),
+  nextBestMove: z.string(),
 });
 
 export const recentActivitySchema = z.object({
@@ -29,6 +31,7 @@ export const recentActivitySchema = z.object({
       createdAt: z.iso.datetime(),
     }),
   ),
+  streak: z.number().int(),
 });
 
 export const skillsSchema = z.object({
@@ -39,6 +42,7 @@ export const skillsSchema = z.object({
       count: z.number().int(),
     }),
   ),
+  focusArea: z.string(),
 });
 
 export const goalsSchema = z.object({
