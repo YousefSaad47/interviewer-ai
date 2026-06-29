@@ -1,6 +1,8 @@
 "use client";
 
-import { Calendar, Clock, TrendingUp } from "lucide-react";
+import Link from "next/link";
+
+import { Calendar, ChevronRight, Clock, TrendingUp } from "lucide-react";
 
 import {
   Card,
@@ -65,8 +67,9 @@ export function RecentInterviews() {
           </div>
         ) : (
           interviews.map((interview) => (
-            <div
+            <Link
               key={interview.id}
+              href={`/interview/${interview.id}/results`}
               className="group flex flex-col gap-4 rounded-lg border border-transparent bg-white/65 px-4 py-4 transition-all hover:border-primary/25 hover:bg-white/90 sm:flex-row sm:items-center sm:justify-between dark:bg-surface-secondary/60 dark:hover:bg-surface-secondary"
             >
               <div className="flex items-center gap-4">
@@ -97,14 +100,9 @@ export function RecentInterviews() {
                       : "--"}
                   </span>
                 </div>
-                <span className="hidden h-px w-10 bg-primary/50 transition-all group-hover:w-14 sm:block" />
-                <span className="font-bold text-lg text-primary sm:hidden">
-                  {interview.score != null
-                    ? `${Math.round(interview.score)}%`
-                    : "--"}
-                </span>
+                <ChevronRight className="hidden h-4 w-4 text-muted-foreground opacity-0 transition-all group-hover:opacity-100 sm:block" />
               </div>
-            </div>
+            </Link>
           ))
         )}
       </CardContent>
