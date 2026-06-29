@@ -1,0 +1,1 @@
+from ats_resume_builder.renderer.latex_renderer import LatexResumeRenderer
