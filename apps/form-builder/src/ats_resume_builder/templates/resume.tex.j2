@@ -1,243 +1,112 @@
 \documentclass[10pt, letterpaper]{article}
-
-{% raw %}
-% Packages:
 \usepackage[
-    ignoreheadfoot,
-    top=1.4 cm,
-    bottom=1.4 cm,
-    left=1.8 cm,
-    right=1.8 cm,
-    footskip=1.0 cm,
+    top=1.4cm,
+    bottom=1.4cm,
+    left=1.8cm,
+    right=1.8cm,
 ]{geometry}
+\usepackage{fontspec}
 \usepackage{titlesec}
-\usepackage{tabularx}
-\usepackage{array}
-\usepackage[dvipsnames]{xcolor}
-\definecolor{primaryColor}{RGB}{0, 0, 0}
-\definecolor{linkColor}{RGB}{0, 102, 204}
 \usepackage{enumitem}
-\usepackage{fontawesome5}
-\usepackage{amsmath}
-{% endraw %}
-\usepackage[
-    pdftitle={ {{ metadata_title }} },
-    pdfauthor={ {{ metadata_author }} },
-    pdfcreator={LaTeX with RenderCV},
-    colorlinks=true,
-    urlcolor=linkColor
-]{hyperref}
-{% raw %}
-\usepackage[pscoord]{eso-pic}
-\usepackage{calc}
-\usepackage{bookmark}
-\usepackage{lastpage}
-\usepackage{changepage}
-\usepackage{paracol}
-\usepackage{ifthen}
+\usepackage[hidelinks]{hyperref}
 \usepackage{needspace}
-\usepackage{iftex}
 
-\ifPDFTeX
-    \input{glyphtounicode}
-    \pdfgentounicode=1
-    \usepackage[T1]{fontenc}
-    \usepackage[utf8]{inputenc}
-    \usepackage{lmodern}
-\fi
-
-\usepackage{charter}
-
-\raggedright
-\AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+\setmainfont{Latin Modern Roman}
 \pagestyle{empty}
 \setcounter{secnumdepth}{0}
 \setlength{\parindent}{0pt}
-\setlength{\topskip}{0pt}
-\setlength{\columnsep}{0.15cm}
+\setlength{\parskip}{0pt}
+\raggedright
 \pagenumbering{gobble}
 
-\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large\color{primaryColor}}{}{0pt}{}[\vspace{1pt}\color{primaryColor}\titlerule]
-
-\titlespacing{\section}{
-    -1pt
-}{
-    0.2 cm
-}{
-    0.1 cm
+\hypersetup{
+    pdftitle={ {{ metadata_title }} },
+    pdfauthor={ {{ metadata_author }} },
+    pdfcreator={ATS Resume Builder}
 }
 
-\renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$}
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+\titlespacing{\section}{0pt}{0.22cm}{0.12cm}
+
 \newenvironment{highlights}{
     \begin{itemize}[
-        topsep=0.05 cm,
-        parsep=0.05 cm,
+        topsep=0.03cm,
+        parsep=0.03cm,
         partopsep=0pt,
         itemsep=0pt,
-        leftmargin=0 cm + 10pt
+        leftmargin=14pt
     ]
 }{
     \end{itemize}
 }
 
-\newenvironment{onecolentry}{
-    \begin{adjustwidth}{
-        0 cm + 0.00001 cm
-    }{
-        0 cm + 0.00001 cm
-    }
-}{
-    \end{adjustwidth}
-}
-
-\newenvironment{twocolentry}[2][]{
-    \onecolentry
-    \def\secondColumn{#2}
-    \setcolumnwidth{\fill, 4.5 cm}
-    \begin{paracol}{2}
-}{
-    \switchcolumn \raggedleft \secondColumn
-    \end{paracol}
-    \endonecolentry
-}
-
-\newenvironment{header}{
-    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
-}{
-    \par\kern\topsep
-}
-
-\let\hrefWithoutArrow\href
-
 \begin{document}
-    \newcommand{\AND}{\unskip
-        \cleaders\copy\ANDbox\hskip\wd\ANDbox
-        \ignorespaces
-    }
-    \newsavebox\ANDbox
-    \sbox\ANDbox{$|$}
-{% endraw %}
 
-{% macro contact_icon(label) -%}
-{% if label == "LinkedIn" %}\footnotesize\faLinkedinIn{% elif label == "GitHub" %}\footnotesize\faGithub{% elif label == "Portfolio" %}\footnotesize\faCode{% elif label == "Location" %}\footnotesize\faMapMarker*{% elif label == "Phone" %}\footnotesize\faPhone*{% elif label == "Email" %}\footnotesize\faEnvelope[regular]{% else %}\footnotesize\faLink{% endif %}
-{%- endmacro %}
-
-{% macro contact_cell(item) -%}
-{% if item.url -%}
-\mbox{\href{ {{- item.url -}} }{\textcolor{linkColor}{ {{- contact_icon(item.label) -}} \hspace*{0.13cm}{{ item.text }}}}}
-{%- else -%}
-\mbox{ {{- contact_icon(item.label) -}} \hspace*{0.13cm}{{ item.text }}}
-{%- endif %}
-{%- endmacro %}
-
-\begin{header}
-    \fontsize{24 pt}{24 pt}\selectfont \textbf{ {{ personal.full_name }} }
-
-    \vspace{4 pt}
-
-    \normalsize
-    \begin{tabularx}{\textwidth}{@{} X X @{}}
-        {% for item in contact_items %}{{ contact_cell(item) }}{% if loop.index0 is odd and not loop.last %} \\
-        {% elif not loop.last %} &
-        {% endif %}{% endfor %}
-    \end{tabularx}
-\end{header}
-
-    \vspace{0.2 cm}
-
-    {% if resume.professional_summary %}\section{Professional Summary}
-
-    \begin{onecolentry}
-        {{ resume.professional_summary }}
-    \end{onecolentry}
-
-    \vspace{0.1 cm}
-    {% endif %}
-
-    {% if resume.education %}\section{Education}
-
-    {% for item in resume.education %}\begin{twocolentry}{ {{ item.date_range }} }
-        \textbf{ {{ item.institution }} }, {{ item.degree }}{% if item.field_of_study %} in {{ item.field_of_study }}{% endif %}{% if item.location %} -- {{ item.location }}{% endif %}
-    \end{twocolentry}
-
-    {% if item.description or item.highlights %}\vspace{0.05 cm}
-    \begin{onecolentry}
-        {% if item.description %}{{ item.description }}{% endif %}
-        {% if item.highlights %}\begin{highlights}
-            {% for detail in item.highlights %}\item {{ detail }}
-            {% endfor %}\end{highlights}{% endif %}
-    \end{onecolentry}
-    {% endif %}
-
-    \vspace{0.08 cm}
+{\centering
+    {\LARGE\textbf{ {{ personal.full_name }} }}\\[4pt]
+    {% if personal.headline %}{{ personal.headline }}\\[4pt]{% endif %}
+    {% for item in contact_items %}
+        {% if item.url %}\href{ {{- item.url -}} }{ {{- item.text -}} }{% else %}{{ item.text }}{% endif %}{% if not loop.last %}\quad | \quad{% endif %}
     {% endfor %}
-    {% endif %}
+    \par
+}
 
-    {% if resume.projects %}\section{Projects}
+\vspace{0.18cm}
 
-    {% for project in resume.projects %}\begin{twocolentry}{ {% if project.url %}\href{ {{- project.url -}} }{Link}{% endif %} }
-        \textbf{ {{ project.name }} }{% if project.technologies %} -- {{ project.technologies | join(", ") }}{% endif %}
-    \end{twocolentry}
+{% if resume.professional_summary %}\section{Professional Summary}
+{{ resume.professional_summary }}
+{% endif %}
 
-    \vspace{0.05 cm}
-    \begin{onecolentry}
-        \begin{highlights}
-            \item {{ project.description }}
-            {% for bullet in project.highlights %}\item {{ bullet }}
-            {% endfor %}
-        \end{highlights}
-    \end{onecolentry}
+{% if resume.experience %}\section{Experience}
+{% for item in resume.experience %}
+\textbf{ {{ item.title }} }\if\relax\detokenize{ {{ item.company }}{% if item.location %} -- {{ item.location }}{% endif %} }\relax\else, {{ item.company }}{% if item.location %} -- {{ item.location }}{% endif %}\fi\hfill {{ item.date_range }}\\
+\begin{highlights}
+{% for bullet in item.highlights %}\item {{ bullet }}
+{% endfor %}\end{highlights}
+\vspace{0.06cm}
+{% endfor %}
+{% endif %}
 
-    \vspace{0.08 cm}
-    {% endfor %}
-    {% endif %}
+{% if resume.education %}\section{Education}
+{% for item in resume.education %}
+\textbf{ {{ item.degree }}{% if item.field_of_study %} in {{ item.field_of_study }}{% endif %} }\if\relax\detokenize{ {{ item.institution }}{% if item.location %} -- {{ item.location }}{% endif %} }\relax\else, {{ item.institution }}{% if item.location %} -- {{ item.location }}{% endif %}\fi\hfill {% if item.date_range %}{{ item.date_range }}{% endif %}\\
+{% if item.description %}{{ item.description }}\\{% endif %}
+{% if item.highlights %}\begin{highlights}
+{% for detail in item.highlights %}\item {{ detail }}
+{% endfor %}\end{highlights}{% endif %}
+\vspace{0.06cm}
+{% endfor %}
+{% endif %}
 
-    {% if resume.experience %}\section{Work Experience}
+{% if resume.skills %}\section{Skills}
+{% for skill in resume.skills %}
+\textbf{ {{ skill.name }} }{% if skill.level %} ({{ skill.level }}){% endif %}{% if skill.keywords %}: {{ skill.keywords | join(", ") }}{% endif %}\\
+{% endfor %}
+{% endif %}
 
-    {% for item in resume.experience %}\begin{twocolentry}{ {{ item.date_range }} }
-        \textbf{ {{ item.company }} }{% if item.location %}, {{ item.location }}{% endif %} -- {{ item.title }}
-    \end{twocolentry}
+{% if resume.projects %}\section{Projects}
+{% for project in resume.projects %}
+\textbf{ {{ project.name }} }{% if project.technologies %}, {{ project.technologies | join(", ") }}{% endif %}\hfill {% if project.url %}\href{ {{- project.url -}} }{Link}{% endif %}\\
+\begin{highlights}
+\item {{ project.description }}
+{% for bullet in project.highlights %}\item {{ bullet }}
+{% endfor %}\end{highlights}
+\vspace{0.06cm}
+{% endfor %}
+{% endif %}
 
-    \vspace{0.05 cm}
-    \begin{onecolentry}
-        \begin{highlights}
-            {% for bullet in item.highlights %}\item {{ bullet }}
-            {% endfor %}
-        \end{highlights}
-    \end{onecolentry}
+{% if resume.certifications %}\section{Certifications}
+{% for item in resume.certifications %}
+\textbf{ {{ item.name }} }{% if item.issuer %}, {{ item.issuer }}{% endif %}\hfill {% if item.issued_on %}{{ item.issued_on }}{% endif %}\\
+{% if item.url %}\href{ {{- item.url -}} }{Credential}\\{% endif %}
+\vspace{0.04cm}
+{% endfor %}
+{% endif %}
 
-    \vspace{0.08 cm}
-    {% endfor %}
-    {% endif %}
-
-    {% if resume.skills %}\section{Technical Skills}
-
-    {% for skill in resume.skills %}\begin{onecolentry}
-        \textbf{ {{ skill.name }} }{% if skill.level %} ({{ skill.level }}){% endif %}{% if skill.keywords %}: {{ skill.keywords | join(", ") }}{% endif %}
-    \end{onecolentry}
-
-    \vspace{0.05 cm}
-    {% endfor %}
-    {% endif %}
-
-    {% if resume.certifications %}\section{Certifications}
-
-    {% for item in resume.certifications %}\begin{twocolentry}{ {{ item.issued_on }} }
-        \textbf{ {{ item.name }} }{% if item.issuer %}, {{ item.issuer }}{% endif %}{% if item.url %} -- \href{ {{- item.url -}} }{Credential}{% endif %}
-    \end{twocolentry}
-
-    \vspace{0.05 cm}
-    {% endfor %}
-    {% endif %}
-
-    {% if resume.languages %}\section{Languages}
-
-    {% for item in resume.languages %}\begin{onecolentry}
-        \textbf{ {{ item.name }} }{% if item.level %}: {{ item.level }}{% endif %}
-    \end{onecolentry}
-
-    \vspace{0.05 cm}
-    {% endfor %}
-    {% endif %}
+{% if resume.languages %}\section{Languages}
+{% for item in resume.languages %}
+\textbf{ {{ item.name }} }{% if item.level %}: {{ item.level }}{% endif %}\\
+{% endfor %}
+{% endif %}
 
 \end{document}

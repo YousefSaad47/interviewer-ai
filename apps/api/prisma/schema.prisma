@@ -305,6 +305,9 @@ model Resume {
   grammarScore Float?   @map("grammar_score")
   suggestions  String[]
 
+  pdfPath        String?   @map("pdf_path")
+  pdfGeneratedAt DateTime? @map("pdf_generated_at") @db.Timestamptz()
+
   userId String @db.Uuid()
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
