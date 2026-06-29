@@ -57,10 +57,7 @@ export class ServicesFactory {
           this._services.set(service, new ResumesService(prisma));
           break;
         case Services.RESUME_EXPORT: {
-          const optimizer = new ResumeOptimizerService(
-            env.resumeExportConfig.geminiApiKey,
-            env.resumeExportConfig.geminiModel,
-          );
+          const optimizer = new ResumeOptimizerService();
           const renderer = new LatexRendererService();
           const compiler = new PdfCompilerService(
             env.resumeExportConfig.latexCommand,
