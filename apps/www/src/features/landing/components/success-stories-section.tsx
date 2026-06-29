@@ -33,9 +33,9 @@ export function SuccessStoriesSection() {
   ];
 
   const team = [
-    { name: "VIKRAM SETHI", role: "Creative Director" },
-    { name: "ELIAS SARKIS", role: "Production Manager" },
-    { name: "YASMINA FARHAT", role: "Event Project Manager" },
+    { name: "Mohamed Abdel Kareem", role: "Full Stack Engineer" },
+    { name: "Tasneem Mohamed", role: "Ai Engineer" },
+    { name: "Youssef Saadallah", role: "Full Stack Engineer" },
     { name: "KARIM WAEL", role: "Senior Graphic & Web Designer" },
   ];
 
