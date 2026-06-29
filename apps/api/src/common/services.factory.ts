@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: <> */
 /** biome-ignore-all lint/complexity/noThisInStatic: <> */
 
+import { env } from "@/core";
 import { prisma } from "@/lib/prisma";
 import { AdminAnalyticsService } from "@/modules/admin-analytics";
 import { AdminCodingService } from "@/modules/admin-coding";
@@ -12,6 +13,12 @@ import { CodingService, codingCacheService } from "@/modules/coding";
 import { DashboardService } from "@/modules/dashboard";
 import { InterviewService } from "@/modules/interview";
 import { ProblemService } from "@/modules/problem";
+import {
+  LatexRendererService,
+  PdfCompilerService,
+  ResumeExportService,
+  ResumeOptimizerService,
+} from "@/modules/resume-export";
 import { ResumesService } from "@/modules/resumes";
 import { SampleService } from "@/modules/sample";
 import { hume } from "@/services/hume";
@@ -49,6 +56,22 @@ export class ServicesFactory {
         case Services.RESUMES:
           this._services.set(service, new ResumesService(prisma));
           break;
+        case Services.RESUME_EXPORT: {
+          const optimizer = new ResumeOptimizerService(
+            env.resumeExportConfig.geminiApiKey,
+            env.resumeExportConfig.geminiModel,
+          );
+          const renderer = new LatexRendererService();
+          const compiler = new PdfCompilerService(
+            env.resumeExportConfig.latexCommand,
+            env.resumeExportConfig.pdfCompileTimeoutMs,
+          );
+          this._services.set(
+            service,
+            new ResumeExportService(prisma, optimizer, renderer, compiler),
+          );
+          break;
+        }
         case Services.ADMIN_USERS:
           this._services.set(service, new AdminUsersService(prisma));
           break;

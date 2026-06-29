@@ -1,16 +1,30 @@
 [project]
 name = "form-builder"
 version = "0.1.0"
-description = "Add your description here"
+description = "FastAPI service for ATS-optimized resume PDF generation."
 readme = "README.md"
-requires-python = ">=3.14"
-dependencies = []
+requires-python = ">=3.13"
+dependencies = [
+    "email-validator>=2.3.0",
+    "fastapi>=0.125.0",
+    "httpx>=0.28.1",
+    "jinja2>=3.1.6",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.12.0",
+    "python-json-logger>=4.0.0",
+    "uvicorn>=0.38.0",
+]
 
 [tool.uv]
 package = true
 
 [project.scripts]
-form-builder = "main:main"
+form-builder = "main:app"
 
 [dependency-groups]
-dev = ["ruff>=0.15.16", "ty>=0.0.47"]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.3.0",
+    "ruff>=0.15.16",
+    "ty>=0.0.47",
+]

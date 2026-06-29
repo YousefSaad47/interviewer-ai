@@ -9,6 +9,7 @@ import {
 
 import { getCodingSubmission, runCode } from "../api";
 import type {
+  CodingSubmissionPollResponse,
   Language,
   LastSubmission,
   RunResult,
@@ -26,15 +27,25 @@ const isLanguage = (value: string): value is Language => {
   return value in LANGUAGE_STARTER_CODE;
 };
 
-const mapSubmission = (data: any): LastSubmission => ({
+type SubmissionResultWithTestCase = NonNullable<
+  CodingSubmissionPollResponse["results"]
+>[number] & {
+  testCase?: { output?: string | null } | null;
+};
+
+type SubmissionWithResults = Omit<CodingSubmissionPollResponse, "results"> & {
+  results?: SubmissionResultWithTestCase[];
+};
+
+const mapSubmission = (data: SubmissionWithResults): LastSubmission => ({
   status: data.status ?? "ERROR",
   executionTimeMs: data.executionTimeMs ?? null,
   memoryUsedKb: data.memoryUsedKb ?? null,
-  results: (data.results ?? []).map((result: any) => ({
+  results: (data.results ?? []).map((result) => ({
     passed: result.passed,
     output: result.output,
     error: result.error,
-    expected: result.testCase?.output ?? null,
+    expected: result.expected ?? result.testCase?.output ?? null,
   })),
 });
 

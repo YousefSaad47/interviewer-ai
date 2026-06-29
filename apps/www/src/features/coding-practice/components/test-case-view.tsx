@@ -145,22 +145,23 @@ export function TestCaseView({
                     </span>
                   </div>
                   <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                    {result.expected !== undefined && result.expected !== null && (
-                      <div className="space-y-1">
-                        <span className="block text-muted-foreground text-xs font-medium">
-                          Expected:
-                        </span>
-                        <pre className="overflow-x-auto rounded bg-muted/70 p-2 font-mono text-xs dark:bg-surface-elevated">
-                          {result.expected}
-                        </pre>
-                      </div>
-                    )}
+                    {result.expected !== undefined &&
+                      result.expected !== null && (
+                        <div className="space-y-1">
+                          <span className="block font-medium text-muted-foreground text-xs">
+                            Expected:
+                          </span>
+                          <pre className="overflow-x-auto rounded bg-muted/70 p-2 font-mono text-xs dark:bg-surface-elevated">
+                            {result.expected}
+                          </pre>
+                        </div>
+                      )}
                     {result.output && (
                       <div className="space-y-1">
-                        <span className="block text-muted-foreground text-xs font-medium">
+                        <span className="block font-medium text-muted-foreground text-xs">
                           Output:
                         </span>
-                        <pre className="overflow-x-auto rounded bg-muted/70 p-2 font-mono text-xs dark:bg-surface-elevated text-heading">
+                        <pre className="overflow-x-auto rounded bg-muted/70 p-2 font-mono text-heading text-xs dark:bg-surface-elevated">
                           {result.output}
                         </pre>
                       </div>

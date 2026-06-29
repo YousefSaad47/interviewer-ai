@@ -5,7 +5,7 @@ from typing import Literal
 from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-AIProviderName = Literal["gemini", "openai", "ollama", "local"]
+AIProviderName = Literal["gemini"]
 
 
 class Settings(BaseSettings):
@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     app_name: str = "ATS Resume Builder"
     environment: Literal["development", "production", "test"] = "development"
     log_level: str = "INFO"
+    internal_service_key: SecretStr | None = SecretStr("development-secret")
 
     ai_provider: AIProviderName = "gemini"
     gemini_api_key: SecretStr | None = None
@@ -33,7 +34,7 @@ class Settings(BaseSettings):
     ats_rules_version: str = "v1"
 
     compiler_path: str = "xelatex"
-    compiler_timeout_seconds: float = Field(default=300.0, gt=0)
+    compiler_timeout_seconds: float = Field(default=60.0, gt=0)
     temporary_directory: Path = Path("/tmp/resume-generation")
 
 

@@ -12,7 +12,7 @@ class ATSRulesRepository:
     def get(self, version: str) -> ATSRuleSet:
         rules = (
             "Use a single-column layout.",
-            "Prefer measurable impact statements.",
+            "Improve wording without inventing metrics or achievements.",
             "Avoid tables, images, icons, graphics, and text boxes.",
             "Use standard section names and plain text bullets.",
             "Keep all output as structured JSON matching the schema.",

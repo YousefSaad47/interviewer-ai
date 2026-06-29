@@ -14,7 +14,7 @@ Welcome to the frontend client documentation for **Interviewer.ai**, a state-of-
 2. **💻 Coding Practice & Sandbox IDE**:
    A LeetCode-like environment where users solve coding challenges. Written code is validated via an AST (Abstract Syntax Tree) hash cache, and if it's a new solution, it is securely compiled and executed within an isolated Judge0 Sandbox.
 3. **💼 Resume Builder & ATS Matcher**:
-   An interactive form to construct professional resumes. Integrated with a python-based backend service that parses PDF text, compares it with dynamic job descriptions, highlights missing keywords, and optimizes ATS scoring.
+   An interactive form to construct professional resumes. Export is handled by the Node.js Express API with server-side Gemini optimization, LaTeX rendering, and direct PDF Blob download from the browser.
 
 ---
 

@@ -35,7 +35,9 @@ class ResumeBuilderService:
                 "resume_id": request.resume_id,
                 "retry_count": retry_count,
                 "duration_ms": round((time.perf_counter() - started) * 1000, 2),
-                "compilation_duration_ms": round((time.perf_counter() - compile_started) * 1000, 2),
+                "compilation_duration_ms": round(
+                    (time.perf_counter() - compile_started) * 1000, 2
+                ),
             },
         )
         return pdf

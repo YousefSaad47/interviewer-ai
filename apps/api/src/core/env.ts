@@ -195,7 +195,19 @@ export const aiConfig = {
   googleApiKey: getEnvVariable("GOOGLE_GENERATIVE_AI_API_KEY", ""),
 };
 
-// 10. Unified Export with Flattened Values for Backward Compatibility
+// 10. Resume Export Configuration
+
+export const resumeExportConfig = {
+  geminiApiKey: getEnvVariable(
+    "GEMINI_API_KEY",
+    getEnvVariable("GOOGLE_GENERATIVE_AI_API_KEY", ""),
+  ),
+  geminiModel: getEnvVariable("GEMINI_MODEL", "gemini-2.5-flash"),
+  latexCommand: getEnvVariable("LATEX_COMMAND", "xelatex"),
+  pdfCompileTimeoutMs: getEnvVarAsNumber("PDF_COMPILE_TIMEOUT_MS", 30000),
+};
+
+// 11. Unified Export with Flattened Values for Backward Compatibility
 export const env = {
   appConfig,
   dbConfig,
@@ -206,6 +218,7 @@ export const env = {
   judge0Config,
   humeConfig,
   aiConfig,
+  resumeExportConfig,
 
   // Flat properties referenced throughout the project codebase
   NODE_ENV: appConfig.nodeEnv,
@@ -231,6 +244,10 @@ export const env = {
   AI_PROVIDER: aiConfig.provider,
   AI_MODEL: aiConfig.model,
   GOOGLE_GENERATIVE_AI_API_KEY: aiConfig.googleApiKey,
+  GEMINI_API_KEY: resumeExportConfig.geminiApiKey,
+  GEMINI_MODEL: resumeExportConfig.geminiModel,
+  LATEX_COMMAND: resumeExportConfig.latexCommand,
+  PDF_COMPILE_TIMEOUT_MS: resumeExportConfig.pdfCompileTimeoutMs,
   MAIL_HOST: emailConfig.host,
   MAIL_PORT: emailConfig.port,
   MAIL_FROM: emailConfig.from,
@@ -260,6 +277,7 @@ console.info(
               webhookSigningKey: "***",
             },
             aiConfig: { ...aiConfig, googleApiKey: "***" },
+            resumeExportConfig: { ...resumeExportConfig, geminiApiKey: "***" },
           },
           null,
           2,

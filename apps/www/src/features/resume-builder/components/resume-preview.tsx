@@ -1,7 +1,5 @@
 "use client";
 
-import { Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui";
 
 import { useResume } from "../contexts/resume-context";
@@ -11,6 +9,11 @@ export function ResumePreview() {
   const { data } = useResume();
   const { personalInfo, workExperience, projects, education, skills } = data;
 
+  const formatDisplayUrl = (url: string) => {
+    if (!url) return "";
+    return url.replace(/^(https?:\/\/)?(www\.)?/, "");
+  };
+
   const renderBulletPoints = (text: string) => {
     if (!text) return null;
     const lines = text
@@ -19,13 +22,59 @@ export function ResumePreview() {
       .filter(Boolean);
 
     return (
-      <ul className="mt-0.5 list-disc space-y-0.5 pl-4 text-[11px] text-gray-800 leading-relaxed">
+      <ul className="mt-1 list-disc space-y-1 pl-5 text-[11.5px] text-gray-800 leading-relaxed">
         {lines.map((line, idx) => (
           <li key={idx}>{line}</li>
         ))}
       </ul>
     );
   };
+
+  const contactItems = [
+    personalInfo.email && (
+      <a
+        key="email"
+        href={`mailto:${personalInfo.email}`}
+        className="print-link hover:underline"
+      >
+        {personalInfo.email}
+      </a>
+    ),
+    personalInfo.phone && <span key="phone">{personalInfo.phone}</span>,
+    personalInfo.location && (
+      <span key="location">{personalInfo.location}</span>
+    ),
+    personalInfo.linkedin && (
+      <a
+        key="linkedin"
+        href={
+          personalInfo.linkedin.startsWith("http")
+            ? personalInfo.linkedin
+            : `https://${personalInfo.linkedin}`
+        }
+        target="_blank"
+        rel="noopener noreferrer"
+        className="print-link hover:underline"
+      >
+        {formatDisplayUrl(personalInfo.linkedin)}
+      </a>
+    ),
+    personalInfo.github && (
+      <a
+        key="github"
+        href={
+          personalInfo.github.startsWith("http")
+            ? personalInfo.github
+            : `https://${personalInfo.github}`
+        }
+        target="_blank"
+        rel="noopener noreferrer"
+        className="print-link hover:underline"
+      >
+        {formatDisplayUrl(personalInfo.github)}
+      </a>
+    ),
+  ].filter(Boolean);
 
   return (
     <>
@@ -52,8 +101,8 @@ export function ResumePreview() {
             color: black !important;
           }
           .print-link {
-            color: #0969da !important;
-            text-decoration: underline !important;
+            color: black !important;
+            text-decoration: none !important;
           }
         }
       `}</style>
@@ -70,7 +119,10 @@ export function ResumePreview() {
 
         <CardContent className="bg-surface-product/60 p-4 dark:bg-surface-secondary/45">
           {/* Printable container */}
-          <div className="print-page-container mx-auto min-h-[840px] rounded-sm border border-gray-200 bg-white p-8 text-black shadow-[0_18px_50px_rgba(15,23,42,0.12)]">
+          <div
+            className="print-page-container mx-auto min-h-[840px] rounded-sm border border-gray-200 bg-white p-8 text-left text-black shadow-[0_18px_50px_rgba(15,23,42,0.12)]"
+            style={{ fontFamily: "Georgia, 'Times New Roman', Times, serif" }}
+          >
             {/* Header / Personal Details */}
             <header className="text-center">
               <h1
@@ -80,129 +132,41 @@ export function ResumePreview() {
                 {personalInfo.fullName || "Your Name"}
               </h1>
 
-              <div className="mt-3.5 grid grid-cols-2 border-gray-100 border-b pb-3 text-[11px] text-gray-700 sm:text-xs">
-                {/* Left column details */}
-                <div className="space-y-0.5 pl-2 text-left">
-                  {personalInfo.location && (
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-3.5 w-3.5 shrink-0 text-gray-900" />
-                      <span>{personalInfo.location}</span>
-                    </div>
-                  )}
-                  {personalInfo.phone && (
-                    <div className="flex items-center gap-1">
-                      <Phone className="h-3.5 w-3.5 shrink-0 text-gray-900" />
-                      <span>{personalInfo.phone}</span>
-                    </div>
-                  )}
-                  {personalInfo.email && (
-                    <div className="flex items-center gap-1">
-                      <Mail className="h-3.5 w-3.5 shrink-0 text-gray-900" />
-                      <a
-                        href={`mailto:${personalInfo.email}`}
-                        className="print-link text-[#0969da] hover:underline"
-                      >
-                        {personalInfo.email}
-                      </a>
-                    </div>
-                  )}
-                </div>
-
-                {/* Right column details */}
-                <div className="space-y-0.5 pl-6 text-left sm:pl-12">
-                  {personalInfo.linkedin && (
-                    <div className="flex items-center gap-1">
-                      <Linkedin className="h-3.5 w-3.5 shrink-0 text-[#0077b5]" />
-                      <a
-                        href={
-                          personalInfo.linkedin.startsWith("http")
-                            ? personalInfo.linkedin
-                            : `https://${personalInfo.linkedin}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="print-link break-all text-[#0969da] hover:underline"
-                      >
-                        {personalInfo.linkedin}
-                      </a>
-                    </div>
-                  )}
-                  {personalInfo.github && (
-                    <div className="flex items-center gap-1">
-                      <Github className="h-3.5 w-3.5 shrink-0 text-gray-900" />
-                      <a
-                        href={
-                          personalInfo.github.startsWith("http")
-                            ? personalInfo.github
-                            : `https://${personalInfo.github}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="print-link break-all text-[#0969da] hover:underline"
-                      >
-                        {personalInfo.github}
-                      </a>
-                    </div>
-                  )}
-                </div>
+              <div className="mt-2.5 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11.5px] text-gray-700">
+                {contactItems.map((item, index) => (
+                  <div key={index} className="flex items-center">
+                    {item}
+                    {index < contactItems.length - 1 && (
+                      <span className="mx-2 text-gray-400">|</span>
+                    )}
+                  </div>
+                ))}
               </div>
             </header>
 
             {/* Sections Wrapper */}
-            <div className="mt-4 space-y-4 text-left">
+            <div className="mt-5 space-y-4 text-left">
               {/* Professional Summary */}
               {personalInfo.summary && (
                 <section>
-                  <h2 className="font-bold text-black text-xs uppercase tracking-wider">
+                  <h2 className="font-bold text-[13px] text-black tracking-tight">
                     Professional Summary
                   </h2>
-                  <hr className="mt-0.5 mb-1.5 border-gray-400 border-t" />
+                  <hr className="mt-0.5 mb-1.5 border-black border-t" />
                   <p className="text-justify text-[11.5px] text-gray-800 leading-relaxed">
                     {personalInfo.summary}
                   </p>
                 </section>
               )}
 
-              {/* Education */}
-              {education && education.length > 0 && (
-                <section>
-                  <h2 className="font-bold text-black text-xs uppercase tracking-wider">
-                    Education
-                  </h2>
-                  <hr className="mt-0.5 mb-1.5 border-gray-400 border-t" />
-                  <div className="space-y-1">
-                    {education.map((edu) => (
-                      <div
-                        key={edu.id}
-                        className="flex items-baseline justify-between gap-4 text-[11.5px]"
-                      >
-                        <div>
-                          <span className="font-bold text-black">
-                            {edu.school}
-                          </span>
-                          {edu.degree && (
-                            <span className="text-gray-800">
-                              , {edu.degree}
-                            </span>
-                          )}
-                        </div>
-                        <div className="shrink-0 font-medium text-gray-900">
-                          {edu.year}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
-
               {/* Experience */}
               {workExperience && workExperience.length > 0 && (
-                <section>
-                  <h2 className="font-bold text-black text-xs uppercase tracking-wider">
+                <section className="mt-3.5">
+                  <h2 className="font-bold text-[13px] text-black tracking-tight">
                     Experience
                   </h2>
-                  <hr className="mt-0.5 mb-1.5 border-gray-400 border-t" />
-                  <div className="space-y-2">
+                  <hr className="mt-0.5 mb-1.5 border-black border-t" />
+                  <div className="space-y-3">
                     {workExperience.map((exp) => (
                       <article key={exp.id} className="space-y-0.5">
                         <div className="flex items-baseline justify-between gap-4 text-[11.5px]">
@@ -213,7 +177,7 @@ export function ResumePreview() {
                             {exp.company && (
                               <span className="text-gray-800">
                                 {" "}
-                                at {exp.company}
+                                , {exp.company}
                               </span>
                             )}
                           </div>
@@ -228,19 +192,60 @@ export function ResumePreview() {
                 </section>
               )}
 
+              {/* Education */}
+              {education && education.length > 0 && (
+                <section className="mt-3.5">
+                  <h2 className="font-bold text-[13px] text-black tracking-tight">
+                    Education
+                  </h2>
+                  <hr className="mt-0.5 mb-1.5 border-black border-t" />
+                  <div className="space-y-2">
+                    {education.map((edu) => (
+                      <div
+                        key={edu.id}
+                        className="flex items-baseline justify-between gap-4 text-[11.5px]"
+                      >
+                        <div>
+                          <span className="font-bold text-black">
+                            {edu.degree}
+                          </span>
+                          {edu.school && (
+                            <span className="text-gray-800">
+                              {" "}
+                              , {edu.school}
+                            </span>
+                          )}
+                        </div>
+                        <div className="shrink-0 font-medium text-gray-900">
+                          {edu.year}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
               {/* Projects */}
               {projects && projects.length > 0 && (
-                <section>
-                  <h2 className="font-bold text-black text-xs uppercase tracking-wider">
+                <section className="mt-3.5">
+                  <h2 className="font-bold text-[13px] text-black tracking-tight">
                     Projects
                   </h2>
-                  <hr className="mt-0.5 mb-1.5 border-gray-400 border-t" />
-                  <div className="space-y-2">
+                  <hr className="mt-0.5 mb-1.5 border-black border-t" />
+                  <div className="space-y-3">
                     {projects.map((proj) => (
                       <article key={proj.id} className="space-y-0.5">
                         <div className="flex items-baseline justify-between gap-4 text-[11.5px]">
-                          <div className="font-bold text-black">
-                            {proj.name}
+                          <div>
+                            <span className="font-bold text-black">
+                              {proj.name}
+                            </span>
+                            {proj.role && (
+                              <span className="text-gray-800">
+                                {" "}
+                                , {proj.role}
+                              </span>
+                            )}
                           </div>
                           {proj.url && (
                             <div className="shrink-0">
@@ -248,11 +253,9 @@ export function ResumePreview() {
                                 href={proj.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="print-link font-medium text-[#0969da] hover:underline"
+                                className="print-link font-medium text-black hover:underline"
                               >
-                                {proj.url.includes("github.com")
-                                  ? "GitHub"
-                                  : "Live Demo"}
+                                Link
                               </a>
                             </div>
                           )}
@@ -267,26 +270,24 @@ export function ResumePreview() {
 
               {/* Technical Skills */}
               {skills && skills.length > 0 && (
-                <section>
-                  <h2 className="font-bold text-black text-xs uppercase tracking-wider">
-                    Technical Skills
+                <section className="mt-3.5">
+                  <h2 className="font-bold text-[13px] text-black tracking-tight">
+                    Skills
                   </h2>
-                  <hr className="mt-0.5 mb-1.5 border-gray-400 border-t" />
-                  <div className="space-y-0.5 text-[11px] leading-relaxed">
+                  <hr className="mt-0.5 mb-1.5 border-black border-t" />
+                  <div className="space-y-0.5 text-[11.5px] leading-relaxed">
                     {Array.isArray(skills) && typeof skills[0] === "string" ? (
-                      // Handle fallback to flat array representation
                       <div>
-                        <span className="font-bold text-black">Skills: </span>
+                        <span className="font-bold text-black">Skills : </span>
                         <span className="text-gray-800">
                           {(skills as string[]).join(", ")}
                         </span>
                       </div>
                     ) : (
-                      // Handle categorized format representation
                       (skills as SkillCategory[]).map((cat) => (
                         <div key={cat.id}>
                           <span className="font-bold text-black">
-                            {cat.category}:{" "}
+                            {cat.category} :{" "}
                           </span>
                           <span className="text-gray-800">
                             {Array.isArray(cat.items)
