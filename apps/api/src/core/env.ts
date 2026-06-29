@@ -195,10 +195,16 @@ export const aiConfig = {
   googleApiKey: getEnvVariable("GOOGLE_GENERATIVE_AI_API_KEY", ""),
 };
 
-// 10. Form Builder FastAPI Service
-export const formBuilderConfig = {
-  serviceUrl: getEnvVariable("FORM_BUILDER_SERVICE_URL", "http://localhost:8001"),
-  serviceKey: getEnvVariable("FORM_BUILDER_SERVICE_KEY", "development-secret"),
+// 10. Resume Export Configuration
+
+export const resumeExportConfig = {
+  geminiApiKey: getEnvVariable(
+    "GEMINI_API_KEY",
+    getEnvVariable("GOOGLE_GENERATIVE_AI_API_KEY", ""),
+  ),
+  geminiModel: getEnvVariable("GEMINI_MODEL", "gemini-2.5-flash"),
+  latexCommand: getEnvVariable("LATEX_COMMAND", "xelatex"),
+  pdfCompileTimeoutMs: getEnvVarAsNumber("PDF_COMPILE_TIMEOUT_MS", 30000),
 };
 
 // 11. Unified Export with Flattened Values for Backward Compatibility
@@ -212,7 +218,7 @@ export const env = {
   judge0Config,
   humeConfig,
   aiConfig,
-  formBuilderConfig,
+  resumeExportConfig,
 
   // Flat properties referenced throughout the project codebase
   NODE_ENV: appConfig.nodeEnv,
@@ -238,8 +244,10 @@ export const env = {
   AI_PROVIDER: aiConfig.provider,
   AI_MODEL: aiConfig.model,
   GOOGLE_GENERATIVE_AI_API_KEY: aiConfig.googleApiKey,
-  FORM_BUILDER_SERVICE_URL: formBuilderConfig.serviceUrl,
-  FORM_BUILDER_SERVICE_KEY: formBuilderConfig.serviceKey,
+  GEMINI_API_KEY: resumeExportConfig.geminiApiKey,
+  GEMINI_MODEL: resumeExportConfig.geminiModel,
+  LATEX_COMMAND: resumeExportConfig.latexCommand,
+  PDF_COMPILE_TIMEOUT_MS: resumeExportConfig.pdfCompileTimeoutMs,
   MAIL_HOST: emailConfig.host,
   MAIL_PORT: emailConfig.port,
   MAIL_FROM: emailConfig.from,
@@ -269,7 +277,7 @@ console.info(
               webhookSigningKey: "***",
             },
             aiConfig: { ...aiConfig, googleApiKey: "***" },
-            formBuilderConfig: { ...formBuilderConfig, serviceKey: "***" },
+            resumeExportConfig: { ...resumeExportConfig, geminiApiKey: "***" },
           },
           null,
           2,

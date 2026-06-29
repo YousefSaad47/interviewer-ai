@@ -17,12 +17,7 @@ import {
 import { useResume } from "../contexts/resume-context";
 
 export function ProjectsSection() {
-  const {
-    data,
-    addProject,
-    updateProject,
-    removeProject,
-  } = useResume();
+  const { data, addProject, updateProject, removeProject } = useResume();
 
   return (
     <Card className="overflow-hidden rounded-lg border-border bg-card/80 dark:bg-card/90">
@@ -42,7 +37,7 @@ export function ProjectsSection() {
       </CardHeader>
 
       <CardContent className="space-y-3 p-4 sm:p-5">
-        {data.projects && data.projects.map((proj, index) => (
+        {data.projects?.map((proj, index) => (
           <div
             key={proj.id}
             className="space-y-3 rounded-lg border border-border bg-white/60 p-4 dark:bg-surface-secondary/55"
