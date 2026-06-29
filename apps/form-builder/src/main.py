@@ -1,7 +1,3 @@
-def main():
+from ats_resume_builder.api.app import create_app
 
-    print("Hello World!")
-
-
-if __name__ == "__main__":
-    main()
+app = create_app()

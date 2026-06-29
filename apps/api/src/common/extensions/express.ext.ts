@@ -27,7 +27,7 @@ export const extendExpressApp = (app: Application) => {
   };
 
   app.registerParsers = () => {
-    app.use(json());
+    app.use(json({ limit: "256kb" }));
     return app;
   };
 

@@ -13,11 +13,11 @@ def test_escape_latex_special_characters() -> None:
 def test_renderer_escapes_resume_content() -> None:
     resume = Resume.model_validate(
         {
-            "personal_information": {
-                "full_name": "Ada & Co",
+            "personalInformation": {
+                "fullName": "Ada & Co",
                 "email": "ada@example.com",
             },
-            "professional_summary": "Built 50% faster systems",
+            "professionalSummary": "Built 50% faster systems",
             "skills": [{"name": "Python_Engineering"}],
         }
     )
@@ -32,8 +32,8 @@ def test_renderer_escapes_resume_content() -> None:
 def test_renderer_omits_empty_sections_and_renders_contact_links() -> None:
     resume = Resume.model_validate(
         {
-            "personal_information": {
-                "full_name": "Ada Lovelace",
+            "personalInformation": {
+                "fullName": "Ada Lovelace",
                 "email": "ada@example.com",
                 "phone": "+1 (555) 123-4567",
                 "location": "London, UK",
@@ -50,14 +50,13 @@ def test_renderer_omits_empty_sections_and_renders_contact_links() -> None:
     latex = LatexResumeRenderer().render(resume)
 
     assert "ada@example.com" in latex
-    assert r"\begin{tabularx}{\textwidth}{@{} X X @{}}" in latex
-    assert r"\faLinkedinIn" in latex
-    assert r"\href{https://linkedin.com/in/ada}" in latex
-    assert r"\faGithub" in latex
-    assert r"\href{https://github.com/ada}" in latex
-    assert r"\faCode" in latex
-    assert r"\href{https://ada.dev/}" in latex
-    assert r"\section{Work Experience}" not in latex
+    assert r"\href{https://linkedin.com/in/ada}{linkedin.com/in/ada}" in latex
+    assert r"\href{https://github.com/ada}{github.com/ada}" in latex
+    assert r"\href{https://ada.dev/}{ada.dev}" in latex
+    assert r"\begin{tabularx}" not in latex
+    assert r"\begin{paracol}" not in latex
+    assert r"\fa" not in latex
+    assert r"\section{Experience}" not in latex
     assert r"\section{Projects}" not in latex
     assert r"\section{Education}" not in latex
 
@@ -65,21 +64,21 @@ def test_renderer_omits_empty_sections_and_renders_contact_links() -> None:
 def test_renderer_sorts_experience_reverse_chronologically() -> None:
     resume = Resume.model_validate(
         {
-            "personal_information": {
-                "full_name": "Ada Lovelace",
+            "personalInformation": {
+                "fullName": "Ada Lovelace",
                 "email": "ada@example.com",
             },
             "experience": [
                 {
                     "company": "Earlier Co",
                     "title": "Engineer",
-                    "date_range": {"start": "2020-01-01", "end": "2021-01-01"},
+                    "dateRange": {"start": "2020-01-01", "end": "2021-01-01"},
                     "highlights": ["Built reliable services."],
                 },
                 {
                     "company": "Current Co",
                     "title": "Senior Engineer",
-                    "date_range": {"start": "2022-02-01", "current": True},
+                    "dateRange": {"start": "2022-02-01", "current": True},
                     "highlights": ["Led platform modernization."],
                 },
             ],
@@ -95,15 +94,15 @@ def test_renderer_sorts_experience_reverse_chronologically() -> None:
 def test_renderer_supports_education_description() -> None:
     resume = Resume.model_validate(
         {
-            "personal_information": {
-                "full_name": "Ada Lovelace",
+            "personalInformation": {
+                "fullName": "Ada Lovelace",
                 "email": "ada@example.com",
             },
             "education": [
                 {
                     "institution": "University of London",
                     "degree": "BSc Computer Science",
-                    "date_range": {"start": "2017-09-01", "end": "2020-06-01"},
+                    "dateRange": {"start": "2017-09-01", "end": "2020-06-01"},
                     "description": "Focused on algorithms and distributed systems.",
                 }
             ],
@@ -114,3 +113,21 @@ def test_renderer_supports_education_description() -> None:
 
     assert "Focused on algorithms and distributed systems." in latex
     assert "Sep 2017 -- Jun 2020" in latex
+
+
+def test_user_input_cannot_inject_latex_commands() -> None:
+    resume = Resume.model_validate(
+        {
+            "personalInformation": {
+                "fullName": r"\input{secret}",
+                "email": "ada@example.com",
+            },
+            "skills": [{"name": r"\write18{rm -rf /}"}],
+        }
+    )
+
+    latex = LatexResumeRenderer().render(resume)
+
+    assert r"\input{secret}" not in latex
+    assert r"\write18{rm -rf /}" not in latex
+    assert r"\textbackslash{}input\{secret\}" in latex

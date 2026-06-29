@@ -8,6 +8,24 @@ from ats_resume_builder.providers.gemini import GeminiProvider
 
 
 @pytest.mark.asyncio
+async def test_gemini_provider_successful_json_response() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            request=request,
+            json={"candidates": [{"content": {"parts": [{"text": '{"skills": []}'}]}}]},
+        )
+
+    settings = Settings(gemini_api_key=SecretStr("test-key"))
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        provider = GeminiProvider(settings, client)
+
+        result = await provider.generate_json("prompt", request_id="request-1")
+
+    assert result == '{"skills": []}'
+
+
+@pytest.mark.asyncio
 async def test_gemini_provider_retries_transient_status_and_uses_header_key() -> None:
     requests: list[httpx.Request] = []
 
@@ -49,3 +67,37 @@ async def test_gemini_provider_does_not_retry_non_transient_status() -> None:
             await provider.generate_json("prompt", request_id="request-1")
 
     assert len(requests) == 1
+
+
+@pytest.mark.asyncio
+async def test_gemini_provider_timeout_handling() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        raise httpx.TimeoutException("timed out", request=request)
+
+    settings = Settings(gemini_api_key=SecretStr("test-key"), ai_retry_limit=0)
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        provider = GeminiProvider(settings, client)
+
+        with pytest.raises(AIProviderError):
+            await provider.generate_json("prompt", request_id="request-1")
+
+
+@pytest.mark.asyncio
+async def test_gemini_provider_missing_api_key() -> None:
+    provider = GeminiProvider(Settings(gemini_api_key=None))
+
+    with pytest.raises(AIProviderError, match="Gemini API key"):
+        await provider.generate_json("prompt", request_id="request-1")
+
+
+@pytest.mark.asyncio
+async def test_gemini_provider_malformed_response() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, request=request, json={"candidates": []})
+
+    settings = Settings(gemini_api_key=SecretStr("test-key"))
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        provider = GeminiProvider(settings, client)
+
+        with pytest.raises(AIProviderError):
+            await provider.generate_json("prompt", request_id="request-1")

@@ -9,7 +9,12 @@ import {
   useState,
 } from "react";
 
-import { getMyResume, saveMyResume } from "../api";
+import {
+  downloadBlob,
+  exportResumePdf,
+  getMyResume,
+  saveMyResume,
+} from "../api";
 import type {
   Education,
   PersonalInfo,
@@ -40,9 +45,12 @@ interface ResumeContextType {
   removeSkillCategory: (id: string) => void;
   isLoading: boolean;
   isSaving: boolean;
+  isExporting: boolean;
   saveError: string | null;
+  exportError: string | null;
   savedAt: string | null;
   saveResume: () => Promise<void>;
+  exportResume: () => Promise<void>;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -110,7 +118,7 @@ const initialData: ResumeData = {
       id: "e-1",
       school: "University of California, Berkeley",
       degree: "B.S. in Cognitive Science (Human-Computer Interaction)",
-      year: "2016 – 2020",
+      year: "2016 Ã¢â‚¬â€œ 2020",
     },
   ],
   skills: [
@@ -153,8 +161,9 @@ const initialData: ResumeData = {
   ],
 };
 
-const normalizeResumeData = (content: any): ResumeData => {
-  const normalized = { ...content };
+const normalizeResumeData = (content: unknown): ResumeData => {
+  const normalized: Partial<ResumeData> =
+    typeof content === "object" && content !== null ? { ...content } : {};
   if (!normalized.personalInfo) {
     normalized.personalInfo = {
       fullName: "",
@@ -184,7 +193,7 @@ const normalizeResumeData = (content: any): ResumeData => {
       {
         id: "default-skills",
         category: "Skills",
-        items: normalized.skills,
+        items: normalized.skills as string[],
       },
     ];
   }
@@ -195,7 +204,9 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<ResumeData>(initialData);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [exportError, setExportError] = useState<string | null>(null);
   const [savedAt, setSavedAt] = useState<string | null>(null);
 
   useEffect(() => {
@@ -471,6 +482,23 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [data]);
 
+  const exportResume = useCallback(async () => {
+    if (isExporting) return;
+    setIsExporting(true);
+    setExportError(null);
+
+    try {
+      const { blob, filename } = await exportResumePdf(data);
+      downloadBlob(blob, filename);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Resume export failed.";
+      setExportError(message);
+    } finally {
+      setIsExporting(false);
+    }
+  }, [data, isExporting]);
+
   return (
     <ResumeContext.Provider
       value={{
@@ -493,9 +521,12 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
         removeSkillCategory,
         isLoading,
         isSaving,
+        isExporting,
         saveError,
+        exportError,
         savedAt,
         saveResume,
+        exportResume,
       }}
     >
       {children}

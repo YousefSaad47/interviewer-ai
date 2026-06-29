@@ -1,0 +1,10 @@
+{
+  "venvPath": "apps/form-builder",
+  "venv": ".venv",
+  "executionEnvironments": [
+    {
+      "root": "apps/form-builder",
+      "extraPaths": ["apps/form-builder/src"]
+    }
+  ]
+}

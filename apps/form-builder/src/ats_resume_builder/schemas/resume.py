@@ -12,6 +12,13 @@ from pydantic import (
     field_validator,
     model_validator,
 )
+from pydantic.alias_generators import to_camel
+
+PUBLIC_MODEL_CONFIG = ConfigDict(
+    alias_generator=to_camel,
+    populate_by_name=True,
+    extra="forbid",
+)
 
 NonEmptyStr = Annotated[str, Field(min_length=1, max_length=500)]
 ShortStr = Annotated[str, Field(min_length=1, max_length=120)]
@@ -33,7 +40,7 @@ class LanguageLevel(StrEnum):
 
 
 class DateRange(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = PUBLIC_MODEL_CONFIG
 
     start: date | None = None
     end: date | None = None
@@ -51,18 +58,20 @@ class DateRange(BaseModel):
 
 
 class Link(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = PUBLIC_MODEL_CONFIG
 
     label: ShortStr
     url: HttpUrl
 
 
 class PersonalInformation(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = PUBLIC_MODEL_CONFIG
 
     full_name: ShortStr
     email: EmailStr
-    phone: Annotated[str | None, Field(default=None, min_length=7, max_length=32)] = None
+    phone: Annotated[str | None, Field(default=None, min_length=7, max_length=32)] = (
+        None
+    )
     location: Annotated[str | None, Field(default=None, max_length=160)] = None
     headline: Annotated[str | None, Field(default=None, max_length=180)] = None
     links: list[Link] = Field(default_factory=list, max_length=8)
@@ -83,7 +92,7 @@ class PersonalInformation(BaseModel):
 
 
 class ExperienceItem(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = PUBLIC_MODEL_CONFIG
 
     company: ShortStr
     title: ShortStr
@@ -93,7 +102,7 @@ class ExperienceItem(BaseModel):
 
 
 class EducationItem(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = PUBLIC_MODEL_CONFIG
 
     institution: ShortStr
     degree: ShortStr
@@ -105,7 +114,7 @@ class EducationItem(BaseModel):
 
 
 class SkillItem(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = PUBLIC_MODEL_CONFIG
 
     name: ShortStr
     level: SkillLevel | None = None
@@ -113,7 +122,7 @@ class SkillItem(BaseModel):
 
 
 class ProjectItem(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = PUBLIC_MODEL_CONFIG
 
     name: ShortStr
     description: LongStr
@@ -123,7 +132,7 @@ class ProjectItem(BaseModel):
 
 
 class CertificationItem(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = PUBLIC_MODEL_CONFIG
 
     name: ShortStr
     issuer: Annotated[str | None, Field(default=None, max_length=160)] = None
@@ -132,17 +141,19 @@ class CertificationItem(BaseModel):
 
 
 class LanguageItem(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = PUBLIC_MODEL_CONFIG
 
     name: ShortStr
     level: LanguageLevel | None = None
 
 
 class Resume(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = PUBLIC_MODEL_CONFIG
 
     personal_information: PersonalInformation
-    professional_summary: Annotated[str | None, Field(default=None, max_length=1800)] = None
+    professional_summary: Annotated[
+        str | None, Field(default=None, max_length=1800)
+    ] = None
     experience: list[ExperienceItem] = Field(default_factory=list, max_length=30)
     education: list[EducationItem] = Field(default_factory=list, max_length=20)
     skills: list[SkillItem] = Field(default_factory=list, max_length=80)
@@ -160,12 +171,7 @@ class Resume(BaseModel):
 
 
 class ResumeBuildRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+    model_config = PUBLIC_MODEL_CONFIG
 
-    resume_id: Annotated[str, Field(alias="resumeId", min_length=1, max_length=120)]
+    resume_id: Annotated[str, Field(min_length=1, max_length=120)]
     resume: Resume
-
-
-class ResumeBuildResponseMetadata(BaseModel):
-    resume_id: str
-    ai_optimized: bool

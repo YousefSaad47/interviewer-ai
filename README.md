@@ -1,3 +1,75 @@
+# Interviewer AI
+
+## Resume PDF Export
+
+The resume builder export flow is Node.js-only. The Next.js frontend posts the current resume form to the Express API, the API optimizes the structured resume with Gemini, renders the validated result through a Nunjucks LaTeX template, compiles it with `xelatex`, and returns raw `application/pdf` bytes for the browser to download as a Blob.
+
+Endpoint:
+
+```http
+POST /api/resumes/export
+Content-Type: application/json
+Accept: application/pdf
+```
+
+Request body:
+
+```json
+{
+  "content": {
+    "personalInfo": {
+      "fullName": "Ada Lovelace",
+      "email": "ada@example.com",
+      "phone": "+20 100 000 0000",
+      "location": "Cairo, Egypt",
+      "summary": "Backend engineer...",
+      "linkedin": "linkedin.com/in/ada",
+      "github": "https://github.com/ada"
+    },
+    "workExperience": [],
+    "projects": [],
+    "education": [],
+    "skills": []
+  }
+}
+```
+
+Required backend environment variables:
+
+```env
+GEMINI_API_KEY=
+GEMINI_MODEL=gemini-2.5-flash
+LATEX_COMMAND=xelatex
+PDF_COMPILE_TIMEOUT_MS=30000
+```
+
+`GEMINI_API_KEY` is preferred. For local compatibility, the API also falls back to the existing server-side `GOOGLE_GENERATIVE_AI_API_KEY` when `GEMINI_API_KEY` is empty. Never expose either key to the frontend.
+
+LaTeX setup:
+
+- Windows: install TinyTeX, MiKTeX, or TeX Live and make `xelatex` available on `PATH`. For TinyTeX, run `tlmgr install titlesec enumitem needspace`.
+- Linux/Debian: install TeX Live packages such as `texlive-xetex`, `texlive-latex-extra`, and `texlive-fonts-recommended`.
+- Docker/production: include `xelatex` plus `titlesec`, `enumitem`, `needspace`, `fontspec`, `hyperref`, and the required base LaTeX packages in the image.
+
+Run locally without Python/FastAPI:
+
+```sh
+bun run --cwd apps/api dev
+bun run --cwd apps/www dev
+```
+
+Useful verification commands:
+
+```sh
+bun run --cwd apps/api type:check
+bun run --cwd apps/api lint
+bun run --cwd apps/api test src/modules/resume-export/resume-export.test.ts
+bun run --cwd apps/www type:check
+```
+
+The frontend export button disables itself while generating, sends `Accept: application/pdf`, reads success responses as a Blob, extracts the filename from `Content-Disposition`, creates a temporary object URL, clicks a temporary anchor, then revokes the URL. Failed responses are parsed as JSON and shown in the existing resume builder error area.
+
+---
 # Turborepo starter
 
 This Turborepo starter is maintained by the Turborepo core team.
