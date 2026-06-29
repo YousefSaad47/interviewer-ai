@@ -6,6 +6,6 @@ export type {
   PersonalInfo,
   Project,
   ResumeData,
-  WorkExperience,
   SkillCategory,
+  WorkExperience,
 } from "./types";

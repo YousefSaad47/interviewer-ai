@@ -27,18 +27,18 @@ export function normalizeAuthError(error: unknown): NormalizedError {
     const errObj = error as Record<string, unknown>;
 
     // Better Auth errors typically have .message or .status
-    if (typeof errObj["message"] === "string") {
-      message = errObj["message"];
+    if (typeof errObj.message === "string") {
+      message = errObj.message;
     }
-    if (typeof errObj["status"] === "number") {
-      status = errObj["status"];
-    } else if (typeof errObj["status"] === "string") {
-      status = Number.parseInt(errObj["status"], 10) || undefined;
+    if (typeof errObj.status === "number") {
+      status = errObj.status;
+    } else if (typeof errObj.status === "string") {
+      status = Number.parseInt(errObj.status, 10) || undefined;
     }
 
     // If it has code property
-    if (typeof errObj["code"] === "string" && !message) {
-      message = errObj["code"];
+    if (typeof errObj.code === "string" && !message) {
+      message = errObj.code;
     }
   }
 
