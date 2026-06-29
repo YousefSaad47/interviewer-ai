@@ -1,22 +1,5 @@
-target-version = "py311"
-line-length = 100
-
 [lint]
-select = [
-    "E",
-    "F",
-    "I",
-    "F401",
-]
-ignore = ["E501"]
-
-[lint.isort]
-known-first-party = ["src"]
-combine-as-imports = true
-force-single-line = false
-force-wrap-aliases = true
-order-by-type = true
+select = ["I", "F401"]
 
 [lint.per-file-ignores]
 "__init__.py" = ["F401"]
-"src/tests/**/*.py" = ["F401", "F841"]
