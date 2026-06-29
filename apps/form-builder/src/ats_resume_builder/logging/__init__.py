@@ -1,0 +1,1 @@
+from ats_resume_builder.logging.setup import configure_logging
