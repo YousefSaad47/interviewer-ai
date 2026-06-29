@@ -115,26 +115,6 @@ function computeSentiment(scores: Record<string, number>): number | null {
   return Math.round((sumPos / total) * 100);
 }
 
-function computeClarity(scores: Record<string, number>): number | null {
-  const concentration = scores["Concentration"] ?? 0;
-  const contemplation = scores["Contemplation"] ?? 0;
-  const realization = scores["Realization"] ?? 0;
-  const interest = scores["Interest"] ?? 0;
-  const satisfaction = scores["Satisfaction"] ?? 0;
-  const confusion = scores["Confusion"] ?? 0;
-  const awkwardness = scores["Awkwardness"] ?? 0;
-  const tiredness = scores["Tiredness"] ?? 0;
-  const boredom = scores["Boredom"] ?? 0;
-  const doubt = scores["Doubt"] ?? 0;
-
-  const clear =
-    concentration + contemplation + realization + interest + satisfaction;
-  const unclear = confusion + awkwardness + tiredness + boredom + doubt;
-
-  const raw = (clear - unclear + 5) / 10;
-  return Math.round(Math.max(0, Math.min(100, raw * 100)));
-}
-
 export class InterviewService extends AbstractService {
   constructor(
     prisma: PrismaClient,
@@ -250,7 +230,6 @@ export class InterviewService extends AbstractService {
       const fluencyScore = computeFluency(scores);
       const confidenceScore = computeConfidence(scores);
       const sentimentScore = computeSentiment(scores);
-      const clarityScore = computeClarity(scores);
 
       const answer = await this.prisma.answer.create({
         data: {
@@ -265,7 +244,6 @@ export class InterviewService extends AbstractService {
               fluencyScore,
               confidenceScore,
               sentimentScore,
-              clarityScore,
               overallScore:
                 fluencyScore != null && confidenceScore != null
                   ? (fluencyScore + confidenceScore) / 2
