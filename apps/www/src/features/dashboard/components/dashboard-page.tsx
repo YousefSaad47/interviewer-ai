@@ -9,6 +9,7 @@ import { Button } from "@/shared/ui";
 import {
   QuickActions,
   RecentInterviews,
+  RecentSubmissions,
   SkillsOverview,
   StatsCards,
   WeeklyGoals,
@@ -29,69 +30,19 @@ export function DashboardPage() {
 
   const firstName = session?.user?.name?.split(" ")[0] ?? "Developer";
 
-  // Calculate Streak
-  const streak = (() => {
-    if (!recent) return 0;
-    const dates = new Set<string>();
-    recent.interviews?.forEach((i) => {
-      if (i.startedAt) {
-        dates.add(new Date(i.startedAt).toDateString());
-      }
-    });
-    recent.submissions?.forEach((s) => {
-      if (s.createdAt) {
-        dates.add(new Date(s.createdAt).toDateString());
-      }
-    });
-
-    let count = 0;
-    const checkDate = new Date();
-
-    // If there is no activity today, check if there was activity yesterday to continue the streak
-    if (!dates.has(checkDate.toDateString())) {
-      checkDate.setDate(checkDate.getDate() - 1);
-    }
-
-    while (dates.has(checkDate.toDateString())) {
-      count++;
-      checkDate.setDate(checkDate.getDate() - 1);
-    }
-    return count;
-  })();
-
+  const streak = recent?.streak ?? 0;
   const streakText =
     streak > 0 ? `${streak} day${streak === 1 ? "" : "s"}` : "Ready";
 
-  // Calculate Focus Skill Area
-  const focusArea = (() => {
-    if (skills?.categories && skills.categories.length > 0) {
-      return skills.categories[0]?.name?.replace("_", " ") ?? "System design";
-    }
-    return "System design";
-  })();
+  const focusArea = skills?.focusArea ?? "System design";
 
-  // Calculate Target Sessions
   const interviewGoal = goals?.interviewGoal ?? 3;
   const targetText = `${interviewGoal} session${interviewGoal === 1 ? "" : "s"}`;
 
-  // Calculate Readiness Pulse
-  const avgScore = stats?.averageScore ?? 0;
-  const interviewsDone = goals?.interviewsDone ?? 0;
-  const problemsDone = goals?.problemsDone ?? 0;
-  const problemGoal = goals?.problemGoal ?? 5;
-
-  const interviewProgress =
-    interviewGoal > 0 ? Math.min(interviewsDone / interviewGoal, 1) : 0;
-  const problemProgress =
-    problemGoal > 0 ? Math.min(problemsDone / problemGoal, 1) : 0;
-
-  const readinessScore = Math.round(
-    avgScore * 0.4 + interviewProgress * 30 + problemProgress * 30,
-  );
-
+  const readinessScore = stats?.readinessScore ?? 0;
   const angle = Math.round((readinessScore / 100) * 360);
 
-  // Formatted Practice Time text
+  const avgScore = stats?.averageScore ?? 0;
   const practiceTimeText = (() => {
     const mins = stats?.practiceTimeMinutes ?? 0;
     if (mins === 0) return "0h";
@@ -99,25 +50,7 @@ export function DashboardPage() {
     return `${Math.round(mins / 60)}h`;
   })();
 
-  // Determine Next Best Move dynamically
-  const nextBestMove = (() => {
-    if (!stats || stats.interviewsCompleted === 0) {
-      return "Start a 20 minute mock session.";
-    }
-    if (avgScore < 60) {
-      return "Review weak signals from your last interview.";
-    }
-    if (stats.problemsSolved === 0) {
-      return "Sharpen your skills with a coding challenge.";
-    }
-    if (interviewsDone >= interviewGoal && problemsDone >= problemGoal) {
-      return "Outstanding! You've crushed your goals for this week.";
-    }
-    if (problemsDone < problemGoal) {
-      return "Solve another coding problem to reach your weekly goal.";
-    }
-    return "Continue your practice with a mock interview.";
-  })();
+  const nextBestMove = stats?.nextBestMove ?? "";
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-background">
@@ -294,6 +227,7 @@ export function DashboardPage() {
             <div className="space-y-6">
               <RecentInterviews />
               <WeeklyGoals />
+              <RecentSubmissions />
             </div>
 
             <div className="space-y-6 xl:sticky xl:top-24 xl:self-start">
