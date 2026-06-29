@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle, Download, Save } from "lucide-react";
+import { Download, Loader2, Save } from "lucide-react";
 
 import { Header } from "@/features/landing";
 import { Button } from "@/shared/ui";
@@ -24,7 +24,16 @@ export const ResumeBuilderPage = () => {
 };
 
 const ResumeBuilderContent = () => {
-  const { isLoading, isSaving, saveError, saveResume, savedAt } = useResume();
+  const {
+    isLoading,
+    isSaving,
+    isExporting,
+    saveError,
+    exportError,
+    saveResume,
+    savedAt,
+    exportResume,
+  } = useResume();
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-background">
@@ -106,14 +115,6 @@ const ResumeBuilderContent = () => {
                   <Button
                     variant="outline"
                     className="h-10 gap-2 rounded-lg border-border bg-card/70 text-foreground text-sm hover:border-primary/30 hover:bg-card"
-                  >
-                    <CheckCircle className="h-4 w-4" />
-                    <span className="hidden sm:inline">ATS Checker</span>
-                    <span className="sm:hidden">ATS</span>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="h-10 gap-2 rounded-lg border-border bg-card/70 text-foreground text-sm hover:border-primary/30 hover:bg-card"
                     disabled={isLoading || isSaving}
                     onClick={saveResume}
                   >
@@ -121,17 +122,27 @@ const ResumeBuilderContent = () => {
                     {isSaving ? "Saving" : "Save"}
                   </Button>
                   <Button
-                    onClick={() => window.print()}
+                    onClick={exportResume}
+                    disabled={isLoading || isExporting}
                     className="h-10 gap-2 rounded-lg bg-primary px-4 text-primary-foreground text-sm shadow-[0_14px_35px_rgba(16,185,129,0.2)] hover:bg-primary/90"
                   >
-                    <Download className="h-4 w-4" />
-                    <span className="hidden sm:inline">Export PDF</span>
-                    <span className="sm:hidden">PDF</span>
+                    {isExporting ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Download className="h-4 w-4" />
+                    )}
+                    <span className="hidden sm:inline">
+                      {isExporting ? "Generating PDF..." : "Export PDF"}
+                    </span>
+                    <span className="sm:hidden">
+                      {isExporting ? "..." : "PDF"}
+                    </span>
                   </Button>
                 </div>
-                {(saveError || savedAt) && (
+                {(saveError || exportError || savedAt) && (
                   <p className="text-muted-foreground text-xs">
                     {saveError ??
+                      exportError ??
                       `Saved ${new Date(savedAt ?? "").toLocaleString()}`}
                   </p>
                 )}

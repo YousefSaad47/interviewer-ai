@@ -19,7 +19,11 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/ui";
 
-export function Header({ scrolled: externalScrolled }: { scrolled?: boolean } = {}) {
+export function Header({
+  scrolled: externalScrolled,
+}: {
+  scrolled?: boolean;
+} = {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolledState, setScrolledState] = useState(false);
   const { scrollYProgress } = useScroll();
@@ -45,7 +49,8 @@ export function Header({ scrolled: externalScrolled }: { scrolled?: boolean } = 
     return () => unsubscribe();
   }, [scrollYProgress, externalScrolled]);
 
-  const scrolled = externalScrolled !== undefined ? externalScrolled : scrolledState;
+  const scrolled =
+    externalScrolled !== undefined ? externalScrolled : scrolledState;
 
   return (
     <header>
@@ -122,42 +127,40 @@ export function Header({ scrolled: externalScrolled }: { scrolled?: boolean } = 
               <ThemeToggle />
 
               {isPending ? null : session ? (
-                <>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        type="button"
-                        className="flex items-center gap-1 rounded-full transition-opacity hover:opacity-90"
-                        aria-label="User menu"
-                      >
-                        <div className="h-9 w-9 overflow-hidden rounded-full bg-gray-600">
-                          <svg
-                            viewBox="0 0 36 36"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <circle cx="18" cy="18" r="18" fill="#4B5563" />
-                            <circle cx="18" cy="14" r="6" fill="#9CA3AF" />
-                            <path
-                              d="M6 32C6 26 11 22 18 22C25 22 30 26 30 32"
-                              fill="#9CA3AF"
-                            />
-                          </svg>
-                        </div>
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-48">
-                      <DropdownMenuItem
-                        variant="destructive"
-                        onClick={() => authClient.signOut()}
-                        className="cursor-pointer"
-                      >
-                        <LogOut className="mr-2 size-4" />
-                        Sign out
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      type="button"
+                      className="flex items-center gap-1 rounded-full transition-opacity hover:opacity-90"
+                      aria-label="User menu"
+                    >
+                      <div className="h-9 w-9 overflow-hidden rounded-full bg-gray-600">
+                        <svg
+                          viewBox="0 0 36 36"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle cx="18" cy="18" r="18" fill="#4B5563" />
+                          <circle cx="18" cy="14" r="6" fill="#9CA3AF" />
+                          <path
+                            d="M6 32C6 26 11 22 18 22C25 22 30 26 30 32"
+                            fill="#9CA3AF"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={() => authClient.signOut()}
+                      className="cursor-pointer"
+                    >
+                      <LogOut className="mr-2 size-4" />
+                      Sign out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               ) : (
                 <>
                   <Link href="/auth/signin">

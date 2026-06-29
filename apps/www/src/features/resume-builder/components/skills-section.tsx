@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Plus, X, Tag } from "lucide-react";
+import { Plus, Tag, X } from "lucide-react";
 
 import {
   Button,
@@ -19,11 +19,14 @@ import { useResume } from "../contexts/resume-context";
 import type { SkillCategory } from "../types";
 
 export function SkillsSection() {
-  const { data, addSkillCategory, updateSkillCategory, removeSkillCategory } = useResume();
+  const { data, addSkillCategory, updateSkillCategory, removeSkillCategory } =
+    useResume();
   const skillCategories = (data.skills || []) as SkillCategory[];
 
   // Keep track of new skill inputs per category ID
-  const [newItemText, setNewItemText] = useState<{ [catId: string]: string }>({});
+  const [newItemText, setNewItemText] = useState<{ [catId: string]: string }>(
+    {},
+  );
 
   const handleAddItem = (catId: string) => {
     const text = newItemText[catId]?.trim();
@@ -94,7 +97,7 @@ export function SkillsSection() {
               <button
                 type="button"
                 onClick={() => removeSkillCategory(cat.id)}
-                className="mt-5 transition-opacity hover:opacity-80 shrink-0"
+                className="mt-5 shrink-0 transition-opacity hover:opacity-80"
               >
                 <X className="h-4 w-4 text-[#FF6467]" />
               </button>
@@ -143,7 +146,7 @@ export function SkillsSection() {
                     <button
                       type="button"
                       onClick={() => handleRemoveItem(cat.id, idx)}
-                      className="transition-opacity hover:opacity-85 text-muted-foreground hover:text-foreground"
+                      className="text-muted-foreground transition-opacity hover:text-foreground hover:opacity-85"
                     >
                       <X className="h-3 w-3" />
                     </button>
@@ -155,7 +158,7 @@ export function SkillsSection() {
         ))}
 
         {skillCategories.length === 0 && (
-          <p className="text-muted-foreground text-sm text-center py-4">
+          <p className="py-4 text-center text-muted-foreground text-sm">
             No technical skills categories added yet.
           </p>
         )}

@@ -1,0 +1,92 @@
+\documentclass[10pt, letterpaper]{article}
+\usepackage[
+    top=1.4cm,
+    bottom=1.4cm,
+    left=1.8cm,
+    right=1.8cm,
+]{geometry}
+\usepackage{fontspec}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{needspace}
+
+\setmainfont{Latin Modern Roman}
+\pagestyle{empty}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\raggedright
+\pagenumbering{gobble}
+
+\hypersetup{
+    pdftitle={ {{ metadataTitle }} },
+    pdfauthor={ {{ metadataAuthor }} },
+    pdfcreator={ATS Resume Builder}
+}
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+\titlespacing{\section}{0pt}{0.22cm}{0.12cm}
+
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.03cm,
+        parsep=0.03cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=14pt
+    ]
+}{
+    \end{itemize}
+}
+
+\begin{document}
+
+{\centering
+    {\LARGE\textbf{ {{ personal.fullName }} }}\\[4pt]
+    {% if contactItems.length > 0 %}
+    {% for item in contactItems %}{% if item.url %}\href{ {{- item.url -}} }{ {{- item.text -}} }{% else %}{{ item.text }}{% endif %}{% if not loop.last %}\quad{} | \quad{}{% endif %}{% endfor %}
+    {% endif %}
+    \par
+}
+
+\vspace{0.18cm}
+
+{% if summary %}\section{Professional Summary}
+{{ summary }}
+{% endif %}
+
+{% if education.length > 0 %}\section{Education}
+{% for item in education %}
+\textbf{ {{ item.degree }} }{% if item.school %}, {{ item.school }}{% endif %}\hfill {{ item.year }}\\
+\vspace{0.06cm}
+{% endfor %}
+{% endif %}
+
+{% if workExperience.length > 0 %}\section{Experience}
+{% for item in workExperience %}
+\textbf{ {{ item.position }} }{% if item.company %}, {{ item.company }}{% endif %}\hfill {{ item.duration }}\\
+{% if item.bullets.length > 0 %}\begin{highlights}
+{% for bullet in item.bullets %}\item {{ bullet }}
+{% endfor %}\end{highlights}{% endif %}
+\vspace{0.06cm}
+{% endfor %}
+{% endif %}
+
+{% if projects.length > 0 %}\section{Projects}
+{% for project in projects %}
+\textbf{ {{ project.name }} }{% if project.role %}, {{ project.role }}{% endif %}\hfill {% if project.safeUrl %}\href{ {{- project.safeUrl -}} }{Link}{% endif %}\\
+{% if project.bullets.length > 0 %}\begin{highlights}
+{% for bullet in project.bullets %}\item {{ bullet }}
+{% endfor %}\end{highlights}{% endif %}
+\vspace{0.06cm}
+{% endfor %}
+{% endif %}
+
+{% if skills.length > 0 %}\section{Skills}
+{% for skill in skills %}
+\textbf{ {{ skill.category }} }{% if skill.items.length > 0 %}: {{ skill.items | join(", ") }}{% endif %}\\
+{% endfor %}
+{% endif %}
+
+\end{document}

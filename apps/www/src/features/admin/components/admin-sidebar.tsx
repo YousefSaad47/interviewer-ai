@@ -27,7 +27,9 @@ export function AdminSidebar({
   open: boolean;
 }) {
   const { data: session } = authClient.useSession();
-  const user = session?.user as (NonNullable<typeof session>["user"] & { role?: string }) | undefined;
+  const user = session?.user as
+    | (NonNullable<typeof session>["user"] & { role?: string })
+    | undefined;
   const userName = user?.name ?? "Admin User";
   const userRole = user?.role ? formatEnumLabel(user.role) : "Admin";
 
@@ -80,9 +82,7 @@ export function AdminSidebar({
           <Avatar name={userName} />
           <div className="min-w-0 flex-1">
             <p className="truncate font-semibold text-sm">{userName}</p>
-            <p className="truncate text-muted-foreground text-xs">
-              {userRole}
-            </p>
+            <p className="truncate text-muted-foreground text-xs">{userRole}</p>
           </div>
         </div>
         <Button
