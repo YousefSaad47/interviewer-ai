@@ -3,7 +3,6 @@ import type { Controller } from "../types";
 
 declare global {
   namespace Express {
-    clear;
     interface Application {
       registerCors: () => this;
       registerParsers: () => this;

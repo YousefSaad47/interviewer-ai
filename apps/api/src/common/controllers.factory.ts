@@ -134,20 +134,6 @@ export class ControllersFactory {
   }
 
   public static get controllers() {
-    this.create(Controllers.SAMPLE);
-    this.create(Controllers.CODING);
-    this.create(Controllers.PROBLEM);
-    this.create(Controllers.INTERVIEW);
-    this.create(Controllers.DASHBOARD);
-    this.create(Controllers.RESUMES);
-    this.create(Controllers.RESUME_EXPORT);
-    this.create(Controllers.ADMIN_USERS);
-    this.create(Controllers.ADMIN_INTERVIEWS);
-    this.create(Controllers.ADMIN_CODING);
-    this.create(Controllers.ADMIN_RESUMES);
-    this.create(Controllers.ADMIN_ANALYTICS);
-    this.create(Controllers.ADMIN_MANAGEMENT);
-
     return Array.from(this._controllers.values());
   }
 }
